@@ -48,7 +48,7 @@ Outras opções: `--sheet animals` (só uma folha), `--map` (só mapa e layout),
 | `animals.yaml` | folha antiga de animais — **desativada** (`enabled: false`) | — |
 | `characters_v2.yaml` | `v2/personagens_v2.jpg` (só farmer_f) | atlas_characters |
 | `characters.yaml` | folha antiga: só os NPCs (elder, blacksmith, shopkeeper, scientist) | atlas_characters |
-| `pets.yaml`, `vehicles.yaml` | folhas antigas | atlas_pets / atlas_vehicles |
+| `pets.yaml`, `vehicles.yaml` | folhas antigas. Veículos com chaves estáveis `vehicle/<cart\|car\|pickup\|truck>_<vista>_<n>` (4 vistas cada; ver vehicles.yaml) | atlas_pets / atlas_vehicles |
 | `buildings.yaml` | `v2/predios_arvores.jpg`: agora só `tree/bush_round` e `decor/crop_rows_*` | atlas_buildings |
 | `crops.yaml` | `v2/estagios_plantas.jpg` (crop/carrot_0..3, potato, strawberry) | atlas_crops |
 | `tiles.yaml` | `v2/canteiro_terra.jpg` (tile/soil_raw, soil_tilled, soil_wet; 112x112) | atlas_tiles |
@@ -141,7 +141,11 @@ Os manifestos explicam, em comentários, o que é cada pose.
 
 Camadas: `collision`, `plots` (slotId, unlockCost, unlockLevel, startsUnlocked), `pens` (habitat: coop/barn/pond),
 `spawn` (ponto `player`), `locked_lots` (lotId, cost), `npc_points` (npc: shopkeeper/blacksmith/scientist),
-`buildings` e `overhead` (opcional: formas extras de telhado; `drop` = `path` ou `path_grass`).
+`buildings`, `overhead` (opcional: formas extras de telhado; `drop` = `path` ou `path_grass`) e `spots`
+(pontos `vehicle_spawn`, na frente da garagem, e `farm_exit`, na saída da estrada à direita).
+
+Canteiros: o retângulo é a borda exata da terra marrom pintada. Os 2 blocos em L (plot_08, plot_12) usam a
+caixa envolvente, então incluem um cantinho de caminho; os blocos duplos retangulares viram 2 canteiros.
 
 **Camada `buildings`** (prédios e árvores): cada objeto é um retângulo do tamanho do sprite, com as propriedades
 `sprite` (ex.: `building/house`, `tree/oak`) e `overheadSplitY` (int). O sprite é desenhado com a base central

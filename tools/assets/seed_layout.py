@@ -55,7 +55,8 @@ PLACEMENTS = [
     ("building/pier", 1830, 724),           # entra no lago pela margem de baixo/direita
     # árvores
     ("tree/pine", 92, 800), ("tree/pine", 92, 1050), ("tree/pine", 92, 1300),
-    ("tree/apple", 1110, 1015), ("tree/apple", 1105, 690),
+    ("tree/apple", 1140, 960),              # grama à direita dos canteiros, longe da coluna 5 e do lote
+    ("tree/apple", 1870, 470),              # grama entre a estufa e o carvalho, acima do lago
     ("tree/palm", 2175, 690),
     ("tree/bush_round", 700, 690),
     ("tree/oak", 2120, 470),
@@ -76,6 +77,8 @@ LOCKED_LOTS = [
 SPAWN = ("player", (450, 625))
 NPCS = [("shopkeeper", (2150, 795)), ("blacksmith", (905, 500)), ("scientist", (1480, 530))]
 STARTS_UNLOCKED = {1, 2, 3, 4}
+# Pontos de interesse (camada "spots"): saída do veículo na frente da garagem e saída da fazenda pela estrada
+SPOTS = [("vehicle_spawn", (850, 545)), ("farm_exit", (2545, 805))]
 
 
 def plot_price(i: int) -> tuple[int, int]:
@@ -107,18 +110,8 @@ def detect_plots(rgb: np.ndarray) -> list[tuple[int, int, int, int]]:
         if x1 - x0 > 230 and fill > 0.9:  # retângulo duplo: divide no meio
             mid = (x0 + x1) // 2
             blocks += [(x0, y0, mid - 6, y1), (mid + 6, y0, x1, y1)]
-        elif fill < 0.9:  # bloco em L: usa o maior retângulo cheio (faixa inteira de linhas ou de colunas)
-            m = lbl[y0:y1, x0:x1] == i + 1
-            rows_ok = np.where(m.mean(axis=1) > 0.9)[0]
-            cols_ok = np.where(m.mean(axis=0) > 0.9)[0]
-            ra = (rows_ok.max() - rows_ok.min() + 1) * (x1 - x0) if len(rows_ok) else 0
-            ca = (cols_ok.max() - cols_ok.min() + 1) * (y1 - y0) if len(cols_ok) else 0
-            if ra >= ca and ra:
-                blocks.append((x0, y0 + rows_ok.min(), x1, y0 + rows_ok.max() + 1))
-            elif ca:
-                blocks.append((x0 + cols_ok.min(), y0, x0 + cols_ok.max() + 1, y1))
-            else:
-                blocks.append((x0, y0, x1, y1))
+        elif fill < 0.9:  # bloco em L: o retângulo cobre a terra pintada inteira (caixa envolvente)
+            blocks.append((x0, y0, x1, y1))
         else:
             blocks.append((x0, y0, x1, y1))
     rows: list[list] = []
@@ -130,8 +123,8 @@ def detect_plots(rgb: np.ndarray) -> list[tuple[int, int, int, int]]:
     out = []
     for row in rows:
         out += sorted(row, key=lambda q: q[0])
-    # recua 3 px para dentro (a borda é serrilhada)
-    return [(x0 + 3, y0 + 3, x1 - 3, y1 - 3) for x0, y0, x1, y1 in out]
+    # retângulo = borda exata da terra marrom pintada
+    return out
 
 
 def water_rects(rgb: np.ndarray, cell: int = 16):
@@ -267,6 +260,8 @@ def build(force: bool):
               "height": 0, "rotation": 0, "visible": True, "point": True}]
     npcs = [{"id": ids(), "name": n, "type": "", "x": p[0], "y": p[1], "width": 0, "height": 0, "rotation": 0,
              "visible": True, "point": True, "properties": [prop("npc", "string", n)]} for n, p in NPCS]
+    spots = [{"id": ids(), "name": n, "type": "", "x": p[0], "y": p[1], "width": 0, "height": 0, "rotation": 0,
+              "visible": True, "point": True} for n, p in SPOTS]
     layers = [
         {"id": 1, "name": "ground", "type": "imagelayer", "image": "../raw/v2/mapa_limpo.jpg",
          "imagewidth": W, "imageheight": H, "x": 0, "y": 0, "offsetx": 0, "offsety": 0, "opacity": 1,
@@ -279,10 +274,11 @@ def build(force: bool):
         layer(7, "npc_points", npcs),
         layer(8, "buildings", blds),
         layer(9, "overhead", []),
+        layer(10, "spots", spots),
     ]
     tmj = {"compressionlevel": -1, "width": 81, "height": 45, "tilewidth": TILE, "tileheight": TILE,
            "infinite": False, "orientation": "orthogonal", "renderorder": "right-down",
-           "tiledversion": "1.10.2", "type": "map", "version": "1.10", "nextlayerid": 10,
+           "tiledversion": "1.10.2", "type": "map", "version": "1.10", "nextlayerid": 11,
            "nextobjectid": ids.n + 1, "layers": layers, "tilesets": []}
     TMJ.parent.mkdir(parents=True, exist_ok=True)
     with open(TMJ, "w") as fp:

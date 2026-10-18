@@ -13,7 +13,7 @@ from build import (CLEAN, DEBUG, OUT, RAW, TILED, BuildError, font)
 
 MAP_W, MAP_H, TILE = 2576, 1438, 32
 SRC_TMJ = TILED / "farm_layout.tmj"
-REQUIRED_LAYERS = ["collision", "plots", "pens", "spawn", "locked_lots", "npc_points", "buildings"]
+REQUIRED_LAYERS = ["collision", "plots", "pens", "spawn", "locked_lots", "npc_points", "buildings", "spots"]
 
 
 MAP_NAME = "v2/mapa_limpo"   # mapa base atual (só terreno). Troque aqui se o dono mandar outro.
@@ -156,6 +156,9 @@ def validate_layout(tmj: dict):
         p = props(o)
         if not isinstance(p.get("lotId"), str) or not isinstance(p.get("cost"), int):
             raise BuildError(f"layout: lote {o.get('name')} sem lotId/cost")
+    for n in ("vehicle_spawn", "farm_exit"):
+        if not any(o.get("name") == n and o.get("point") for o in layer_objects(tmj, "spots")):
+            raise BuildError(f"layout: falta o ponto '{n}' na camada spots")
     if not any(o.get("name") == "player" and o.get("point") for o in layer_objects(tmj, "spawn")):
         raise BuildError("layout: falta o ponto 'player' na camada spawn")
     for o in layer_objects(tmj, "npc_points"):
@@ -307,7 +310,7 @@ def previews():
         txt = "LIVRE" if p["startsUnlocked"] else f"${p['unlockCost']} nv{p['unlockLevel']}"
         d.text((o["x"] + 4, o["y"] + 22), txt, fill=(255, 255, 160, 255), font=f, stroke_width=2,
                stroke_fill=(0, 0, 0, 255))
-    for o in layer_objects(tmj, "spawn") + layer_objects(tmj, "npc_points"):
+    for o in layer_objects(tmj, "spawn") + layer_objects(tmj, "npc_points") + layer_objects(tmj, "spots"):
         x, y = o["x"], o["y"]
         d.ellipse([x - 9, y - 9, x + 9, y + 9], fill=(255, 255, 255, 255), outline=(0, 0, 0, 255), width=3)
         d.text((x + 12, y - 10), o["name"], fill=(255, 255, 255, 255), font=font(18), stroke_width=3,

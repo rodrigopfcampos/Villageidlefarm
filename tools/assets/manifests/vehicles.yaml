@@ -32,6 +32,27 @@ quantize: 32
 frame:
   size: [160, 112]
   anchor: bottom
+# Chaves estáveis (apelidos): vehicle/<cart|car|pickup|truck>_<vista>_<n>, 4 vistas por veículo:
+#   vehicle/cart_down_left_0, vehicle/cart_down_left_1, vehicle/cart_up_right_0, vehicle/cart_up_right_1
+#   vehicle/car_down_left_0, vehicle/car_down_right_0, vehicle/car_up_right_0, vehicle/car_up_right_1 (car = sedan)
+#   vehicle/pickup_... e vehicle/truck_... (mesmas vistas do car)
+aliases:
+  vehicle/cart_down_left_0: cart/down_left_0
+  vehicle/cart_down_left_1: cart/down_left_1
+  vehicle/cart_up_right_0: cart/up_right_0
+  vehicle/cart_up_right_1: cart/up_right_1
+  vehicle/car_down_left_0: sedan/down_left_0
+  vehicle/car_down_right_0: sedan/down_right_0
+  vehicle/car_up_right_0: sedan/up_right_0
+  vehicle/car_up_right_1: sedan/up_right_1
+  vehicle/pickup_down_left_0: pickup/down_left_0
+  vehicle/pickup_down_right_0: pickup/down_right_0
+  vehicle/pickup_up_right_0: pickup/up_right_0
+  vehicle/pickup_up_right_1: pickup/up_right_1
+  vehicle/truck_down_left_0: truck/down_left_0
+  vehicle/truck_down_right_0: truck/down_right_0
+  vehicle/truck_up_right_0: truck/up_right_0
+  vehicle/truck_up_right_1: truck/up_right_1
 names:
   - cart/down_left_0
   - cart/down_left_1
