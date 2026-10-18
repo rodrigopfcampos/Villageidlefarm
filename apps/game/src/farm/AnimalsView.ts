@@ -24,6 +24,7 @@ interface AnimalGfx {
   shadow: Phaser.GameObjects.Image;
   bubble: Phaser.GameObjects.Container | null;
   frames: string[];
+  walk: string[];
   pen: LayoutPen | null;
   x: number;
   y: number;
@@ -102,6 +103,7 @@ export class AnimalsView {
       shadow,
       bubble: null,
       frames,
+      walk: breed?.walk ?? [],
       pen,
       x: start.x,
       y: start.y,
@@ -216,7 +218,9 @@ export class AnimalsView {
         const d = Math.hypot(dx, dy);
         const max = 90;
         g.target = d > max ? { x: g.x + (dx / d) * max, y: g.y + (dy / d) * max } : p;
-        g.sprite.setFlipX(g.target.x < g.x);
+        // com ciclo de caminhada (arte de lado olhando para a direita) o lado é confiável
+        if (g.walk.length > 0) g.sprite.setFlipX(g.target.x < g.x);
+        else g.sprite.setFlipX(g.rnd() < 0.5);
         g.hopT = 0;
         continue;
       }
@@ -236,8 +240,14 @@ export class AnimalsView {
       }
       g.x += (dx / d) * step;
       g.y += (dy / d) * step;
-      const hop = Math.abs(Math.sin((g.hopT / 260) * Math.PI)) * 3;
-      this.place(g, hop);
+      if (g.walk.length > 0) {
+        g.sprite.setFrame(g.walk[Math.floor(g.hopT / 140) % g.walk.length]!);
+        this.place(g);
+      } else {
+        // sem ciclo de caminhada: pulinho
+        const hop = Math.abs(Math.sin((g.hopT / 260) * Math.PI)) * 3;
+        this.place(g, hop);
+      }
     }
   }
 

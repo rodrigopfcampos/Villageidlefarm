@@ -9,31 +9,51 @@ export function speciesOf(animalType: string): string {
 
 export interface Breed {
   breed: string;
+  /** Poses paradas (pose_*/idle_*), trocadas de vez em quando. */
   frames: string[];
+  /** Ciclo de caminhada, se a arte tiver (walk_*; de lado olhando para a direita). Vazio = pulinho. */
+  walk: string[];
 }
 
+const ANIMAL_FRAME_RE = /^([a-z]+(?:_[a-z]+)*)\/([a-z]+)(?:_([a-z]+))?_(\d+)$/;
+
 /**
- * Raças disponíveis no atlas para a espécie: quadros "<espécie>_<raça>/pose_<n>".
- * Sem nenhuma, usa "<espécie>/idle_0" se existir.
+ * Raças disponíveis no atlas para a espécie: entidades "<espécie>_<raça>" (ex.: chicken_brown).
+ * Sem nenhuma, usa a própria "<espécie>". Não depende de nomes fixos: lê o que existir em
+ * "<entidade>/pose_<n>", "<entidade>/idle[_dir]_<n>" e "<entidade>/walk[_dir]_<n>".
  */
 export function breedsFor(species: string, frames: readonly string[]): Breed[] {
-  const by = new Map<string, { n: number; f: string }[]>();
-  const re = new RegExp(`^(${species}_[a-z]+)/pose_(\\d+)$`);
+  const by = new Map<string, { still: { n: number; f: string }[]; walk: { n: number; f: string; d: string }[] }>();
   for (const f of frames) {
-    const m = re.exec(f);
+    const m = ANIMAL_FRAME_RE.exec(f);
     if (!m) continue;
-    const list = by.get(m[1]!) ?? [];
-    list.push({ n: Number(m[2]), f });
-    by.set(m[1]!, list);
+    const entity = m[1]!;
+    if (entity !== species && !entity.startsWith(`${species}_`)) continue;
+    const g = by.get(entity) ?? { still: [], walk: [] };
+    const n = Number(m[4]);
+    if (m[2] === 'walk') g.walk.push({ n, f, d: m[3] ?? 'side' });
+    else if (m[2] === 'pose' || m[2] === 'idle') g.still.push({ n, f });
+    by.set(entity, g);
   }
-  const out = [...by.entries()]
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([breed, list]) => ({ breed, frames: list.sort((a, b) => a.n - b.n).map((x) => x.f) }));
-  if (out.length === 0) {
-    const idle = frames.filter((f) => f.startsWith(`${species}/`));
-    if (idle.length > 0) out.push({ breed: species, frames: idle });
-  }
-  return out;
+  const toBreed = (breed: string): Breed | null => {
+    const g = by.get(breed);
+    if (!g) return null;
+    // caminhada: prefere a de lado (espelhada para a esquerda)
+    const dirs = new Set(g.walk.map((w) => w.d));
+    const dir = dirs.has('side') ? 'side' : [...dirs][0];
+    const walk = g.walk.filter((w) => w.d === dir).sort((a, b) => a.n - b.n).map((w) => w.f);
+    const still = g.still.sort((a, b) => a.n - b.n).map((x) => x.f);
+    const framesOut = still.length > 0 ? still : walk.slice(0, 1);
+    return framesOut.length > 0 ? { breed, frames: framesOut, walk } : null;
+  };
+  const breeds = [...by.keys()]
+    .filter((k) => k !== species)
+    .sort()
+    .map(toBreed)
+    .filter((b): b is Breed => b !== null);
+  if (breeds.length > 0) return breeds;
+  const own = toBreed(species);
+  return own ? [own] : [];
 }
 
 /** Hash estável (FNV-1a) para escolher raça/posição sem aleatoriedade entre recargas. */

@@ -45,7 +45,6 @@ import {
 } from '../farm/pathfinding';
 import { FloatingText, type FloatEntry } from '../fx/FloatingText';
 import { WorldFx } from '../fx/WorldFx';
-import { FX_DEPTH } from '../fx/depths';
 import { TimeController } from '../time/TimeController';
 import { NPC_CHARACTERS, animKey, ensureCharacterAnims, prepareFarmAssets, type PlayerCharacter } from './Preload';
 
@@ -663,4 +662,3 @@ export class FarmScene extends Phaser.Scene {
   }
 }
 
-export { FX_DEPTH };
