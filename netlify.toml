@@ -1,0 +1,7 @@
+# Netlify: publica o jogo como site estático.
+[build]
+  command = "pnpm build"
+  publish = "apps/game/dist"
+
+[build.environment]
+  NODE_VERSION = "22"

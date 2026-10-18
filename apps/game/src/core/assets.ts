@@ -93,7 +93,7 @@ export async function loadLayout(
 
 /** Lista do que o Phaser deve carregar (chaves de textura fixas para o mapa). */
 export const TEXTURE_KEYS = {
-  map: 'map',
+  map: 'map_ground',
   overhead: 'map_overhead',
 } as const;
 

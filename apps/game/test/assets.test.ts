@@ -62,7 +62,7 @@ describe('manifest (os dois casos da cena)', () => {
     const loaded = await loadManifest('./assets/manifest.json', f);
     expect(loaded?.baseDir).toBe('./assets/');
     expect(planLoads(loaded!)).toEqual([
-      { type: 'image', key: 'map', url: './assets/map/farm.webp' },
+      { type: 'image', key: 'map_ground', url: './assets/map/farm.webp' },
       { type: 'image', key: 'map_overhead', url: './assets/map/overhead.png' },
       {
         type: 'atlas',

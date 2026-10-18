@@ -25,7 +25,7 @@ apps/game/
 ## Fluxo de inicialização
 
 1. `BootScene` lê `assets/manifest.json` (`core/assets.ts`). Ausente → segue sem assets.
-2. Enfileira no loader do Phaser o mapa (`map`), o overhead (`map_overhead`) e os atlas. O JSON de cada atlas é lido antes; se faltar, o atlas é pulado. Falhas viram aviso no console.
+2. Enfileira no loader do Phaser o mapa (`map_ground`), o overhead (`map_overhead`) e os atlas. O JSON de cada atlas é lido antes; se faltar, o atlas é pulado. Falhas viram aviso no console.
 3. Lê e interpreta o layout (`parseLayout`).
 4. `createServices(layout)`: `bus` + `ClientStore` + `MockApi` (canteiros vindos do layout).
 5. `api.bootstrap()` → `store.applyBootstrap()` → evento `farm:snapshot`. Começa o `time:tick` (1 s) e o heartbeat (5 min e ao voltar para a aba).
