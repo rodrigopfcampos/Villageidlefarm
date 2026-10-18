@@ -1,0 +1,124 @@
+# Folha de animais -> atlas_animals
+# 10 animais x 6 poses. ATENÇÃO: as 6 poses NÃO são quadros de animação; são variações,
+# às vezes com cor diferente (ex.: vaca preta e branca, malhada de marrom, marrom).
+# Para "andar", o jogo espelha o sprite e faz um pulinho via tween.
+#
+# Poses (direção para onde o animal olha: dir = direita, esq = esquerda):
+#   cow:     idle_0 preta/branca dir | walk_0 malhada marrom dir | walk_1 malhada marrom, 3/4 de costas
+#            graze_0 preta/branca pastando dir | graze_1 marrom pastando esq | lie_0 preta/branca deitada
+#   chicken: idle_0 marrom dir | idle_1 marrom dir | peck_0 branca bicando dir | peck_1 preta bicando esq
+#            idle_2 branca de frente | idle_3 preta dir
+#   pig:     idle_0 dir | idle_1 dir | rear_0 3/4 de costas | eat_0 comendo dir | lie_0 deitado esq | rear_1 3/4 de costas
+#   sheep:   idle_0 dir | graze_0 pastando dir | idle_1 dir | idle_2 esq | graze_1 pastando esq | rear_0 de costas
+#   goat:    idle_0 cinza dir | idle_1 marrom dir | jump_0 marrom pulando | graze_0 marrom pastando esq
+#            idle_2 marrom esq | rear_0 cinza de costas
+#   duck:    idle_0 marreco dir | idle_1 marreco (fêmea) dir | quack_0 branco grasnando | swim_0 marreco nadando
+#            idle_2 marreco esq | idle_3 branco esq
+#   goose:   idle_0 dir | walk_0 dir | flap_0 asas abertas | hiss_0 pescoço esticado | walk_1 esq | idle_1 esq
+#   alpaca:  idle_0 creme dir | idle_1 creme dir | eat_0 marrom comendo | idle_2 marrom de frente
+#            lie_0 creme deitada | rear_0 marrom de costas
+#   rabbit:  idle_0 branco dir | hop_0 branco pulando | idle_1 cinza dir | hop_1 cinza pulando esq
+#            idle_2 cinza agachado | rear_0 cinza de costas
+#   turkey:  idle_0 dir | idle_1 dir | walk_0 dir | walk_1 esq | idle_2 esq | display_0 cauda aberta de lado
+sheet: animals
+source: Foto_dos_animais.jpg
+category: animals
+transparency: flood
+bg_tolerance: 6            # fundo é bem uniforme; tolerância baixa protege pelagem escura (gato, galinha preta)
+halo_passes: 2
+barrier_L: 4               # pixels mais escuros que isso (contorno preto) bloqueiam o preenchimento do fundo
+barrier_grow: 1            # engrossa o muro 1 px para o borrão do JPG não abrir buracos
+shadow:
+  enabled: true
+  min_L: 0
+  max_ab: 5
+halo_tolerance: 18
+restore_enclosed:          # devolve partes escuras (penas pretas) que o fundo "comeu" dentro do contorno
+  close: 3
+  min_dE: 4.5
+  shadow_ab: 5
+exclude:
+  - [0, 0, 420, 1438]      # textos "1. VACA", "2. GALINHA"... (coluna da esquerda)
+min_piece_area: 600
+merge_distance: 24         # grama, migalhas, "!" de grasnar
+merge_big_area: 1500
+merge_distance_big: 0
+rows: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+scale:
+  mode: fit                # cada animal tem uma escala única, a maior que cabe em todas as poses
+  margin: 2
+quantize: 32
+frame:
+  size: [80, 64]
+  anchor: bottom           # pivot nos pés (0.5, 1)
+groups:
+  large:                   # animal grande 80x64
+    entities: [cow, pig, sheep, goat, alpaca]
+    size: [80, 64]
+  medium:                  # ganso e peru 48x48
+    entities: [goose, turkey]
+    size: [48, 48]
+  small:                   # animal pequeno 32x32
+    entities: [chicken, duck, rabbit]
+    size: [32, 32]
+names:
+  - cow/idle_0
+  - cow/walk_0
+  - cow/walk_1
+  - cow/graze_0
+  - cow/graze_1
+  - cow/lie_0
+  - chicken/idle_0
+  - chicken/idle_1
+  - chicken/peck_0
+  - chicken/peck_1
+  - chicken/idle_2
+  - chicken/idle_3
+  - pig/idle_0
+  - pig/idle_1
+  - pig/rear_0
+  - pig/eat_0
+  - pig/lie_0
+  - pig/rear_1
+  - sheep/idle_0
+  - sheep/graze_0
+  - sheep/idle_1
+  - sheep/idle_2
+  - sheep/graze_1
+  - sheep/rear_0
+  - goat/idle_0
+  - goat/idle_1
+  - goat/jump_0
+  - goat/graze_0
+  - goat/idle_2
+  - goat/rear_0
+  - duck/idle_0
+  - duck/idle_1
+  - duck/quack_0
+  - duck/swim_0
+  - duck/idle_2
+  - duck/idle_3
+  - goose/idle_0
+  - goose/walk_0
+  - goose/flap_0
+  - goose/hiss_0
+  - goose/walk_1
+  - goose/idle_1
+  - alpaca/idle_0
+  - alpaca/idle_1
+  - alpaca/eat_0
+  - alpaca/idle_2
+  - alpaca/lie_0
+  - alpaca/rear_0
+  - rabbit/idle_0
+  - rabbit/hop_0
+  - rabbit/idle_1
+  - rabbit/hop_1
+  - rabbit/idle_2
+  - rabbit/rear_0
+  - turkey/idle_0
+  - turkey/idle_1
+  - turkey/walk_0
+  - turkey/walk_1
+  - turkey/idle_2
+  - turkey/display_0

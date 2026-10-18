@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#1b2a1b" />
+    <title>Village Idle Farm</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #1b2a1b;
+        overscroll-behavior: none;
+        touch-action: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      #game {
+        position: fixed;
+        inset: 0;
+      }
+      #game canvas {
+        image-rendering: pixelated;
+        display: block;
+      }
+      /* Painéis DOM (Preact) por cima do canvas. Só os filhos recebem clique. */
+      #ui-root {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        font-family: system-ui, sans-serif;
+      }
+      #ui-root > * {
+        pointer-events: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game"></div>
+    <div id="ui-root"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

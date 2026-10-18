@@ -1,0 +1,9 @@
+node_modules
+dist
+pnpm-lock.yaml
+apps/game/public/assets
+packages/shared/src/generated
+tools/assets
+assets-src
+*.tmj
+docs/PLANO-FASE0.md

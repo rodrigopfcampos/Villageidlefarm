@@ -1,0 +1,51 @@
+# Folha de veículos -> atlas_vehicles
+# 4 veículos x 4 vistas, em perspectiva isométrica 3/4 (não combina 100% com o mapa visto de cima):
+# use só como decoração parada ou ícone de interface.
+# Nome da vista = para onde a FRENTE do veículo aponta na tela:
+#   down_left = frente para baixo/esquerda, down_right = frente para baixo/direita, up_right = de traseira, indo para cima/direita
+#   cart (carroça com cavalo): down_left_0, down_left_1 (quase iguais), up_right_0, up_right_1
+#   sedan (carro vermelho), pickup (caminhonete verde), truck (caminhão amarelo com grade):
+#       down_left_0, down_right_0, up_right_0, up_right_1
+sheet: vehicles
+source: Foto_dos_veiculos.jpg
+category: vehicles
+transparency: flood
+bg_tolerance: 7
+barrier_L: 9                # contorno dos pneus é escuro mas não preto
+barrier_grow: 1
+shadow:                    # sombra azulada embaixo dos veículos
+  enabled: true
+  min_L: 0
+  max_ab: 7
+halo_tolerance: 16
+halo_passes: 2
+hole_area: 0               # não abrir "buracos": vidros e calotas têm a cor do fundo
+min_piece_area: 3000
+merge_distance: 30
+merge_big_area: 6000
+merge_distance_big: 0
+rows: [4, 4, 4, 4]
+scale:
+  mode: fit                # escala única por veículo; cabe em 160x112
+  margin: 2
+quantize: 32
+frame:
+  size: [160, 112]
+  anchor: bottom
+names:
+  - cart/down_left_0
+  - cart/down_left_1
+  - cart/up_right_0
+  - cart/up_right_1
+  - sedan/down_left_0
+  - sedan/down_right_0
+  - sedan/up_right_0
+  - sedan/up_right_1
+  - pickup/down_left_0
+  - pickup/down_right_0
+  - pickup/up_right_0
+  - pickup/up_right_1
+  - truck/down_left_0
+  - truck/down_right_0
+  - truck/up_right_0
+  - truck/up_right_1

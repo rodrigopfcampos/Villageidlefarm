@@ -1,0 +1,81 @@
+# Folha de pets -> atlas_pets
+# Cachorro (2 linhas x 8), gato (2 linhas x 8), papagaio (1 linha x 7).
+# É a folha mais próxima de animação. "side" olha para a DIREITA (espelhe para a esquerda).
+#   dog:    linha 1 walk_side_0/1 (andando), walk_up_0/1 (de costas), sit_0, bark_0 (com linhas de latido),
+#                   sleep_0 (enrolado), lie_0 (deitado)
+#           linha 2 run_side_0..3 (correndo), sit_1, bark_1, sleep_1, lie_1
+#   cat:    linha 1 walk_side_0/1, walk_up_0/1, sit_0 (3/4), sit_1 (frente), sleep_0, sleep_1
+#           linha 2 walk_side_2/3, walk_up_2/3, sit_2 (de costas), stretch_0 (espreguiçando), sleep_2, sleep_3
+#   parrot: idle_0/idle_1 (dir), idle_2/idle_3 (esq, 3/4), fly_0/fly_1 (asas abertas), peck_0 (bicando)
+sheet: pets
+source: Foto_dos_pets.jpg
+category: pets
+transparency: flood
+bg_tolerance: 6            # fundo é bem uniforme; tolerância baixa protege pelagem escura (gato, galinha preta)
+halo_passes: 2
+barrier_L: 4
+barrier_grow: 1
+shadow:
+  enabled: true
+  min_L: 0
+  max_ab: 5
+halo_tolerance: 18
+restore_enclosed:
+  close: 3
+  min_dE: 4.5
+  shadow_ab: 5
+min_piece_area: 800
+merge_distance: 40         # linhas do latido, ponta da asa
+merge_big_area: 2500
+merge_distance_big: 0
+rows: [8, 8, 8, 8, 7]
+scale:
+  mode: fit                # escala única por bicho (todas as poses do cachorro cabem em 48x48)
+  margin: 2
+quantize: 32
+frame:
+  size: [48, 48]
+  anchor: bottom
+names:
+  - dog/walk_side_0
+  - dog/walk_side_1
+  - dog/walk_up_0
+  - dog/walk_up_1
+  - dog/sit_0
+  - dog/bark_0
+  - dog/sleep_0
+  - dog/lie_0
+  - dog/run_side_0
+  - dog/run_side_1
+  - dog/run_side_2
+  - dog/run_side_3
+  - dog/sit_1
+  - dog/bark_1
+  - dog/sleep_1
+  - dog/lie_1
+  - cat/walk_side_0
+  - cat/walk_side_1
+  - cat/walk_up_0
+  - cat/walk_up_1
+  - cat/sit_0
+  - cat/sit_1
+  - cat/sleep_0
+  - cat/sleep_1
+  - cat/walk_side_2
+  - cat/walk_side_3
+  - cat/walk_up_2
+  - cat/walk_up_3
+  - cat/sit_2
+  - cat/stretch_0
+  - cat/sleep_2
+  - cat/sleep_3
+  - parrot/idle_0
+  - parrot/idle_1
+  - parrot/idle_2
+  - parrot/idle_3
+  - parrot/fly_0
+  - parrot/fly_1
+  - parrot/peck_0
+overrides:
+  cat/sit_1:
+    accept_pieces: false   # a ponta do rabo de cat/stretch_0 (linha de baixo) encosta neste quadro

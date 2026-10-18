@@ -1,0 +1,53 @@
+# Molduras de carta -> atlas_cards
+# 6 peças numa linha: comum (pedra), incomum (folhas), rara (azul), épica (dourada),
+# lendária (vermelha com fogo) e o verso.
+sheet: cards
+source: Cards.jpg
+category: cards
+transparency: flood
+bg_tolerance: 12
+segment:                   # separação das cartas: o halo do fogo vira fundo para não grudar uma carta na outra
+  bg_tolerance: 30
+  bg_not_darker: 4
+  grow: 6
+glow:                      # só para as cartas marcadas com "glow: true" em overrides
+  bg_tolerance: 30         # o halo escuro avermelhado em volta vira fundo...
+  not_darker: 4            # ...mas nunca o contorno preto (mais escuro que o fundo)
+  threshold: 0.06          # ...e volta como transparência parcial: a = max(canal - fundo)
+  radius: 50               # distância máxima (px da folha) do brilho até a moldura
+shadow: {enabled: false}
+halo_tolerance: 14
+min_piece_area: 2000
+merge_distance: 90         # faíscas e chamas soltas entram na carta mais próxima
+merge_big_area: 8000       # peças maiores que isso são partes de carta; as menores se juntam à mais próxima
+merge_distance_big: 10
+rows: [6]
+interior:                  # miolo roxo escuro vira transparente (menos no verso)
+  enabled: true
+  tolerance: 14
+  min_area: 600
+overrides:
+  card/frame_epic:
+    glow: true
+  card/frame_legendary:
+    glow: true
+  card/back:
+    interior: false
+    accept_pieces: false   # as faíscas soltas à esquerda do verso são da carta lendária
+scale:
+  mode: ref_height         # o verso (sem enfeites) fica com 264 px de altura
+  ref: card/back
+  target: 264
+frame:
+  size: [192, 264]         # tamanho nominal; o quadro cresce para caber asas/fogo (corpo continua 192x264)
+  anchor: center
+groups:
+  card:
+    size: [192, 264]
+names:
+  - card/frame_common
+  - card/frame_uncommon
+  - card/frame_rare
+  - card/frame_epic
+  - card/frame_legendary
+  - card/back

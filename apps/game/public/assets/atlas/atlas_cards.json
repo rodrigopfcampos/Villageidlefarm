@@ -1,0 +1,159 @@
+{
+ "frames": {
+  "card/back": {
+   "frame": {
+    "x": 1,
+    "y": 1,
+    "w": 215,
+    "h": 311
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 215,
+    "h": 311
+   },
+   "sourceSize": {
+    "w": 215,
+    "h": 311
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "card/frame_common": {
+   "frame": {
+    "x": 222,
+    "y": 1,
+    "w": 215,
+    "h": 311
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 215,
+    "h": 311
+   },
+   "sourceSize": {
+    "w": 215,
+    "h": 311
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "card/frame_epic": {
+   "frame": {
+    "x": 1,
+    "y": 318,
+    "w": 215,
+    "h": 311
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 215,
+    "h": 311
+   },
+   "sourceSize": {
+    "w": 215,
+    "h": 311
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "card/frame_legendary": {
+   "frame": {
+    "x": 222,
+    "y": 318,
+    "w": 215,
+    "h": 311
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 215,
+    "h": 311
+   },
+   "sourceSize": {
+    "w": 215,
+    "h": 311
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "card/frame_rare": {
+   "frame": {
+    "x": 1,
+    "y": 635,
+    "w": 215,
+    "h": 311
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 215,
+    "h": 311
+   },
+   "sourceSize": {
+    "w": 215,
+    "h": 311
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "card/frame_uncommon": {
+   "frame": {
+    "x": 222,
+    "y": 635,
+    "w": 215,
+    "h": 311
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 215,
+    "h": 311
+   },
+   "sourceSize": {
+    "w": 215,
+    "h": 311
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  }
+ },
+ "meta": {
+  "app": "village-idle-farm tools/assets/build.py",
+  "version": "1.0",
+  "image": "atlas_cards.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 512,
+   "h": 1024
+  },
+  "scale": "1"
+ }
+}

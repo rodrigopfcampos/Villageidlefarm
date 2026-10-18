@@ -1,0 +1,22 @@
+{
+  "name": "@vif/shared",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Contratos (tipos, erros, eventos, IApi, layout), catálogo e fórmulas compartilhados.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./catalog/*.json": "./src/catalog/*.json",
+    "./generated/*": "./src/generated/*.ts",
+    "./test/fixtures/*": "./test/fixtures/*"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "~5.9.3",
+    "vitest": "^3.2.7"
+  }
+}

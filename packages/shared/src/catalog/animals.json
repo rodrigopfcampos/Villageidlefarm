@@ -1,0 +1,32 @@
+[
+  {
+    "animalType": "animal_chicken",
+    "buyPrice": 300,
+    "productItemId": "prod_egg",
+    "produceSeconds": 1800,
+    "maxStock": 3,
+    "habitat": "coop",
+    "xp": 5,
+    "unlockLevel": 3
+  },
+  {
+    "animalType": "animal_duck",
+    "buyPrice": 600,
+    "productItemId": "prod_duck_egg",
+    "produceSeconds": 2700,
+    "maxStock": 3,
+    "habitat": "pond",
+    "xp": 8,
+    "unlockLevel": 4
+  },
+  {
+    "animalType": "animal_cow",
+    "buyPrice": 1200,
+    "productItemId": "prod_milk",
+    "produceSeconds": 3600,
+    "maxStock": 2,
+    "habitat": "barn",
+    "xp": 15,
+    "unlockLevel": 5
+  }
+]

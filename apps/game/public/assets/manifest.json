@@ -1,0 +1,41 @@
+{
+  "map": {
+    "image": "map/farm.webp",
+    "overhead": "map/overhead.png",
+    "layout": "map/farm_layout.tmj",
+    "width": 2576,
+    "height": 1438
+  },
+  "atlases": [
+    {
+      "key": "atlas_icons",
+      "png": "atlas/atlas_icons.png",
+      "json": "atlas/atlas_icons.json"
+    },
+    {
+      "key": "atlas_cards",
+      "png": "atlas/atlas_cards.png",
+      "json": "atlas/atlas_cards.json"
+    },
+    {
+      "key": "atlas_animals",
+      "png": "atlas/atlas_animals.png",
+      "json": "atlas/atlas_animals.json"
+    },
+    {
+      "key": "atlas_characters",
+      "png": "atlas/atlas_characters.png",
+      "json": "atlas/atlas_characters.json"
+    },
+    {
+      "key": "atlas_pets",
+      "png": "atlas/atlas_pets.png",
+      "json": "atlas/atlas_pets.json"
+    },
+    {
+      "key": "atlas_vehicles",
+      "png": "atlas/atlas_vehicles.png",
+      "json": "atlas/atlas_vehicles.json"
+    }
+  ]
+}

@@ -1,0 +1,515 @@
+{
+ "compressionlevel": -1,
+ "height": 45,
+ "width": 81,
+ "infinite": false,
+ "orientation": "orthogonal",
+ "renderorder": "right-down",
+ "tiledversion": "1.11.0",
+ "tileheight": 32,
+ "tilewidth": 32,
+ "type": "map",
+ "version": "1.10",
+ "nextlayerid": 9,
+ "tilesets": [],
+ "layers": [
+  {
+   "id": 1,
+   "name": "map",
+   "type": "imagelayer",
+   "image": "farm.webp",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0
+  },
+  {
+   "id": 2,
+   "name": "collision",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": [
+    {
+     "id": 7,
+     "name": "house",
+     "type": "",
+     "x": 320,
+     "y": 224,
+     "width": 256,
+     "height": 192,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 8,
+     "name": "top_edge",
+     "type": "",
+     "x": 0,
+     "y": 0,
+     "width": 2592,
+     "height": 32,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 9,
+     "name": "pond",
+     "type": "",
+     "x": 1600,
+     "y": 1000,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "polygon": [
+      {
+       "x": 0,
+       "y": 0
+      },
+      {
+       "x": 160,
+       "y": -32
+      },
+      {
+       "x": 256,
+       "y": 64
+      },
+      {
+       "x": 96,
+       "y": 160
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "name": "plots",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": [
+    {
+     "id": 1,
+     "name": "plot_01",
+     "type": "",
+     "x": 960,
+     "y": 640,
+     "width": 64,
+     "height": 64,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "slotId",
+       "type": "string",
+       "value": "plot_01"
+      },
+      {
+       "name": "unlockCost",
+       "type": "int",
+       "value": 0
+      },
+      {
+       "name": "unlockLevel",
+       "type": "int",
+       "value": 1
+      },
+      {
+       "name": "startsUnlocked",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 2,
+     "name": "plot_02",
+     "type": "",
+     "x": 1056,
+     "y": 640,
+     "width": 64,
+     "height": 64,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "slotId",
+       "type": "string",
+       "value": "plot_02"
+      },
+      {
+       "name": "unlockCost",
+       "type": "int",
+       "value": 0
+      },
+      {
+       "name": "unlockLevel",
+       "type": "int",
+       "value": 1
+      },
+      {
+       "name": "startsUnlocked",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 3,
+     "name": "plot_03",
+     "type": "",
+     "x": 1152,
+     "y": 640,
+     "width": 64,
+     "height": 64,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "slotId",
+       "type": "string",
+       "value": "plot_03"
+      },
+      {
+       "name": "unlockCost",
+       "type": "int",
+       "value": 0
+      },
+      {
+       "name": "unlockLevel",
+       "type": "int",
+       "value": 1
+      },
+      {
+       "name": "startsUnlocked",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "plot_04",
+     "type": "",
+     "x": 960,
+     "y": 736,
+     "width": 64,
+     "height": 64,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "slotId",
+       "type": "string",
+       "value": "plot_04"
+      },
+      {
+       "name": "unlockCost",
+       "type": "int",
+       "value": 0
+      },
+      {
+       "name": "unlockLevel",
+       "type": "int",
+       "value": 1
+      },
+      {
+       "name": "startsUnlocked",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 5,
+     "name": "plot_05",
+     "type": "",
+     "x": 1056,
+     "y": 736,
+     "width": 64,
+     "height": 64,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "slotId",
+       "type": "string",
+       "value": "plot_05"
+      },
+      {
+       "name": "unlockCost",
+       "type": "int",
+       "value": 200
+      },
+      {
+       "name": "unlockLevel",
+       "type": "int",
+       "value": 2
+      },
+      {
+       "name": "startsUnlocked",
+       "type": "bool",
+       "value": false
+      }
+     ]
+    },
+    {
+     "id": 6,
+     "name": "plot_06",
+     "type": "",
+     "x": 1152,
+     "y": 736,
+     "width": 64,
+     "height": 64,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "slotId",
+       "type": "string",
+       "value": "plot_06"
+      },
+      {
+       "name": "unlockCost",
+       "type": "int",
+       "value": 500
+      },
+      {
+       "name": "unlockLevel",
+       "type": "int",
+       "value": 3
+      },
+      {
+       "name": "startsUnlocked",
+       "type": "bool",
+       "value": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 10,
+   "name": "animals",
+   "type": "group",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "offsetx": 0,
+   "offsety": 0,
+   "layers": [
+    {
+     "id": 4,
+     "name": "pens",
+     "type": "objectgroup",
+     "draworder": "topdown",
+     "opacity": 1,
+     "visible": true,
+     "x": 0,
+     "y": 0,
+     "objects": [
+      {
+       "id": 10,
+       "name": "coop_1",
+       "type": "",
+       "x": 1400,
+       "y": 400,
+       "width": 192,
+       "height": 128,
+       "rotation": 0,
+       "visible": true,
+       "properties": [
+        {
+         "name": "habitat",
+         "type": "string",
+         "value": "coop"
+        }
+       ]
+      },
+      {
+       "id": 11,
+       "name": "barn_1",
+       "type": "",
+       "x": 1700,
+       "y": 380,
+       "width": 256,
+       "height": 192,
+       "rotation": 0,
+       "visible": true,
+       "properties": [
+        {
+         "name": "habitat",
+         "type": "string",
+         "value": "barn"
+        }
+       ]
+      },
+      {
+       "id": 12,
+       "name": "pond_1",
+       "type": "",
+       "x": 1580,
+       "y": 990,
+       "width": 280,
+       "height": 200,
+       "rotation": 0,
+       "visible": true,
+       "properties": [
+        {
+         "name": "habitat",
+         "type": "string",
+         "value": "pond"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "name": "spawn",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": [
+    {
+     "id": 13,
+     "name": "player",
+     "type": "",
+     "x": 1100,
+     "y": 900,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "name": "locked_lots",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": [
+    {
+     "id": 14,
+     "name": "lot_east",
+     "type": "",
+     "x": 2100,
+     "y": 300,
+     "width": 320,
+     "height": 256,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "lotId",
+       "type": "string",
+       "value": "lot_east"
+      },
+      {
+       "name": "cost",
+       "type": "int",
+       "value": 2000
+      }
+     ]
+    },
+    {
+     "id": 15,
+     "name": "lot_south",
+     "type": "",
+     "x": 200,
+     "y": 1100,
+     "width": 384,
+     "height": 256,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "lotId",
+       "type": "string",
+       "value": "lot_south"
+      },
+      {
+       "name": "cost",
+       "type": "int",
+       "value": 3500
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "name": "npc_points",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": [
+    {
+     "id": 16,
+     "name": "shop",
+     "type": "",
+     "x": 700,
+     "y": 600,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "npc",
+       "type": "string",
+       "value": "shopkeeper"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "name": "overhead",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": [
+    {
+     "id": 17,
+     "name": "house_roof",
+     "type": "",
+     "x": 320,
+     "y": 160,
+     "width": 256,
+     "height": 128,
+     "rotation": 0,
+     "visible": true
+    }
+   ]
+  }
+ ]
+}

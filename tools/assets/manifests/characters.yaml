@@ -1,0 +1,123 @@
+# Folha de personagens -> atlas_characters
+# 6 linhas: fazendeiro, fazendeira, senhor de chapéu (elder), ferreiro, lojista, cientista.
+# NÃO existe ciclo de caminhada (4 direções x 4 quadros). Há 1-2 quadros por direção:
+#   down = de frente (ou 3/4 de frente), up = de costas (ou 3/4 de costas), side = de perfil (olhando para a DIREITA;
+#   para a esquerda, espelhe com flipX). "tool" = segurando/usando a ferramenta.
+#
+# farmer_m  idle_down_0 frente | idle_down_1 frente (meio passo) | idle_up_0 costas | idle_up_1 costas (meio passo)
+#           tool_down_0 frente com picareta | tool_down_1 3/4 frente com picareta, andando
+#           tool_up_0 3/4 costas com picareta | tool_up_1 3/4 costas andando | tool_up_2 3/4 costas (dir)
+#           tool_side_0 perfil cavando (dir) | tool_side_1 perfil, picareta no chão (dir)
+# farmer_f  idle_down_0 frente com regador | idle_down_1 frente com regador e cesta | idle_up_0 costas com regador
+#           idle_up_1 costas com regador | idle_down_2 3/4 frente com cesta | idle_down_3 3/4 frente (esq)
+#           walk_down_0 3/4 frente andando (dir) | walk_up_0 3/4 costas andando | idle_up_2 3/4 costas com cesta
+#           tool_side_0 / tool_side_1 perfil regando (dir)
+# elder     idle_down_0 frente com bengala | idle_down_1 3/4 frente | idle_up_0 costas | idle_up_1 3/4 costas
+#           read_down_0 frente com prancheta | read_down_1 3/4 com prancheta | walk_down_0 3/4 andando
+#           walk_up_0 3/4 costas andando | wave_up_0 3/4 costas acenando | wave_side_0 perfil acenando (dir)
+# blacksmith idle_down_0 frente com martelo na mão | idle_down_1 3/4 frente | tool_down_0 martelo no ombro
+#           idle_up_0 3/4 costas | tool_up_0 3/4 costas martelando | tool_down_1 3/4 martelo no ombro
+#           walk_down_0 3/4 frente andando | walk_up_0 3/4 costas andando | walk_up_1 3/4 costas com ferramenta
+#           tool_side_0 perfil martelando (dir)
+# shopkeeper idle_down_0 frente com prancheta | idle_down_1 3/4 | idle_down_2 3/4 (dir) | idle_up_0..idle_up_2 3/4 costas
+#           walk_up_0 / walk_up_1 3/4 costas andando | idle_up_3 3/4 costas | offer_down_0 entregando sacola (dir)
+#           offer_down_1 entregando sacola (esq)
+# scientist idle_down_0 frente com lupa | idle_down_1 3/4 com planta | idle_down_2 3/4 com lupa
+#           idle_up_0 / idle_up_1 3/4 costas com lupa | idle_up_2 3/4 costas | walk_up_0 / walk_up_1 costas andando
+#           idle_up_3 3/4 costas | plant_side_0 / plant_side_1 agachada plantando (dir)
+sheet: characters
+source: Foto_dos_personagens.jpg
+category: characters
+transparency: flood
+bg_tolerance: 10
+barrier_L: 6
+barrier_grow: 1
+shadow: {enabled: false}
+halo_tolerance: 16
+min_piece_area: 800
+merge_distance: 30         # gotas do regador, terra da picareta
+merge_big_area: 3000
+merge_distance_big: 0
+rows: [11, 11, 10, 10, 11, 11]
+scale:
+  mode: sheet_height       # uma escala só para a folha toda: altura mediana -> 64 px
+  target: 64
+quantize: 32
+frame:
+  size: [48, 72]           # nominal; personagens com ferramenta larga ganham quadro mais largo
+  anchor: feet             # pivot (0.5, 1) no meio dos pés
+# Nomes extras apontando para o mesmo quadro (o atlas repete a área). Úteis para o MVP.
+aliases:
+  farmer_m/walk_down_0: farmer_m/idle_down_0
+  farmer_m/walk_down_1: farmer_m/idle_down_1
+  farmer_m/walk_up_0: farmer_m/idle_up_0
+  farmer_m/walk_up_1: farmer_m/idle_up_1
+  farmer_m/walk_side_0: farmer_m/tool_down_1
+  farmer_f/walk_down_1: farmer_f/idle_down_3
+  farmer_f/walk_up_1: farmer_f/idle_up_1
+  farmer_f/walk_side_0: farmer_f/walk_down_0
+names:
+  - farmer_m/idle_down_0
+  - farmer_m/idle_down_1
+  - farmer_m/idle_up_0
+  - farmer_m/idle_up_1
+  - farmer_m/tool_down_0
+  - farmer_m/tool_down_1
+  - farmer_m/tool_up_0
+  - farmer_m/tool_up_1
+  - farmer_m/tool_up_2
+  - farmer_m/tool_side_0
+  - farmer_m/tool_side_1
+  - farmer_f/idle_down_0
+  - farmer_f/idle_down_1
+  - farmer_f/idle_up_0
+  - farmer_f/idle_up_1
+  - farmer_f/idle_down_2
+  - farmer_f/idle_down_3
+  - farmer_f/walk_down_0
+  - farmer_f/walk_up_0
+  - farmer_f/idle_up_2
+  - farmer_f/tool_side_0
+  - farmer_f/tool_side_1
+  - elder/idle_down_0
+  - elder/idle_down_1
+  - elder/idle_up_0
+  - elder/idle_up_1
+  - elder/read_down_0
+  - elder/read_down_1
+  - elder/walk_down_0
+  - elder/walk_up_0
+  - elder/wave_up_0
+  - elder/wave_side_0
+  - blacksmith/idle_down_0
+  - blacksmith/idle_down_1
+  - blacksmith/tool_down_0
+  - blacksmith/idle_up_0
+  - blacksmith/tool_up_0
+  - blacksmith/tool_down_1
+  - blacksmith/walk_down_0
+  - blacksmith/walk_up_0
+  - blacksmith/walk_up_1
+  - blacksmith/tool_side_0
+  - shopkeeper/idle_down_0
+  - shopkeeper/idle_down_1
+  - shopkeeper/idle_down_2
+  - shopkeeper/idle_up_0
+  - shopkeeper/idle_up_1
+  - shopkeeper/idle_up_2
+  - shopkeeper/walk_up_0
+  - shopkeeper/walk_up_1
+  - shopkeeper/idle_up_3
+  - shopkeeper/offer_down_0
+  - shopkeeper/offer_down_1
+  - scientist/idle_down_0
+  - scientist/idle_down_1
+  - scientist/idle_down_2
+  - scientist/idle_up_0
+  - scientist/idle_up_1
+  - scientist/idle_up_2
+  - scientist/walk_up_0
+  - scientist/walk_up_1
+  - scientist/idle_up_3
+  - scientist/plant_side_0
+  - scientist/plant_side_1

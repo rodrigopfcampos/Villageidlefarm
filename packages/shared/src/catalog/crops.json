@@ -1,0 +1,32 @@
+[
+  {
+    "cropId": "crop_carrot",
+    "seedItemId": "seed_carrot",
+    "yieldItemId": "crop_carrot",
+    "growSeconds": 120,
+    "yieldMin": 1,
+    "yieldMax": 2,
+    "xp": 3,
+    "unlockLevel": 1
+  },
+  {
+    "cropId": "crop_potato",
+    "seedItemId": "seed_potato",
+    "yieldItemId": "crop_potato",
+    "growSeconds": 600,
+    "yieldMin": 1,
+    "yieldMax": 2,
+    "xp": 10,
+    "unlockLevel": 1
+  },
+  {
+    "cropId": "crop_strawberry",
+    "seedItemId": "seed_strawberry",
+    "yieldItemId": "crop_strawberry",
+    "growSeconds": 3600,
+    "yieldMin": 2,
+    "yieldMax": 3,
+    "xp": 40,
+    "unlockLevel": 1
+  }
+]

@@ -1,0 +1,68 @@
+# Folha de frutas, legumes e verduras -> atlas_icons
+# 40 ícones em 4 linhas de 10. Pixel art com grade limpa (~10 px da folha por pixel de arte).
+sheet: icons
+source: Foto_das_Frutas_legumes_e_verdura.jpg
+category: icons
+transparency: flood        # flood = fundo por preenchimento a partir das bordas
+bg_tolerance: 12           # distância de cor (ΔE em Lab) para considerar "fundo"
+shadow:                    # sombra projetada embaixo de cada ícone (mais escura que o fundo)
+  enabled: true
+  min_L: 5                 # abaixo disso é contorno preto (fica no sprite)
+  max_ab: 6
+halo_tolerance: 18
+min_piece_area: 400
+merge_distance: 30         # junta folhinhas/caules soltos ao ícone
+merge_big_area: 3000
+rows: [10, 10, 10, 10]
+scale:
+  mode: grid               # pega o pixel do centro de cada célula da grade
+  pitch: auto
+frame:
+  size: [32, 32]
+  anchor: center
+# Ordem de leitura (linha por linha, da esquerda para a direita)
+names:
+  # linha 1 - frutas
+  - icon/apple
+  - icon/green_apple
+  - icon/banana
+  - icon/orange
+  - icon/grape
+  - icon/strawberry
+  - icon/blueberry
+  - icon/blackberry
+  - icon/peach
+  - icon/cherry
+  # linha 2 - frutas
+  - icon/melon
+  - icon/watermelon_slice
+  - icon/watermelon
+  - icon/pineapple
+  - icon/pear
+  - icon/lemon
+  - icon/mango
+  - icon/fig
+  - icon/kiwi
+  - icon/pomegranate
+  # linha 3 - legumes
+  - icon/carrot
+  - icon/potato
+  - icon/onion
+  - icon/garlic
+  - icon/corn
+  - icon/eggplant
+  - icon/pumpkin
+  - icon/bell_pepper
+  - icon/chili_pepper
+  - icon/ginger
+  # linha 4 - verduras
+  - icon/cabbage
+  - icon/kale
+  - icon/spinach
+  - icon/lettuce
+  - icon/broccoli
+  - icon/cauliflower
+  - icon/celery
+  - icon/asparagus
+  - icon/artichoke
+  - icon/leek
