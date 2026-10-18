@@ -1,4 +1,8 @@
 # Animais v2 -> atlas_animals (substitui animals.yaml, que ficou desativado)
+# ATUALIZAÇÃO: animals_v3.yaml (fazendeiro_animais_v3.jpg) tem prioridade: os quadros de lá são pose_0..;
+# os desta folha continuam a numeração de cada raça (ex.: cow_holstein v3 = pose_0..4, v2 = pose_5..10).
+# A tabela abaixo usa a numeração ORIGINAL desta folha; some o deslocamento (offset) da raça:
+#   alpaca_brown +1, alpaca_cream +5, chicken_brown +9, chicken_white +1, cow_brownspot +1, cow_holstein +5, duck_green +1, duck_mallard +4, duck_white +1, goat_brown +3, goat_gray +2, goose_white +6, pig_pink +11, rabbit_gray +2, rabbit_white +4, sheep_white +12, turkey_bronze +6
 # 10 linhas x 7 poses. As cores ainda variam entre as poses, então cada cor virou uma RAÇA:
 # nome = <espécie>_<raça>/pose_<n> (n conta só dentro da raça). Direção: dir = olhando para a direita.
 #
@@ -41,7 +45,7 @@ rows: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
 scale:
   mode: fit
   margin: 2
-  max_factor: 1          # a folha já é pequena: só reduz, nunca amplia
+  factors: {large: 0.873, medium: 0.613, small: 0.6}   # escala fixa igual nas folhas v2 e v3 (pequenos podem passar de 32 px)
 quantize: 32
 frame: {size: [80, 64], anchor: bottom}
 groups:
@@ -53,87 +57,75 @@ groups:
     size: [48, 48]
   small:
     entities: [chicken_brown, chicken_white, chicken_black, duck_green, duck_mallard, duck_white, rabbit_white]
-    size: [32, 32]
-aliases:
-  cow/idle_0: cow_holstein/pose_0
-  chicken/idle_0: chicken_brown/pose_0
-  pig/idle_0: pig_pink/pose_0
-  sheep/idle_0: sheep_white/pose_0
-  goat/idle_0: goat_gray/pose_0
-  duck/idle_0: duck_mallard/pose_0
-  duck/swim_0: duck_mallard/pose_1
-  goose/idle_0: goose_white/pose_0
-  alpaca/idle_0: alpaca_cream/pose_0
-  rabbit/idle_0: rabbit_white/pose_0
-  turkey/idle_0: turkey_bronze/pose_0
+    size: [32, 36]
 names:
-  - cow_holstein/pose_0
-  - cow_holstein/pose_1
-  - cow_holstein/pose_2
-  - cow_holstein/pose_3
-  - cow_holstein/pose_4
-  - cow_brown/pose_0
   - cow_holstein/pose_5
-  - chicken_brown/pose_0
-  - chicken_brown/pose_1
-  - chicken_brown/pose_2
-  - chicken_white/pose_0
-  - chicken_black/pose_0
+  - cow_holstein/pose_6
+  - cow_holstein/pose_7
+  - cow_holstein/pose_8
+  - cow_holstein/pose_9
+  - cow_brown/pose_0
+  - cow_holstein/pose_10
+  - chicken_brown/pose_9
+  - chicken_brown/pose_10
+  - chicken_brown/pose_11
   - chicken_white/pose_1
+  - chicken_black/pose_0
+  - chicken_white/pose_2
   - chicken_black/pose_1
-  - pig_pink/pose_0
-  - pig_pink/pose_1
-  - pig_pink/pose_2
-  - pig_pink/pose_3
-  - pig_pink/pose_4
-  - pig_pink/pose_5
-  - pig_pink/pose_6
-  - sheep_white/pose_0
-  - sheep_white/pose_1
-  - sheep_white/pose_2
-  - sheep_white/pose_3
-  - sheep_white/pose_4
-  - sheep_white/pose_5
-  - sheep_white/pose_6
-  - goat_gray/pose_0
-  - goat_gray/pose_1
-  - goat_brown/pose_0
-  - goat_brown/pose_1
-  - goat_brown/pose_2
-  - goat_brown/pose_3
+  - pig_pink/pose_11
+  - pig_pink/pose_12
+  - pig_pink/pose_13
+  - pig_pink/pose_14
+  - pig_pink/pose_15
+  - pig_pink/pose_16
+  - pig_pink/pose_17
+  - sheep_white/pose_12
+  - sheep_white/pose_13
+  - sheep_white/pose_14
+  - sheep_white/pose_15
+  - sheep_white/pose_16
+  - sheep_white/pose_17
+  - sheep_white/pose_18
   - goat_gray/pose_2
-  - duck_green/pose_0
+  - goat_gray/pose_3
+  - goat_brown/pose_3
+  - goat_brown/pose_4
+  - goat_brown/pose_5
+  - goat_brown/pose_6
+  - goat_gray/pose_4
   - duck_green/pose_1
-  - duck_mallard/pose_0
-  - duck_white/pose_0
-  - duck_mallard/pose_1
-  - duck_mallard/pose_2
+  - duck_green/pose_2
+  - duck_mallard/pose_4
   - duck_white/pose_1
-  - goose_white/pose_0
-  - goose_white/pose_1
-  - goose_white/pose_2
-  - goose_white/pose_3
-  - goose_white/pose_4
-  - goose_white/pose_5
+  - duck_mallard/pose_5
+  - duck_mallard/pose_6
+  - duck_white/pose_2
   - goose_white/pose_6
-  - alpaca_cream/pose_0
-  - alpaca_cream/pose_1
-  - alpaca_cream/pose_2
-  - alpaca_brown/pose_0
+  - goose_white/pose_7
+  - goose_white/pose_8
+  - goose_white/pose_9
+  - goose_white/pose_10
+  - goose_white/pose_11
+  - goose_white/pose_12
+  - alpaca_cream/pose_5
+  - alpaca_cream/pose_6
+  - alpaca_cream/pose_7
   - alpaca_brown/pose_1
-  - alpaca_cream/pose_3
   - alpaca_brown/pose_2
-  - rabbit_white/pose_0
-  - rabbit_white/pose_1
-  - rabbit_white/pose_2
-  - rabbit_white/pose_3
+  - alpaca_cream/pose_8
+  - alpaca_brown/pose_3
   - rabbit_white/pose_4
   - rabbit_white/pose_5
   - rabbit_white/pose_6
-  - turkey_bronze/pose_0
-  - turkey_bronze/pose_1
-  - turkey_bronze/pose_2
-  - turkey_bronze/pose_3
-  - turkey_bronze/pose_4
-  - turkey_bronze/pose_5
+  - rabbit_white/pose_7
+  - rabbit_white/pose_8
+  - rabbit_white/pose_9
+  - rabbit_white/pose_10
   - turkey_bronze/pose_6
+  - turkey_bronze/pose_7
+  - turkey_bronze/pose_8
+  - turkey_bronze/pose_9
+  - turkey_bronze/pose_10
+  - turkey_bronze/pose_11
+  - turkey_bronze/pose_12

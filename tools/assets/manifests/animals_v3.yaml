@@ -1,0 +1,192 @@
+# Animais v3 (resto de v2/fazendeiro_animais_v3.jpg) -> atlas_animals. TEM PRIORIDADE sobre animais_v2:
+# estes quadros são pose_0.. de cada raça; os de animals_v2.yaml vêm depois na numeração.
+# Cada cor = uma RAÇA (<espécie>_<raça>/pose_<n>). Blocos da folha:
+#   topo à direita: galinha (4), porco (4), ovelha (6)
+#   grade à esquerda (linhas): vaca, galinha, porco, ovelha, cabra (o último da linha das cabras é um PORCO)
+#   grade à direita (linhas): pato, ganso, alpaca, coelho, peru
+# Poses desta folha:
+#   chicken_brown: v3 topo: 0 parada dir, 1 parada dir, 2 bicando dir, 3 parada dir | v3 grade: 4..8 paradas/andando dir
+#   pig_pink: v3 topo: 0 parado dir, 1 de costas 3/4, 2 comendo dir, 3 deitado/fuçando | v3 grade: 4..8 parado/andando/comendo dir, 9 deitado | 10 deitado (estava na linha das cabras)
+#   sheep_white: v3 topo: 0..4 parada/andando dir, 5 deitada | v3 grade: 6..10 parada/pastando dir, 11 pastando esq
+#   cow_holstein: v3 grade: 0 parada dir, 1 parada dir, 2 3/4 de costas, 3 pastando dir, 4 deitada
+#   cow_brownspot: v3 grade: 0 parada (malhada marrom e branca) — raça nova, só 1 pose
+#   chicken_white: v3 grade: 0 parada dir
+#   goat_gray: v3 grade: 0 parada dir, 1 parada dir
+#   goat_brown: v3 grade: 0 parada dir, 1 andando dir, 2 pastando dir
+#   duck_mallard: v3 grade: 0 parado dir, 1 parado dir, 2 parado dir, 3 nadando dir
+#   duck_green: v3 grade: 0 parado dir
+#   duck_white: v3 grade: 0 parado dir
+#   goose_white: v3 grade: 0..3 parado/andando dir, 4 asas abertas, 5 pescoço esticado
+#   alpaca_cream: v3 grade: 0..3 parada dir, 4 deitada
+#   alpaca_brown: v3 grade: 0 parada dir
+#   rabbit_white: v3 grade: 0..1 sentado, 2..3 pulando dir
+#   rabbit_gray: v3 grade: 0 sentado, 1 sentado de frente (raça nova)
+#   turkey_bronze: v3 grade: 0..4 parado dir/esq, 5 cauda aberta de lado
+#
+# TOTAL de quadros por raça (v3 + v2):
+#   alpaca_brown: 4 (v3: 1, v2: 3)
+#   alpaca_cream: 9 (v3: 5, v2: 4)
+#   chicken_black: 2 (v3: 0, v2: 2)
+#   chicken_brown: 12 (v3: 9, v2: 3)
+#   chicken_white: 3 (v3: 1, v2: 2)
+#   cow_brown: 1 (v3: 0, v2: 1)
+#   cow_brownspot: 1 (v3: 1, v2: 0)
+#   cow_holstein: 11 (v3: 5, v2: 6)
+#   duck_green: 3 (v3: 1, v2: 2)
+#   duck_mallard: 7 (v3: 4, v2: 3)
+#   duck_white: 3 (v3: 1, v2: 2)
+#   goat_brown: 7 (v3: 3, v2: 4)
+#   goat_gray: 5 (v3: 2, v2: 3)
+#   goose_white: 13 (v3: 6, v2: 7)
+#   pig_pink: 18 (v3: 11, v2: 7)
+#   rabbit_gray: 2 (v3: 2, v2: 0)
+#   rabbit_white: 11 (v3: 4, v2: 7)
+#   sheep_white: 19 (v3: 12, v2: 7)
+#   turkey_bronze: 13 (v3: 6, v2: 7)
+#
+# Escala: fator fixo por tamanho (large 0.873, medium 0.613, small 0.6) igual em animals_v2.yaml, para as
+# duas folhas ficarem na mesma escala. Quadros: grande 80x64, médio 48x48, pequeno 32x32 (crescem se preciso).
+sheet: animals_v3
+source: v2/fazendeiro_animais_v3.jpg
+category: animals
+transparency: flood
+# Fundo azulado (63,71,79) MUITO uniforme, mas quase da cor das manchas pretas da vaca e do peru:
+# tolerâncias bem baixas (o ruído do fundo é < 1,5 ΔE).
+bg_tolerance: 2.5
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: true, min_L: 0, max_ab: 3}
+halo_tolerance: 5
+restore_enclosed: {close: 3, min_dE: 2, shadow_ab: 2.5}
+segment:                   # para SEPARAR os bichos usa tolerância normal (tira sombra); os pixels vêm da máscara rígida
+  bg_tolerance: 6
+  shadow: {enabled: true, min_L: 0, max_ab: 5}
+  grow: 3
+  rim_shadow_ab: 6.0       # na borda extra, o que for da cor de sombra sai
+  rim_shadow_min_L: 8      # (contorno preto fica)
+min_piece_area: 150
+speck_area: 14
+merge_distance: 10
+merge_big_area: 350
+merge_distance_big: 0
+split_erode: 3             # ovelha encosta no chifre da cabra
+split_cuts:
+  - [520, 514, 1024, 518]   # pés do coelho encostam na cabeça do peru
+group_boxes:                # peru 5 da grade: cinza-azulado quase da cor do fundo, sai em pedaços -> junta tudo
+  - [845, 520, 925, 572]
+regions:
+  - {box: [690, 100, 1024, 165], rows: [4]}
+  - {box: [690, 165, 1024, 215], rows: [4]}
+  - {box: [520, 215, 1024, 300], rows: [6]}
+  - {box: [0, 300, 520, 572], rows: [6, 6, 6, 6, 6]}
+  - {box: [520, 300, 1024, 572], rows: [6, 6, 6, 6, 6]}
+rows: []
+scale:
+  mode: fit
+  margin: 2
+  factors: {large: 0.873, medium: 0.613, small: 0.6}   # escala fixa igual nas folhas v2 e v3 (pequenos podem passar de 32 px)
+quantize: 32
+frame: {size: [80, 64], anchor: bottom}
+groups:
+  large:
+    entities: [cow_holstein, cow_brown, cow_brownspot, pig_pink, sheep_white, goat_gray, goat_brown, alpaca_cream, alpaca_brown]
+    size: [80, 64]
+  medium:
+    entities: [goose_white, turkey_bronze]
+    size: [48, 48]
+  small:
+    entities: [chicken_brown, chicken_white, chicken_black, duck_green, duck_mallard, duck_white, rabbit_white, rabbit_gray]
+    size: [32, 36]
+overrides:
+  turkey_bronze/pose_4:
+    restore_enclosed: {close: 5, min_dE: 0, shadow_ab: 0}   # devolve o corpo que o fundo "comeu"
+    add_box: [845, 516, 925, 572]                           # penas da cauda que grudaram no coelho cinza
+  rabbit_gray/pose_0:
+    clip_box: [845, 470, 925, 516]                          # tira as penas do peru de baixo
+aliases:
+  cow/idle_0: cow_holstein/pose_0
+  chicken/idle_0: chicken_brown/pose_0
+  pig/idle_0: pig_pink/pose_0
+  sheep/idle_0: sheep_white/pose_0
+  goat/idle_0: goat_gray/pose_0
+  duck/idle_0: duck_mallard/pose_0
+  duck/swim_0: duck_mallard/pose_3
+  goose/idle_0: goose_white/pose_0
+  alpaca/idle_0: alpaca_cream/pose_0
+  rabbit/idle_0: rabbit_white/pose_0
+  turkey/idle_0: turkey_bronze/pose_0
+names:
+  - chicken_brown/pose_0
+  - chicken_brown/pose_1
+  - chicken_brown/pose_2
+  - chicken_brown/pose_3
+  - pig_pink/pose_0
+  - pig_pink/pose_1
+  - pig_pink/pose_2
+  - pig_pink/pose_3
+  - sheep_white/pose_0
+  - sheep_white/pose_1
+  - sheep_white/pose_2
+  - sheep_white/pose_3
+  - sheep_white/pose_4
+  - sheep_white/pose_5
+  - cow_holstein/pose_0
+  - cow_holstein/pose_1
+  - cow_brownspot/pose_0
+  - cow_holstein/pose_2
+  - cow_holstein/pose_3
+  - cow_holstein/pose_4
+  - chicken_brown/pose_4
+  - chicken_brown/pose_5
+  - chicken_brown/pose_6
+  - chicken_brown/pose_7
+  - chicken_brown/pose_8
+  - chicken_white/pose_0
+  - pig_pink/pose_4
+  - pig_pink/pose_5
+  - pig_pink/pose_6
+  - pig_pink/pose_7
+  - pig_pink/pose_8
+  - pig_pink/pose_9
+  - sheep_white/pose_6
+  - sheep_white/pose_7
+  - sheep_white/pose_8
+  - sheep_white/pose_9
+  - sheep_white/pose_10
+  - sheep_white/pose_11
+  - goat_gray/pose_0
+  - goat_gray/pose_1
+  - goat_brown/pose_0
+  - goat_brown/pose_1
+  - goat_brown/pose_2
+  - pig_pink/pose_10
+  - duck_mallard/pose_0
+  - duck_mallard/pose_1
+  - duck_green/pose_0
+  - duck_mallard/pose_2
+  - duck_white/pose_0
+  - duck_mallard/pose_3
+  - goose_white/pose_0
+  - goose_white/pose_1
+  - goose_white/pose_2
+  - goose_white/pose_3
+  - goose_white/pose_4
+  - goose_white/pose_5
+  - alpaca_cream/pose_0
+  - alpaca_cream/pose_1
+  - alpaca_cream/pose_2
+  - alpaca_cream/pose_3
+  - alpaca_cream/pose_4
+  - alpaca_brown/pose_0
+  - rabbit_white/pose_0
+  - rabbit_white/pose_1
+  - rabbit_white/pose_2
+  - rabbit_white/pose_3
+  - rabbit_gray/pose_0
+  - rabbit_gray/pose_1
+  - turkey_bronze/pose_0
+  - turkey_bronze/pose_1
+  - turkey_bronze/pose_2
+  - turkey_bronze/pose_3
+  - turkey_bronze/pose_4
+  - turkey_bronze/pose_5

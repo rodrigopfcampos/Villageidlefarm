@@ -11,12 +11,16 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
     "@vif/shared": "workspace:*",
     "phaser": "3.90.0",
     "preact": "^10.29.8"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",
+    "@types/pg": "^8.23.1",
+    "embedded-postgres": "17.9.0-beta.16",
+    "pg": "^8.23.1",
     "typescript": "~5.9.3",
     "vite": "^7.3.7",
     "vitest": "^3.2.7"

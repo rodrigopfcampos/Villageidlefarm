@@ -4,3 +4,9 @@ packages:
 
 onlyBuiltDependencies:
   - esbuild
+  # Postgres embutido usado só nos testes de banco (A2): o postinstall recria os links das bibliotecas.
+  - '@embedded-postgres/darwin-arm64'
+  - '@embedded-postgres/darwin-x64'
+  - '@embedded-postgres/linux-arm64'
+  - '@embedded-postgres/linux-x64'
+  - '@embedded-postgres/windows-x64'

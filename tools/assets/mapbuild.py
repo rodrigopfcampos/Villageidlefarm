@@ -240,6 +240,9 @@ def previews():
               ("farmer_f/idle_down_0", sp["x"] + 60, sp["y"] + 8, True, False),
               ("farmer_m/idle_up_0", 330, 300, True, False),          # atrás da casa (telhado por cima)
               ("farmer_f/water_side_0", plots[1]["x"] - 20, plots[1]["y"] + 90, True, False),
+              ("farmer_m/water_side_0", plots[0]["x"] - 14, plots[0]["y"] + 90, True, False),
+              ("farmer_m/walk_side_1", sp["x"] + 150, sp["y"] + 30, True, False),
+              ("farmer_m/hoe_side_0", plots[4]["x"] - 20, plots[4]["y"] + 100, True, False),
               ("dog/sit_0", sp["x"] - 60, sp["y"] + 12, True, False),
               ("cow_holstein/pose_0", 1560, 1230, True, False), ("cow_brown/pose_0", 1700, 1300, True, False),
               ("sheep_white/pose_0", 1820, 1220, True, False), ("pig_pink/pose_0", 1640, 1340, True, True),

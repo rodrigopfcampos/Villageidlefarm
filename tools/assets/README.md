@@ -17,13 +17,54 @@ Outras opções: `--sheet animals` (só uma folha), `--map` (só mapa e layout),
 
 | Arquivo | O que é |
 |---|---|
-| `atlas/atlas_<categoria>.png` + `.json` | Sprites de icons, cards, animals, characters, pets, vehicles (JSON Hash do Phaser) |
-| `map/farm.webp` | O mapa |
-| `map/overhead.png` | Só telhados e copas, desenhado por cima do jogador |
-| `map/farm_layout.tmj` | Colisão, canteiros, cercados, lotes, spawn, NPCs (cópia do arquivo do Tiled) |
+| `atlas/atlas_<categoria>.png` + `.json` | Sprites de icons, cards, animals, characters, pets, vehicles, buildings, crops, tiles, ui (JSON Hash do Phaser) |
+| `map/farm.webp` | O mapa base (hoje: `raw/v2/mapa_limpo.jpg`, só terreno) |
+| `map/overhead.png` | Telhados e copas dos prédios/árvores da camada `buildings`, desenhado por cima do jogador |
+| `map/farm_layout.tmj` | Colisão, canteiros, cercados, lotes, spawn, NPCs e prédios (cópia do arquivo do Tiled) |
 | `manifest.json` | Lista de tudo acima (o jogo lê este arquivo) |
 | `packages/shared/src/generated/assetKeys.ts` | Nomes de atlas e quadros para o código |
 | `tools/assets/debug/` | Prévias para você conferir (não vão para o git) |
+
+## Folhas e manifestos
+
+| Manifesto | Folha | Vai para |
+|---|---|---|
+| `icons.yaml` | Frutas/legumes (40) | atlas_icons |
+| `products.yaml` | `v2/produtos_sementes.jpg` (ovo, ovo de pato, leite, lã, 3 sacos de semente) | atlas_icons |
+| `buffs.yaml` | `v2/buffs_cartas.jpg`: `card/art_1..8` (132x192, miolo da carta) e `buff/icon_1..8` (24x24) | atlas_cards / atlas_icons |
+| `cards.yaml` | Molduras de carta | atlas_cards |
+| `animals_v3.yaml` | `v2/fazendeiro_animais_v3.jpg` (animais; PRIORIDADE: são os pose_0.. de cada raça) | atlas_animals |
+| `farmer_v3.yaml` | `v2/fazendeiro_animais_v3.jpg` (farmer_m: idle, walk, pickaxe, hoe, water) | atlas_characters |
+| `animals_v2.yaml` | `v2/animais_v2.jpg` (mesmas raças; numeração continua depois da v3) | atlas_animals |
+| `animals.yaml` | folha antiga de animais — **desativada** (`enabled: false`) | — |
+| `characters_v2.yaml` | `v2/personagens_v2.jpg` (farmer_f inteira; do farmer_m só os perfis) | atlas_characters |
+| `characters.yaml` | folha antiga: só os NPCs (elder, blacksmith, shopkeeper, scientist) | atlas_characters |
+| `pets.yaml`, `vehicles.yaml` | folhas antigas | atlas_pets / atlas_vehicles |
+| `buildings.yaml` | `v2/predios_arvores.jpg` (building/*, tree/*, decor/crop_rows_*) | atlas_buildings |
+| `crops.yaml` | `v2/estagios_plantas.jpg` (crop/carrot_0..3, potato, strawberry) | atlas_crops |
+| `tiles.yaml` | `v2/canteiro_terra.jpg` (tile/soil_raw, soil_tilled, soil_wet; 112x112) | atlas_tiles |
+| `ui.yaml` | `v2/interface.jpg` (moeda, coroa, estrela, evento, botões, painel, barras) | atlas_ui |
+
+Cada manifesto explica nos comentários o que é cada quadro (direção, pose, raça) e o que está faltando.
+
+Escalas: ícones 32x32; animais 80x64 / 48x48 / 32x32; personagens com corpo de ~64 px; prédios e árvores
+ampliados 2x com vizinho mais próximo (casa 400x386); plantas 3x (cabem num canteiro); interface 2x.
+
+Informações extras para o código (em `assetKeys.ts`):
+- `NINE_SLICE`: margens [esq, dir, cima, baixo] de painel, botões, barras e tiles de terra
+  (o painel também sai cortado em `ui/panel_corner_tl` ... `ui/panel_center`).
+- `CARD_ART_SLOT`: onde fica o miolo de cada moldura. Desenhe `card/art_N` ATRÁS da moldura, centrado em (cx, cy).
+  Prévia: `debug/cards_art_in_frames.png`.
+- `BUILDING_FOOTPRINTS`: base com colisão e `overheadSplitY` de cada prédio/árvore.
+
+Opções de manifesto para folhas difíceis (todas comentadas nos manifestos que usam):
+- `regions`: folha com blocos diferentes; cada caixa tem as próprias linhas, o resto é ignorado.
+- `exclude`: caixas que viram fundo (textos, bichos de outro manifesto).
+- `split_erode` / `split_cuts`: separar sprites que encostam um no outro.
+- `group_boxes`: juntar pedaços num sprite só. `overrides.<quadro>`: `clip_box`, `add_box`, `fill_box`,
+  `accept_pieces`, `restore_enclosed`, `strip_bg_dE`, `glow`, `interior`.
+- `segment`: separar com uma tolerância e recortar os pixels com outra (fundo quase da cor do sprite).
+- `scale.factors`: escala fixa, igual entre folhas (animals_v2 e animals_v3 usam a mesma).
 
 ## Trocar uma arte (ex.: folha de animais nova)
 
@@ -65,20 +106,31 @@ Os manifestos explicam, em comentários, o que é cada pose.
    amarelo = lotes à venda, rosa = telhados/copas, bolinhas = spawn e NPCs).
 
 Camadas: `collision`, `plots` (slotId, unlockCost, unlockLevel, startsUnlocked), `pens` (habitat: coop/barn/pond),
-`spawn` (ponto `player`), `locked_lots` (lotId, cost), `npc_points` (npc: shopkeeper/blacksmith/scientist) e
-`overhead` (formas de telhado/copa; a propriedade `drop` diz que cor de chão tirar do recorte: `path` ou `path_grass`).
+`spawn` (ponto `player`), `locked_lots` (lotId, cost), `npc_points` (npc: shopkeeper/blacksmith/scientist),
+`buildings` e `overhead` (opcional: formas extras de telhado; `drop` = `path` ou `path_grass`).
+
+**Camada `buildings`** (prédios e árvores): cada objeto é um retângulo do tamanho do sprite, com as propriedades
+`sprite` (ex.: `building/house`, `tree/oak`) e `overheadSplitY` (int). O sprite é desenhado com a base central
+no meio da borda de baixo do retângulo (pivot 0.5, 1). `overheadSplitY` é a linha do sprite, contada a partir
+do TOPO, acima da qual o sprite fica por cima do jogador (telhado/copa); 0 = nunca cobre (píer, plantinhas).
+O build já recorta essa parte de cima e coloca em `map/overhead.png`, então o jogo pode simplesmente desenhar:
+mapa → prédios (inteiros) → jogador → overhead.png. A base de cada prédio/árvore tem um retângulo
+`<nome>_base` na camada `collision`. Para mover um prédio no Tiled, arraste o retângulo **e** a base dele.
 
 `tools/assets/seed_layout.py` só cria a primeira versão do layout. Ele **não** sobrescreve o arquivo do Tiled
 (a menos que se use `--force`, que apaga seus ajustes).
 
 ## Trocar o mapa
 
-Coloque o mapa novo em `assets-src/clean/mapa_do_jogo.png` com **2576×1438 px**. Se os prédios mudarem de lugar,
-ajuste as formas da camada `overhead` e a colisão no Tiled.
+O mapa base é `assets-src/raw/v2/mapa_limpo.jpg` (constante `MAP_NAME` em `mapbuild.py`). Para trocar, coloque o
+novo em `assets-src/clean/v2/mapa_limpo.png` com **2576×1438 px** e rode o build. Se o terreno mudar (rio,
+canteiros), recrie o layout: `python tools/assets/seed_layout.py --force` (apaga ajustes manuais!) ou ajuste no Tiled.
 
 ## Prévias para aprovar
 
-- `debug/preview_on_map.png` e `debug/preview_on_map_animals.png`: sprites colados no mapa na escala final.
+- `debug/preview_composto.png`: mapa + prédios + árvores + plantas nos canteiros + fazendeiros + animais (escala final).
+- `debug/preview_on_map.png` (zoom 2x na casa/campo) e `debug/preview_on_map_animals.png` (celeiro/galinheiro/lago).
+- `debug/cards_art_in_frames.png`: cada arte de carta dentro de cada moldura.
 - `debug/layout_overlay.png`: objetos do layout por cima do mapa.
 - `debug/contact_<categoria>.png`: todos os quadros de cada atlas.
 - `debug/<folha>_boxes.png`: como cada folha foi recortada.

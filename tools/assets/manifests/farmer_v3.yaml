@@ -1,0 +1,75 @@
+# Fazendeiro v3 (topo à esquerda de v2/fazendeiro_animais_v3.jpg) -> atlas_characters. TEM PRIORIDADE sobre
+# farmer_m de personagens_v2 (de lá só ficam os quadros de PERFIL: idle_side_*, walk_side_*, walk_left_*).
+# Direções: down = de frente/3-4 de frente | up = de costas/3-4 de costas | side = perfil olhando para a DIREITA.
+#   linha 1: idle_down_0/1, idle_up_0/1, pickaxe_down_0/1 (picareta, de frente), pickaxe_up_0..2 (de costas),
+#            pickaxe_side_0/1 (cavando, de lado)
+#   linha 2: walk_down_0/1, walk_up_0/1 (só 2 quadros reais por direção; walk_*_2/3 são apelidos de 0/1),
+#            hoe_down_0/1 (enxada, 3/4 de frente), hoe_side_0/1 (enxada, de lado)
+#   linha 3: water_down_0/1 (regando de frente), water_up_0/1 (de costas), water_side_0/1 (agachado, de lado)
+# Não existe: idle/walk de perfil nesta folha (vêm de personagens_v2), plantar e colher do fazendeiro.
+sheet: farmer_v3
+source: v2/fazendeiro_animais_v3.jpg
+category: characters
+transparency: flood
+# Fundo azulado quase da cor do macacão escuro: máscara rígida (tolerância baixa) + separação com tolerância normal
+bg_tolerance: 2.5
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: true, min_L: 0, max_ab: 3}
+halo_tolerance: 5
+speck_area: 14
+restore_enclosed: {close: 3, min_dE: 2, shadow_ab: 2.5}
+segment:
+  bg_tolerance: 6
+  shadow: {enabled: true, min_L: 0, max_ab: 5}
+  grow: 3
+  rim_shadow_ab: 6.0
+  rim_shadow_min_L: 8
+min_piece_area: 150
+merge_distance: 10          # gotas do regador, terra da enxada
+merge_big_area: 1300
+merge_distance_big: 0
+split_erode: 1
+exclude:                    # bichos do topo à direita e grade de animais (outro manifesto)
+  - [692, 108, 1024, 215]
+  - [520, 214, 1024, 305]
+  - [0, 303, 1024, 572]
+regions:
+  - {box: [0, 0, 1024, 100], rows: [11]}
+  - {box: [0, 100, 690, 205], rows: [8]}
+  - {box: [0, 205, 520, 305], rows: [6]}
+rows: []
+scale: {mode: ref_height, ref: farmer_m/idle_down_0, target: 64}   # mesma altura do farmer_m de personagens_v2
+quantize: 32
+frame: {size: [48, 72], anchor: feet}
+aliases:
+  farmer_m/walk_down_2: farmer_m/walk_down_0
+  farmer_m/walk_down_3: farmer_m/walk_down_1
+  farmer_m/walk_up_2: farmer_m/walk_up_0
+  farmer_m/walk_up_3: farmer_m/walk_up_1
+names:
+  - farmer_m/idle_down_0
+  - farmer_m/idle_down_1
+  - farmer_m/idle_up_0
+  - farmer_m/idle_up_1
+  - farmer_m/pickaxe_down_0
+  - farmer_m/pickaxe_down_1
+  - farmer_m/pickaxe_up_0
+  - farmer_m/pickaxe_up_1
+  - farmer_m/pickaxe_up_2
+  - farmer_m/pickaxe_side_0
+  - farmer_m/pickaxe_side_1
+  - farmer_m/walk_down_0
+  - farmer_m/walk_down_1
+  - farmer_m/walk_up_0
+  - farmer_m/walk_up_1
+  - farmer_m/hoe_down_0
+  - farmer_m/hoe_down_1
+  - farmer_m/hoe_side_0
+  - farmer_m/hoe_side_1
+  - farmer_m/water_down_0
+  - farmer_m/water_down_1
+  - farmer_m/water_up_0
+  - farmer_m/water_up_1
+  - farmer_m/water_side_0
+  - farmer_m/water_side_1

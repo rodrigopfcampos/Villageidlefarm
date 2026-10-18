@@ -3,7 +3,7 @@
 #   art_1 sol | art_2 cesta de colheita | art_3 carneiro | art_4 coruja | art_5 ampulheta | art_6 chuva/raio
 #   art_7 ferradura | art_8 engrenagem. buff/icon_N é o mini ícone da mesma carta N.
 # card/art_N vai para atlas_cards (132x192 = 44x64 pixels de arte ampliados 3x; desenhe ATRÁS da moldura,
-#   centrado no ponto CARD_ART_OFFSET da moldura, ver assetKeys.ts). buff/icon_N vai para atlas_icons (24x24 = 12x12 x2).
+#   centrado no ponto CARD_ART_OFFSET da moldura, ver assetKeys.ts). buff/icon_N vai para atlas_icons (24x24).
 sheet: buffs
 source: v2/buffs_cartas.jpg
 category: cards
@@ -29,7 +29,7 @@ scale:
   mode: art
   groups:
     card: {art_size: [44, 64], upscale: 3}   # arte ~110x160 na folha -> exatamente 44x64 -> x3 = 132x192
-    buff: {art_size: [12, 12], upscale: 2}   # ícone ~64 px -> exatamente 12x12 -> x2 = 24x24
+    buff: {art_size: [24, 24], upscale: 1}   # ícone ~64 px -> 24x24 direto (12x12 ficava borrado demais)
 quantize: 48
 frame: {size: [132, 192], anchor: center}
 groups:

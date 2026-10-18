@@ -177,7 +177,25 @@ def box_gap(a: Piece, b: Piece) -> float:
 
 
 def find_pieces(sprite: np.ndarray, cfg: dict) -> tuple[list[Piece], np.ndarray]:
-    lbl, n = ndi.label(sprite, structure=np.ones((3, 3)))
+    se = int(cfg.get("split_erode", 0))
+    cuts = cfg.get("split_cuts") or []
+    if se or cuts:
+        # sprites encostados por 1-2 px (perna da ovelha no chifre da cabra): rotula a máscara erodida
+        # e devolve cada pixel original ao rótulo mais próximo
+        core = ndi.binary_erosion(sprite, structure=np.ones((3, 3)), iterations=se) if se else sprite.copy()
+        for x0, y0, x1, y1 in cuts:  # linhas de corte manuais entre sprites colados
+            core[y0:y1, x0:x1] = False
+        cl, n = ndi.label(core, structure=np.ones((3, 3)))
+        _, (iy, ix) = ndi.distance_transform_edt(cl == 0, return_indices=True)
+        lbl = np.where(sprite, cl[iy, ix], 0)
+        # pedacinhos que sumiram na erosão (pontas finas soltas) ganham rótulo próprio
+        rest = sprite & (lbl == 0)
+        if rest.any():
+            rl, rn = ndi.label(rest, structure=np.ones((3, 3)))
+            lbl = np.where(rl > 0, rl + n, lbl)
+            n += rn
+    else:
+        lbl, n = ndi.label(sprite, structure=np.ones((3, 3)))
     objs = ndi.find_objects(lbl)
     areas = ndi.sum(np.ones_like(lbl), lbl, index=np.arange(1, n + 1)) if n else []
     pieces = [Piece(s[1].start, s[0].start, s[1].stop, s[0].stop, int(areas[i]), [i + 1])
@@ -528,7 +546,16 @@ def process_sheet(cfg: dict, sheet_name: str) -> tuple[list[Sprite], dict]:
         seg_bg, seg_sprite = bg, sprite
     pieces, lbl = find_pieces(seg_sprite, cfg)
     rows_expected = cfg["rows"]
-    rows = group_rows(pieces, len(rows_expected))
+    if cfg.get("regions"):
+        # folha com blocos separados: cada região tem as próprias linhas; o que estiver fora é ignorado
+        rows = []
+        for reg in cfg["regions"]:
+            x0, y0, x1, y1 = reg["box"]
+            sel = [p for p in pieces if x0 <= p.cx < x1 and y0 <= p.cy < y1]
+            rows += group_rows(sel, len(reg["rows"]))
+        rows_expected = [r for reg in cfg["regions"] for r in reg["rows"]]
+    else:
+        rows = group_rows(pieces, len(rows_expected))
     names = cfg["names"]
     got = [len(r) for r in rows]
     boxes_png = DEBUG / f"{sheet_name}_boxes.png"
@@ -554,10 +581,17 @@ def process_sheet(cfg: dict, sheet_name: str) -> tuple[list[Sprite], dict]:
         if seg:
             region = ndi.binary_fill_holes(ndi.binary_dilation(own, iterations=int(seg.get("grow", 5))))
             own = region & sprite[y0:y1, x0:x1]
+            if seg.get("rim_shadow_ab"):
+                # na borda extra (fora da silhueta de separação), tira o que parece sombra
+                cl = lab[y0:y1, x0:x1]
+                dab = np.linalg.norm(cl[..., 1:] - lab_bg[1:], axis=-1)
+                shadowish = (dab < float(seg["rim_shadow_ab"])) & (cl[..., 0] < lab_bg[0] + 1) & \
+                    (cl[..., 0] > float(seg.get("rim_shadow_min_L", 8)))
+                own &= ~(shadowish & ~seg_sprite[y0:y1, x0:x1])
         else:
             own &= sprite[y0:y1, x0:x1]
         own = ndi.binary_fill_holes(own) if cfg.get("fill_holes", False) else own
-        rc = cfg.get("restore_enclosed")
+        rc = ov.get("restore_enclosed", cfg.get("restore_enclosed"))
         if rc:
             # partes escuras quase da cor do fundo (rabo da galinha preta) cercadas pelo contorno:
             # fecha o contorno, preenche, e devolve só pixels que não são fundo puro nem sombra
@@ -575,6 +609,17 @@ def process_sheet(cfg: dict, sheet_name: str) -> tuple[list[Sprite], dict]:
             dEs = np.linalg.norm(lab[y0:y1, x0:x1] - lab_bg, axis=-1)
             own = own & ~(dEs < float(ov["strip_bg_dE"]))
             own = ndi.binary_opening(own, structure=np.ones((2, 2))) | (own & ndi.binary_erosion(own))
+        if ov.get("clip_box"):  # só pixels dentro desta caixa (coordenadas da folha) pertencem ao sprite
+            cx0, cy0, cx1, cy1 = ov["clip_box"]
+            keep = np.zeros_like(own)
+            keep[max(cy0 - y0, 0):max(cy1 - y0, 0), max(cx0 - x0, 0):max(cx1 - x0, 0)] = True
+            own &= keep
+        if ov.get("add_box"):  # todo pixel de sprite dentro desta caixa entra (pedaços que foram para o vizinho)
+            ax0, ay0, ax1, ay1 = ov["add_box"]
+            ax0, ay0 = max(ax0, x0), max(ay0, y0)
+            ax1, ay1 = min(ax1, x1), min(ay1, y1)
+            if ax1 > ax0 and ay1 > ay0:
+                own[ay0 - y0:ay1 - y0, ax0 - x0:ax1 - x0] |= sprite[ay0:ay1, ax0:ax1]
         if ov.get("fill_box"):  # região que é sempre opaca (ex.: interior escuro da garagem)
             fx0, fy0, fx1, fy1 = ov["fill_box"]
             own[max(fy0 - y0, 0):max(fy1 - y0, 0), max(fx0 - x0, 0):max(fx1 - x0, 0)] = True
@@ -691,8 +736,11 @@ def scale_sprites(raw, cfg, sheet_name) -> list[Sprite]:
             fw, fh = frame_nominal(cfg, g)
             f = min(min((fw - margin) / tights[n].shape[1], (fh - margin) / tights[n].shape[0]) for n in ns)
             f = min(f, float(sc.get("max_factor", 1e9)))  # nunca ampliar além disso
+            if g in (sc.get("factors") or {}):
+                f = float(sc["factors"][g])  # fator fixo (mesma escala entre folhas diferentes)
             for n in ns:
                 factors[n] = f
+            print(f"  [{sheet_name}] escala {g}: {f:.3f}")
     else:
         raise BuildError(f"modo de escala desconhecido: {mode}")
     for name, rgba, _, _ in raw:
