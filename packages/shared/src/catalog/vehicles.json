@@ -1,0 +1,86 @@
+[
+  {
+    "id": "cart",
+    "name": "Carroça",
+    "unlockLevel": 3,
+    "price": 0,
+    "capacity": 780,
+    "tripCost": 30,
+    "tripCostIcon": "icon/feed_sack",
+    "wear": 6,
+    "speed": 1.0,
+    "risk": 1.0,
+    "repairCostPerPoint": 3.12,
+    "upgradeCosts": [
+      500,
+      1000,
+      2000
+    ],
+    "upgradeCapacityMult": 1.25,
+    "maxUpgrades": 3,
+    "spriteKey": "vehicle/cart"
+  },
+  {
+    "id": "car",
+    "name": "Carro",
+    "unlockLevel": 12,
+    "price": 4000,
+    "capacity": 2700,
+    "tripCost": 135,
+    "tripCostIcon": "icon/fuel_can",
+    "wear": 5,
+    "speed": 2.0,
+    "risk": 0.8,
+    "repairCostPerPoint": 10.8,
+    "upgradeCosts": [
+      2000,
+      4000,
+      8000
+    ],
+    "upgradeCapacityMult": 1.25,
+    "maxUpgrades": 3,
+    "spriteKey": "vehicle/car"
+  },
+  {
+    "id": "pickup",
+    "name": "Caminhonete",
+    "unlockLevel": 20,
+    "price": 15000,
+    "capacity": 6210,
+    "tripCost": 310,
+    "tripCostIcon": "icon/fuel_can",
+    "wear": 7,
+    "speed": 1.5,
+    "risk": 0.9,
+    "repairCostPerPoint": 24.84,
+    "upgradeCosts": [
+      7500,
+      15000,
+      30000
+    ],
+    "upgradeCapacityMult": 1.25,
+    "maxUpgrades": 3,
+    "spriteKey": "vehicle/pickup"
+  },
+  {
+    "id": "truck",
+    "name": "Caminhão",
+    "unlockLevel": 32,
+    "price": 60000,
+    "capacity": 16910,
+    "tripCost": 1000,
+    "tripCostIcon": "icon/fuel_can",
+    "wear": 9,
+    "speed": 1.0,
+    "risk": 1.1,
+    "repairCostPerPoint": 67.64,
+    "upgradeCosts": [
+      30000,
+      60000,
+      120000
+    ],
+    "upgradeCapacityMult": 1.25,
+    "maxUpgrades": 3,
+    "spriteKey": "vehicle/truck"
+  }
+]

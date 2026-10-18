@@ -6,9 +6,14 @@
 import type {
   ActiveBuff,
   Album,
+  AlbumSlot,
   AnimalState,
   AnimalType,
+  Avatar,
   CardInstance,
+  CargoEntry,
+  DestinationId,
+  ExploreState,
   EpochMs,
   Extraction,
   ExtractionQuota,
@@ -25,6 +30,9 @@ import type {
   PublicProfile,
   RequestId,
   ServerTime,
+  TripState,
+  VehicleId,
+  VehicleState,
   Wallet,
   WorldState,
 } from './models';
@@ -34,9 +42,10 @@ import type {
  * - `inventoryChanges`: quantidades ABSOLUTAS novas dos itens que mudaram (qty 0 = sumiu).
  *   Inclui itens de carta usada (`card_*`) = cópias no álbum.
  * - `plots` / `animals`: estado completo das entidades que mudaram.
- * - `xp`: níveis e xp totais depois da ação.
+ * - `xp`: nível e xp total depois da ação (XP único).
  * - `gained`: o que entrou no inventário nesta ação (deltas positivos), só para efeitos visuais.
  * - `bonusCoins`: moedas extras de buffs (carta de Ouro, álbum) já somadas em `wallet`.
+ * - `album`: espaços do álbum que mudaram (carta usada), quando mudou.
  * - `cards`: cartas novas ou que mudaram (drop, uso).
  * - `activeBuffs`: lista COMPLETA de buffs em vigor, quando mudou.
  */
@@ -50,6 +59,7 @@ export interface MutationResult {
   bonusCoins?: number;
   cards?: CardInstance[];
   activeBuffs?: ActiveBuff[];
+  album?: AlbumSlot[];
   farmClock: FarmClockSeconds;
   serverNow: EpochMs;
 }
@@ -121,6 +131,33 @@ export interface SteamReturnSyncParams extends Mutation {
   steamItemIds: string[];
 }
 
+export interface ProfileSetAvatarParams {
+  avatar: Avatar;
+}
+
+export interface ExploreDispatchParams extends Mutation {
+  vehicleId: VehicleId;
+  destinationId: DestinationId;
+  /** Itens com preço de loja (sellPrice); somados ≤ capacidade do veículo. */
+  cargo: CargoEntry[];
+}
+export interface ExploreCollectParams extends Mutation {
+  tripId: string;
+}
+export interface VehicleParams extends Mutation {
+  vehicleId: VehicleId;
+}
+
+/** Retorno das RPCs de exploração. */
+export interface ExploreResult extends MutationResult {
+  /** Veículo que mudou (condição, melhorias, viagem ativa, compra). */
+  vehicle?: VehicleState;
+  /** Viagem criada (sem resultado) ou recolhida (com `result`). */
+  trip?: TripState;
+  /** Viagens usadas hoje (data local do perfil), quando mudou. */
+  tripsToday?: number;
+}
+
 export interface Page<T> {
   items: T[];
   page: number;
@@ -165,6 +202,9 @@ export interface IApi {
   shopBuy(p: ShopTradeParams): Promise<MutationResult>;
   shopSell(p: ShopTradeParams): Promise<MutationResult>;
 
+  /** Escolha do personagem (cosmético). */
+  profileSetAvatar(p: ProfileSetAvatarParams): Promise<Profile>;
+
   // Cartas
   cardActivate(p: CardActivateParams): Promise<MutationResult>;
   albumGet(): Promise<Album>;
@@ -179,6 +219,14 @@ export interface IApi {
   extractionRequest(p: ExtractionRequestParams): Promise<ExtractionResult>;
   extractionList(): Promise<Extraction[]>;
   steamReturnSync(p: SteamReturnSyncParams): Promise<SteamReturnResult>;
+
+  // Exploração (viagens de venda)
+  exploreState(): Promise<ExploreState>;
+  exploreDispatch(p: ExploreDispatchParams): Promise<ExploreResult>;
+  exploreCollect(p: ExploreCollectParams): Promise<ExploreResult>;
+  vehicleBuy(p: VehicleParams): Promise<ExploreResult>;
+  vehicleRepair(p: VehicleParams): Promise<ExploreResult>;
+  vehicleUpgrade(p: VehicleParams): Promise<ExploreResult>;
 
   // Visitas
   visitListCandidates(page: number): Promise<Page<VisitCandidate>>;
@@ -199,6 +247,7 @@ export const RPC_NAMES = {
   collectAnimal: 'collect_animal',
   shopBuy: 'shop_buy',
   shopSell: 'shop_sell',
+  profileSetAvatar: 'profile_set_avatar',
   cardActivate: 'card_activate',
   albumGet: 'album_get',
   getWorldState: 'get_world_state',
@@ -208,6 +257,12 @@ export const RPC_NAMES = {
   extractionRequest: 'extraction_request',
   extractionList: 'extraction_list',
   steamReturnSync: 'steam_return_sync',
+  exploreState: 'explore_state',
+  exploreDispatch: 'explore_dispatch',
+  exploreCollect: 'explore_collect',
+  vehicleBuy: 'vehicle_buy',
+  vehicleRepair: 'vehicle_repair',
+  vehicleUpgrade: 'vehicle_upgrade',
   visitListCandidates: 'visit_list_candidates',
   visitGetFarm: 'visit_get_farm',
   visitInteract: 'visit_interact',

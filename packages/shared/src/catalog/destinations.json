@@ -1,0 +1,165 @@
+[
+  {
+    "id": "village",
+    "name": "Vila",
+    "unlockLevel": 3,
+    "hours": 2,
+    "outcomes": [
+      {
+        "id": "total_loss",
+        "name": "Perda total",
+        "chance": 0.03,
+        "mult": 0,
+        "cardChance": 0,
+        "iconKey": "explore/out_total_loss"
+      },
+      {
+        "id": "robbery",
+        "name": "Roubo parcial",
+        "chance": 0.1,
+        "mult": 0.5,
+        "cardChance": 0,
+        "iconKey": "explore/out_robbery"
+      },
+      {
+        "id": "normal",
+        "name": "Venda normal",
+        "chance": 0.62,
+        "mult": 1.12,
+        "cardChance": 0,
+        "iconKey": "explore/out_normal"
+      },
+      {
+        "id": "good",
+        "name": "Boa feira",
+        "chance": 0.2,
+        "mult": 1.4,
+        "cardChance": 0,
+        "iconKey": "explore/out_good"
+      },
+      {
+        "id": "great",
+        "name": "Ótima venda",
+        "chance": 0.05,
+        "mult": 2.2,
+        "cardChance": 0.25,
+        "iconKey": "explore/out_great"
+      }
+    ],
+    "iconKey": "explore/dest_village"
+  },
+  {
+    "id": "city",
+    "name": "Cidade",
+    "unlockLevel": 10,
+    "hours": 4,
+    "outcomes": [
+      {
+        "id": "total_loss",
+        "name": "Perda total",
+        "chance": 0.05,
+        "mult": 0,
+        "cardChance": 0,
+        "iconKey": "explore/out_total_loss"
+      },
+      {
+        "id": "robbery",
+        "name": "Roubo parcial",
+        "chance": 0.12,
+        "mult": 0.5,
+        "cardChance": 0,
+        "iconKey": "explore/out_robbery"
+      },
+      {
+        "id": "normal",
+        "name": "Venda normal",
+        "chance": 0.5,
+        "mult": 1.15,
+        "cardChance": 0,
+        "iconKey": "explore/out_normal"
+      },
+      {
+        "id": "good",
+        "name": "Boa feira",
+        "chance": 0.25,
+        "mult": 1.6,
+        "cardChance": 0,
+        "iconKey": "explore/out_good"
+      },
+      {
+        "id": "great",
+        "name": "Ótima venda",
+        "chance": 0.07,
+        "mult": 2.5,
+        "cardChance": 0.25,
+        "iconKey": "explore/out_great"
+      },
+      {
+        "id": "jackpot",
+        "name": "Jackpot",
+        "chance": 0.01,
+        "mult": 5,
+        "cardChance": 1.0,
+        "iconKey": "explore/out_jackpot"
+      }
+    ],
+    "iconKey": "explore/dest_city"
+  },
+  {
+    "id": "port",
+    "name": "Porto",
+    "unlockLevel": 22,
+    "hours": 8,
+    "outcomes": [
+      {
+        "id": "total_loss",
+        "name": "Perda total",
+        "chance": 0.1,
+        "mult": 0,
+        "cardChance": 0,
+        "iconKey": "explore/out_total_loss"
+      },
+      {
+        "id": "robbery",
+        "name": "Roubo parcial",
+        "chance": 0.15,
+        "mult": 0.5,
+        "cardChance": 0,
+        "iconKey": "explore/out_robbery"
+      },
+      {
+        "id": "normal",
+        "name": "Venda normal",
+        "chance": 0.4,
+        "mult": 1.1,
+        "cardChance": 0,
+        "iconKey": "explore/out_normal"
+      },
+      {
+        "id": "good",
+        "name": "Boa feira",
+        "chance": 0.24,
+        "mult": 1.6,
+        "cardChance": 0,
+        "iconKey": "explore/out_good"
+      },
+      {
+        "id": "great",
+        "name": "Ótima venda",
+        "chance": 0.08,
+        "mult": 2.8,
+        "cardChance": 0.25,
+        "iconKey": "explore/out_great"
+      },
+      {
+        "id": "jackpot",
+        "name": "Jackpot",
+        "chance": 0.03,
+        "mult": 6,
+        "cardChance": 1.0,
+        "iconKey": "explore/out_jackpot"
+      }
+    ],
+    "iconKey": "explore/dest_port"
+  }
+]

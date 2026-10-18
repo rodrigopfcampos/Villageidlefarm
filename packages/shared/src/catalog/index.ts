@@ -1,11 +1,14 @@
 // Catálogo: fonte única de balanceamento (vira seed do banco via tools/seed).
-// Edite os JSON; `validateCatalog()` (rodado nos testes) confere as referências e os inteiros.
-// Culturas: tabela de docs/BALANCEAMENTO.md (margem 50%, lucro/h cai com a duração).
+// GERADO por tools/balance/gen_catalog.py a partir de tools/balance/economia.py (docs/ECONOMIA.md):
+// não edite os JSON à mão. `validateCatalog()` (rodado nos testes) confere referências e inteiros.
 
 import itemsJson from './items.json';
 import cropsJson from './crops.json';
 import animalsJson from './animals.json';
 import cardsJson from './cards.json';
+import progressionJson from './progression.json';
+import vehiclesJson from './vehicles.json';
+import destinationsJson from './destinations.json';
 import {
   BUFF_KINDS,
   RARITIES,
@@ -16,13 +19,18 @@ import {
   type CardDef,
   type CropDef,
   type CropId,
+  type DestinationDef,
+  type DestinationId,
   type ItemDef,
   type ItemId,
+  type PlotSlotDef,
   type Rarity,
+  type VehicleDef,
+  type VehicleId,
 } from '../types/models';
 
 export interface CardsConfig {
-  /** O mapeamento arte ↔ buff ainda é PROVISÓRIO (DECISOES.md). */
+  /** Mapeamento arte ↔ buff confirmado em ECONOMIA.md (false = definitivo). */
   provisionalArtMapping: boolean;
   /** Chance de carta por hora de cultivo de 1 canteiro (0.0125 = 1,25%). */
   dropChancePerPlotHour: number;
@@ -33,14 +41,40 @@ export interface CardsConfig {
   cards: CardDef[];
 }
 
+export interface PlotProgression {
+  /** Posição do canteiro na ordem do layout (0 = primeiro). */
+  index: number;
+  unlockLevel: number;
+  /** 0 para os 4 iniciais; depois `150 × 1,32^(n−4)` arredondado à dezena. */
+  unlockCost: number;
+  startsUnlocked: boolean;
+}
+
+export interface ProgressionConfig {
+  /** Nível máximo do lançamento (40). */
+  maxLevel: number;
+  /** Níveis reservados para conteúdo futuro (até 50). */
+  reservedMaxLevel: number;
+  /** xpToNext[L-1] = XP para ir do nível L ao L+1 = round(100 × 1,06^L × L^1,6). */
+  xpToNext: number[];
+  plots: PlotProgression[];
+  explorationUnlockLevel: number;
+  tripsPerDay: { level: number; trips: number }[];
+  tripsPerDayVipBonus: number;
+}
+
 export const CARDS_CONFIG = cardsJson as unknown as CardsConfig;
 export const CARDS = CARDS_CONFIG.cards as readonly CardDef[];
 export const BUFFS = CARDS_CONFIG.buffs as readonly BuffDef[];
+export const PROGRESSION = progressionJson as unknown as ProgressionConfig;
+export const VEHICLES = vehiclesJson as unknown as readonly VehicleDef[];
+export const DESTINATIONS = destinationsJson as unknown as readonly DestinationDef[];
 
-/** Cada carta também é um item (kind "card"): a carta usada = 1 cópia no álbum, pode ir à Steam. */
+/** Cada carta também é um item (kind "card"): a cópia de uma carta usada pode ir à Steam. */
 const CARD_ITEMS: ItemDef[] = CARDS.map((c) => ({
   id: c.id,
   kind: 'card',
+  name: `Carta ${c.name}`,
   rarity: c.rarity,
   basePrice: 0,
   sellPrice: null,
@@ -67,8 +101,17 @@ export const ANIMALS_BY_TYPE: ReadonlyMap<AnimalType, AnimalDef> = new Map(
 );
 export const CARDS_BY_ID: ReadonlyMap<ItemId, CardDef> = new Map(CARDS.map((c) => [c.id, c]));
 export const BUFFS_BY_KIND: ReadonlyMap<BuffKind, BuffDef> = new Map(BUFFS.map((b) => [b.kind, b]));
+export const VEHICLES_BY_ID: ReadonlyMap<VehicleId, VehicleDef> = new Map(
+  VEHICLES.map((v) => [v.id, v]),
+);
+export const DESTINATIONS_BY_ID: ReadonlyMap<DestinationId, DestinationDef> = new Map(
+  DESTINATIONS.map((d) => [d.id, d]),
+);
 
 export const cardId = (buff: BuffKind, rarity: Rarity): ItemId => `card_${buff}_${rarity}`;
+
+/** Nome exibido de um item (pt-BR); cai no id se não existir. */
+export const itemName = (id: ItemId): string => ITEMS_BY_ID.get(id)?.name ?? id;
 
 /** O que toda conta nova recebe (gatilho de cadastro no servidor e mock). */
 export const STARTER_KIT = {
@@ -77,11 +120,41 @@ export const STARTER_KIT = {
   items: [{ itemId: 'seed_carrot', qty: 5 }],
 } as const;
 
+/**
+ * Aplica a progressão de canteiros (nível e custo por posição) aos canteiros do layout, na ordem
+ * do layout. O layout do Tiled só define POSIÇÃO e `slotId`; nível e custo vêm do catálogo.
+ * Canteiros além da tabela ficam no último nível/custo da tabela.
+ */
+export function withPlotProgression(slots: readonly PlotSlotDef[]): PlotSlotDef[] {
+  const table = PROGRESSION.plots;
+  return slots.map((s, i) => {
+    const p = table[Math.min(i, table.length - 1)]!;
+    return {
+      slotId: s.slotId,
+      unlockLevel: p.unlockLevel,
+      unlockCost: p.unlockCost,
+      startsUnlocked: p.startsUnlocked,
+    };
+  });
+}
+
+/** 20 canteiros "plot_01".."plot_20" com a progressão do catálogo (mock e testes). */
+export const DEFAULT_PLOT_SLOTS: readonly PlotSlotDef[] = withPlotProgression(
+  PROGRESSION.plots.map((p) => ({
+    slotId: `plot_${String(p.index + 1).padStart(2, '0')}`,
+    unlockCost: 0,
+    unlockLevel: 1,
+    startsUnlocked: false,
+  })),
+);
+
 export interface Catalog {
   items: readonly ItemDef[];
   crops: readonly CropDef[];
   animals: readonly AnimalDef[];
   cards: CardsConfig;
+  vehicles?: readonly VehicleDef[];
+  destinations?: readonly DestinationDef[];
 }
 
 export const CATALOG: Catalog = {
@@ -89,6 +162,8 @@ export const CATALOG: Catalog = {
   crops: CROPS,
   animals: ANIMALS,
   cards: CARDS_CONFIG,
+  vehicles: VEHICLES,
+  destinations: DESTINATIONS,
 };
 
 const isNonNegInt = (n: unknown): boolean => Number.isInteger(n) && (n as number) >= 0;
@@ -101,6 +176,7 @@ export function validateCatalog(c: Catalog = CATALOG): string[] {
   for (const i of c.items) {
     if (ids.has(i.id)) errs.push(`item repetido: ${i.id}`);
     ids.add(i.id);
+    if (!i.name) errs.push(`${i.id}: sem nome`);
     if (!isNonNegInt(i.basePrice)) errs.push(`${i.id}: basePrice não inteiro`);
     if (i.sellPrice !== null && !isNonNegInt(i.sellPrice)) errs.push(`${i.id}: sellPrice`);
     if (i.shopBuyable && i.sellPrice !== null && i.sellPrice > i.basePrice) {
@@ -145,5 +221,18 @@ export function validateCatalog(c: Catalog = CATALOG): string[] {
   if (cfg.cards.length !== cfg.album.slots) errs.push('álbum: slots ≠ número de cartas');
   const totalWeight = RARITIES.reduce((s, r) => s + (cfg.rarityWeights[r] ?? 0), 0);
   if (totalWeight !== 100) errs.push(`pesos de raridade somam ${totalWeight}, esperado 100`);
+  // exploração
+  for (const v of c.vehicles ?? []) {
+    if (!isNonNegInt(v.price) || !isPosInt(v.capacity) || !isPosInt(v.tripCost)) {
+      errs.push(`${v.id}: preço/capacidade/custo`);
+    }
+    if (v.upgradeCosts.length !== v.maxUpgrades || !v.upgradeCosts.every(isPosInt)) {
+      errs.push(`${v.id}: upgradeCosts`);
+    }
+  }
+  for (const d of c.destinations ?? []) {
+    const total = d.outcomes.reduce((s, o) => s + o.chance, 0);
+    if (Math.abs(total - 1) > 1e-9) errs.push(`${d.id}: chances somam ${total}`);
+  }
   return errs;
 }

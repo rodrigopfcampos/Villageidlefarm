@@ -4,6 +4,7 @@
 
 import type { FarmClockSeconds, PlotState } from '../types/models';
 import { ECONOMY } from '../types/api';
+import { PROGRESSION } from '../catalog/index';
 
 /**
  * Estima o relógio da fazenda agora, a partir do último valor recebido do servidor.
@@ -47,21 +48,41 @@ export function looksReady(plot: PlotState, farmClock: FarmClockSeconds): boolea
   return plot.readyFc !== null && farmClock >= plot.readyFc;
 }
 
-/** XP total necessário para ATINGIR o nível `level` (nível 1 = 0 xp). 50, 150, 300, 500… */
-export function xpForLevel(level: number): number {
+/** Nível máximo do lançamento (40). Os níveis 41–50 ficam reservados. */
+export const MAX_LEVEL = PROGRESSION.maxLevel;
+
+/**
+ * XP para ir do nível L ao L+1: round(100 × 1,06^L × L^1,6) (ECONOMIA.md). Mesma fórmula de
+ * tools/balance/economia.py; o teste confere contra catalog/progression.json.
+ */
+export function xpToNext(level: number): number {
   const l = Math.max(1, Math.floor(level));
-  return (25 * (l - 1) * l) | 0;
+  return Math.round(100 * 1.06 ** l * l ** 1.6);
 }
 
+const cumulative: number[] = [0, 0]; // cumulative[L] = XP total para atingir L
+
+/** XP total necessário para ATINGIR o nível `level` (nível 1 = 0 xp; 2 = 106; 3 = 447…). */
+export function xpForLevel(level: number): number {
+  const l = Math.max(1, Math.floor(level));
+  while (cumulative.length <= l) {
+    const prev = cumulative.length - 1;
+    cumulative.push(cumulative[prev]! + xpToNext(prev));
+  }
+  return cumulative[l]!;
+}
+
+/** Nível pelo XP total, limitado a MAX_LEVEL. */
 export function levelForXp(xp: number): number {
   let level = 1;
-  while (xpForLevel(level + 1) <= xp) level++;
+  while (level < MAX_LEVEL && xpForLevel(level + 1) <= xp) level++;
   return level;
 }
 
-/** Progresso 0..1 dentro do nível atual. */
+/** Progresso 0..1 dentro do nível atual (1 no nível máximo). */
 export function levelProgress(xp: number): number {
   const level = levelForXp(xp);
+  if (level >= MAX_LEVEL) return 1;
   const start = xpForLevel(level);
   const end = xpForLevel(level + 1);
   return (xp - start) / (end - start);

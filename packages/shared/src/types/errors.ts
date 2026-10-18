@@ -47,6 +47,21 @@ export const ERROR_CODES = [
   'NOT_ACTIVE',
   /** A ponte com a Steam está fora do ar ou não configurada. */
   'STEAM_UNAVAILABLE',
+  // --- exploração (ECONOMIA.md) ---
+  /** Acabaram as viagens do dia (voltam à meia-noite local). */
+  'EXPLORE_NO_SLOTS',
+  /** Valor de loja da carga acima da capacidade do veículo. */
+  'CARGO_OVER_CAPACITY',
+  /** Veículo com condição 0: precisa de conserto. */
+  'VEHICLE_BROKEN',
+  /** Veículo viajando (ou de volta sem recolher). */
+  'VEHICLE_BUSY',
+  /** A viagem ainda não voltou. */
+  'TRIP_NOT_FINISHED',
+  /** Veículo bloqueado por nível ou ainda não comprado. */
+  'VEHICLE_LOCKED',
+  /** Destino bloqueado por nível. */
+  'DESTINATION_LOCKED',
   /** Recurso ainda não implementado (só cliente/mock). */
   'NOT_IMPLEMENTED',
   /** Falha de rede (só cliente). */
@@ -122,6 +137,13 @@ export const ERROR_MESSAGES_PT: Record<ErrorCode, string> = {
   NOT_EXTRACTABLE: 'Este item não pode ir para a Steam.',
   NOT_ACTIVE: 'Fique ativo no evento por 30 minutos para ganhar a carta.',
   STEAM_UNAVAILABLE: 'A Steam não está disponível agora.',
+  EXPLORE_NO_SLOTS: 'Acabaram as viagens de hoje. Voltam à meia-noite.',
+  CARGO_OVER_CAPACITY: 'A carga passa da capacidade do veículo.',
+  VEHICLE_BROKEN: 'O veículo está quebrado. Conserte antes de viajar.',
+  VEHICLE_BUSY: 'O veículo está em viagem.',
+  TRIP_NOT_FINISHED: 'A viagem ainda não voltou.',
+  VEHICLE_LOCKED: 'Veículo bloqueado.',
+  DESTINATION_LOCKED: 'Destino bloqueado.',
   NOT_IMPLEMENTED: 'Ainda não disponível.',
   NETWORK_ERROR: 'Sem conexão. Tente de novo.',
   UNKNOWN: 'Algo deu errado.',

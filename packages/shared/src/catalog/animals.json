@@ -1,42 +1,112 @@
 [
   {
     "animalType": "animal_chicken",
-    "buyPrice": 300,
+    "name": "Galinha",
+    "buyPrice": 1050,
     "productItemId": "prod_egg",
-    "produceSeconds": 1800,
-    "maxStock": 3,
+    "produceSeconds": 3600,
+    "maxStock": 8,
     "habitat": "coop",
-    "xp": 5,
+    "xp": 22,
     "unlockLevel": 3
   },
   {
     "animalType": "animal_duck",
-    "buyPrice": 600,
+    "name": "Pato",
+    "buyPrice": 1180,
     "productItemId": "prod_duck_egg",
-    "produceSeconds": 2700,
-    "maxStock": 3,
+    "produceSeconds": 5400,
+    "maxStock": 5,
     "habitat": "pond",
-    "xp": 8,
-    "unlockLevel": 4
-  },
-  {
-    "animalType": "animal_cow",
-    "buyPrice": 1200,
-    "productItemId": "prod_milk",
-    "produceSeconds": 3600,
-    "maxStock": 2,
-    "habitat": "barn",
-    "xp": 15,
+    "xp": 37,
     "unlockLevel": 5
   },
   {
-    "animalType": "animal_sheep",
-    "buyPrice": 1500,
-    "productItemId": "prod_wool",
-    "produceSeconds": 5400,
+    "animalType": "animal_rabbit",
+    "name": "Coelho",
+    "buyPrice": 1410,
+    "productItemId": "prod_rabbit_fur",
+    "produceSeconds": 7200,
+    "maxStock": 4,
+    "habitat": "coop",
+    "xp": 58,
+    "unlockLevel": 8
+  },
+  {
+    "animalType": "animal_pig",
+    "name": "Porco",
+    "buyPrice": 1680,
+    "productItemId": "prod_truffle",
+    "produceSeconds": 14400,
     "maxStock": 2,
     "habitat": "barn",
-    "xp": 18,
-    "unlockLevel": 6
+    "xp": 139,
+    "unlockLevel": 11
+  },
+  {
+    "animalType": "animal_sheep",
+    "name": "Ovelha",
+    "buyPrice": 2000,
+    "productItemId": "prod_wool",
+    "produceSeconds": 10800,
+    "maxStock": 2,
+    "habitat": "barn",
+    "xp": 124,
+    "unlockLevel": 14
+  },
+  {
+    "animalType": "animal_goat",
+    "name": "Cabra",
+    "buyPrice": 2380,
+    "productItemId": "prod_goat_milk",
+    "produceSeconds": 7200,
+    "maxStock": 4,
+    "habitat": "barn",
+    "xp": 99,
+    "unlockLevel": 17
+  },
+  {
+    "animalType": "animal_cow",
+    "name": "Vaca",
+    "buyPrice": 2830,
+    "productItemId": "prod_milk",
+    "produceSeconds": 7200,
+    "maxStock": 4,
+    "habitat": "barn",
+    "xp": 118,
+    "unlockLevel": 20
+  },
+  {
+    "animalType": "animal_goose",
+    "name": "Ganso",
+    "buyPrice": 3570,
+    "productItemId": "prod_goose_egg",
+    "produceSeconds": 10800,
+    "maxStock": 2,
+    "habitat": "pond",
+    "xp": 223,
+    "unlockLevel": 24
+  },
+  {
+    "animalType": "animal_alpaca",
+    "name": "Alpaca",
+    "buyPrice": 4510,
+    "productItemId": "prod_alpaca_wool",
+    "produceSeconds": 14400,
+    "maxStock": 2,
+    "habitat": "barn",
+    "xp": 376,
+    "unlockLevel": 28
+  },
+  {
+    "animalType": "animal_turkey",
+    "name": "Peru",
+    "buyPrice": 5700,
+    "productItemId": "prod_turkey_feather",
+    "produceSeconds": 10800,
+    "maxStock": 2,
+    "habitat": "coop",
+    "xp": 356,
+    "unlockLevel": 32
   }
 ]
