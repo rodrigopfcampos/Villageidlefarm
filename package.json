@@ -13,7 +13,9 @@
     "typecheck": "pnpm -r --if-present typecheck",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "db:seed": "tsx tools/seed/gen-seed.ts",
+    "db:seed:check": "tsx tools/seed/gen-seed.ts --check"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

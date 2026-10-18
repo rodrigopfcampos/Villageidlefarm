@@ -1,5 +1,5 @@
 // Liga as peças do cliente: bus + store + api. Criado no Boot e lido pelas cenas com getServices().
-// Hoje usa sempre a MockApi; o agente Servidor (A2) troca por net/api.ts quando existir.
+// API: Supabase quando VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY existem; senão a MockApi (net/index.ts).
 
 import {
   ECONOMY,
@@ -11,7 +11,7 @@ import {
 } from '@vif/shared';
 import { bus, type EventBus } from './bus';
 import { ClientStore } from './store';
-import { MockApi } from '../net/mockApi';
+import { createApi } from '../net/index';
 
 export interface Services {
   bus: EventBus;
@@ -23,7 +23,7 @@ export interface Services {
 let current: Services | null = null;
 
 export function createServices(layout: FarmLayout | null, api?: IApi): Services {
-  const realApi = api ?? new MockApi({ slots: layout ? layoutPlotSlots(layout) : undefined });
+  const realApi = api ?? createApi({ slots: layout ? layoutPlotSlots(layout) : undefined });
   current = { bus, store: new ClientStore(bus), api: realApi, layout };
   return current;
 }
