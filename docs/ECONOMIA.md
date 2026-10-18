@@ -31,7 +31,7 @@ O simulador está em `tools/balance/economia.py` (rodar com `python3 tools/balan
 - **Como funciona:** o jogador carrega um veículo com colheitas e produtos e manda vender num destino.
   - A viagem leva um tempo e não pode ser cancelada.
   - O resultado é sorteado **no servidor** na hora em que o veículo sai, e só é revelado quando ele volta.
-- **Viagens por dia:** 2 no início, 3 no nível 20 e 4 no nível 35. As vagas voltam à meia-noite local.
+- **Viagens por dia:** 2 no início, 3 no nível 20 e 4 no nível 35 (+1 com VIP). As vagas voltam à meia-noite local.
 - **Custos por viagem:** ração do cavalo ou gasolina, em ouro.
 - **Desgaste:** cada viagem gasta a **condição** do veículo.
   - Abaixo de 50%, as chances de resultado ruim ficam ×1,5.
@@ -75,7 +75,7 @@ O simulador está em `tools/balance/economia.py` (rodar com `python3 tools/balan
 | Ovelha | Animais | +50% na produção animal |
 | Coruja | XP | +50% de XP |
 | Ampulheta | Adubo | avança na hora todos os canteiros em 30/45/60/75/90 min |
-| Chuva | **Céu limpo** (proposta) | corta pela metade a chance de resultado ruim nas viagens que saírem durante a janela (vila 13%→6%, porto 25%→12%) |
+| Chuva | **Céu limpo** | corta pela metade a chance de resultado ruim nas viagens que saírem durante a janela (vila 13%→6%, porto 25%→12%) |
 | Ferradura | Sorte | +100% de chance de carta |
 | Engrenagem | **Exploração** | +50% no lucro extra (a parte acima do preço da loja) das viagens que saírem durante a janela; sem desgaste nessas viagens |
 
@@ -86,6 +86,6 @@ O simulador está em `tools/balance/economia.py` (rodar com `python3 tools/balan
 - A cópia retirada é uma cópia extra, um item à parte.
 
 ## Pendências
-- Confirmar a carta Chuva como **Céu limpo**.
-- Confirmar se o VIP ganha +1 viagem por dia.
+- Confirmado: Chuva = Céu limpo; VIP +1 viagem por dia.
+
 - Recalibrar quando houver dados reais de jogadores.
