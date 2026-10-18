@@ -14,27 +14,12 @@ import {
   CARDS_BY_ID,
   CATALOG,
   CROPS_BY_SEED,
-  DEFAULT_PLOT_SLOTS,
-  DESTINATIONS_BY_ID,
-  VEHICLES,
-  VEHICLES_BY_ID,
-  AVATARS,
-  PROGRESSION,
   ECONOMY,
   NIGHT_EVENT,
   STARTER_KIT,
   activeMagnitude,
   albumBonus,
   buildAlbum,
-  cargoValue,
-  nextLocalMidnight,
-  outcomeOdds,
-  pickOutcome,
-  repairCost,
-  tripDurationMs,
-  tripPayout,
-  tripsPerDay,
-  vehicleCapacity,
   cardDropChance,
   cardId,
   isValidTimeZone,
@@ -53,16 +38,6 @@ import {
   type AnimalDef,
   type AnimalState,
   type BootstrapResult,
-  type CargoEntry,
-  type ExploreCollectParams,
-  type ExploreDispatchParams,
-  type ExploreResult,
-  type ExploreState,
-  type ProfileSetAvatarParams,
-  type TripState,
-  type VehicleId,
-  type VehicleParams,
-  type VehicleState,
   type BuffKind,
   type BuffWindow,
   type BuyAnimalParams,
@@ -153,12 +128,16 @@ export interface MockApiOptions {
   vip?: boolean;
   /** false simula a ponte Steam fora do ar (STEAM_UNAVAILABLE). */
   steamAvailable?: boolean;
-  /** Álbum inicial (testes): vezes que cada carta já foi usada. */
-  albumUses?: Record<ItemId, number>;
 }
 
-/** 20 canteiros com a progressão do catálogo (nível e custo por posição; 4 iniciais). */
-export const DEFAULT_SLOTS: readonly PlotSlotDef[] = DEFAULT_PLOT_SLOTS;
+export const DEFAULT_SLOTS: readonly PlotSlotDef[] = [
+  { slotId: 'plot_01', unlockCost: 0, unlockLevel: 1, startsUnlocked: true },
+  { slotId: 'plot_02', unlockCost: 0, unlockLevel: 1, startsUnlocked: true },
+  { slotId: 'plot_03', unlockCost: 0, unlockLevel: 1, startsUnlocked: true },
+  { slotId: 'plot_04', unlockCost: 0, unlockLevel: 1, startsUnlocked: true },
+  { slotId: 'plot_05', unlockCost: 200, unlockLevel: 2, startsUnlocked: false },
+  { slotId: 'plot_06', unlockCost: 500, unlockLevel: 3, startsUnlocked: false },
+];
 
 // ---------- estado interno (equivale às tabelas) ----------
 
@@ -187,12 +166,6 @@ interface State {
   animals: Map<string, AnimalState>;
   nextId: number;
   cards: Map<string, CardInstance>;
-  /** Álbum PERMANENTE: vezes que cada carta foi usada (nunca diminui). */
-  albumUses: Map<ItemId, number>;
-  vehicles: Map<VehicleId, VehicleInternal>;
-  trips: Map<string, TripInternal>;
-  /** Viagens despachadas por data local do perfil. */
-  tripsByDate: Map<string, number>;
   /** Histórico de janelas de buff (inclui expiradas: colheitas longas ainda as consultam). */
   buffs: BuffRecord[];
   /** Presença no evento por data local. */
@@ -202,20 +175,6 @@ interface State {
   extractions: Extraction[];
   steamInventory: Map<string, { itemId: ItemId; qty: number }>;
   usedRequestIds: Set<string>;
-}
-
-interface VehicleInternal {
-  owned: boolean;
-  condition: number;
-  upgrades: number;
-  activeTripId: string | null;
-}
-
-/** Viagem com o resultado OCULTO (sorteado no despacho; o cliente só vê depois do collect). */
-interface TripInternal extends Omit<TripState, 'status' | 'result'> {
-  collected: boolean;
-  hidden: { outcome: TripState['destinationId'] extends never ? never : string; mult: number; coins: number; cardWon: boolean };
-  result?: TripState['result'];
 }
 
 const PLAYER_ID = 'mock-player';
@@ -271,6 +230,8 @@ export class MockApi implements IApi {
         vip: opts.vip ?? false,
         level: levelForXp(xp),
         xp,
+        accountLevel: 1,
+        accountXp: 0,
       },
       tzChangedAt: null,
       coins: starter.coins,
@@ -296,16 +257,6 @@ export class MockApi implements IApi {
       animals: new Map(),
       nextId: 1,
       cards: new Map(),
-      albumUses: new Map(Object.entries(opts.albumUses ?? {}).filter(([, n]) => n > 0)),
-      // carroça: grátis, vem com a exploração (bloqueada por nível até o 3)
-      vehicles: new Map(
-        VEHICLES.map((v) => [
-          v.id,
-          { owned: v.price === 0, condition: 100, upgrades: 0, activeTripId: null },
-        ]),
-      ),
-      trips: new Map(),
-      tripsByDate: new Map(),
       buffs: [],
       attendance: new Map(),
       eventClaims: new Set(),
@@ -425,8 +376,8 @@ export class MockApi implements IApi {
   }
 
   private progress(): ProgressState {
-    const { level, xp } = this.s.profile;
-    return { level, xp };
+    const { level, xp, accountLevel, accountXp } = this.s.profile;
+    return { level, xp, accountLevel, accountXp };
   }
 
   private qty(itemId: ItemId): number {
@@ -448,10 +399,12 @@ export class MockApi implements IApi {
     this.s.coins = next;
   }
 
-  private addXp(xp: number): ProgressState {
+  private addXp(farmXp: number, accountXp: number): ProgressState {
     const p = this.s.profile;
-    p.xp += xp;
+    p.xp += farmXp;
     p.level = levelForXp(p.xp);
+    p.accountXp += accountXp;
+    p.accountLevel = levelForXp(p.accountXp);
     return this.progress();
   }
 
@@ -472,7 +425,7 @@ export class MockApi implements IApi {
   // ================= cartas =================
 
   private album(): Album {
-    return buildAlbum((id) => this.s.albumUses.get(id) ?? 0);
+    return buildAlbum((id) => this.qty(id));
   }
 
   /** Bônus total (carta prorrateada + álbum) sobre uma produção em [start, end]. */
@@ -536,19 +489,26 @@ export class MockApi implements IApi {
     const span = crop.yieldMax - crop.yieldMin + 1;
     const baseQty = crop.yieldMin + Math.floor(u('yield') * span);
     const qty =
-      baseQty + stochasticRound(this.bonus('bountiful', start, end, album), u('bh'));
+      baseQty + stochasticRound(this.bonus('bountiful_harvest', start, end, album), u('bh'));
     const sell = this.items.get(crop.yieldItemId)?.sellPrice ?? 0;
     const bonusCoins = stochasticRound(
       sell * qty * this.bonus('gold', start, end, album),
       u('gold'),
     );
-    const xp = stochasticRound(crop.xp * (1 + this.bonus('xp', start, end, album)), u('fx'));
-    const chance = cardDropChance(crop.growSeconds, this.bonus('lucky', start, end, album));
+    const farmXp = stochasticRound(
+      crop.xp * (1 + this.bonus('farm_xp', start, end, album)),
+      u('fx'),
+    );
+    const accXp = stochasticRound(
+      crop.xp * (1 + this.bonus('account_xp', start, end, album)),
+      u('ax'),
+    );
+    const chance = cardDropChance(crop.growSeconds, this.bonus('luck', start, end, album));
     const card = u('drop') < chance ? this.rollCard(`${seed}:${plot.slotId}`, 'drop') : null;
     plot.cropId = null;
     plot.plantedFc = null;
     plot.readyFc = null;
-    return { itemId: crop.yieldItemId, qty, xp, bonusCoins, card };
+    return { itemId: crop.yieldItemId, qty, farmXp, accXp, bonusCoins, card };
   }
 
   // ================= Núcleo =================
@@ -625,12 +585,14 @@ export class MockApi implements IApi {
   ): MutationResult {
     if (harvested.length === 0) return { ...base };
     const gained = new Map<ItemId, number>();
-    let xp = 0;
+    let farmXp = 0;
+    let accXp = 0;
     let bonusCoins = 0;
     const cards: CardInstance[] = [];
     for (const h of harvested) {
       gained.set(h.itemId, (gained.get(h.itemId) ?? 0) + h.qty);
-      xp += h.xp;
+      farmXp += h.farmXp;
+      accXp += h.accXp;
       bonusCoins += h.bonusCoins;
       if (h.card) cards.push({ ...h.card });
     }
@@ -641,7 +603,7 @@ export class MockApi implements IApi {
       plots,
       inventoryChanges,
       gained: [...gained].map(([itemId, qty]) => ({ itemId, qty })),
-      xp: this.addXp(xp),
+      xp: this.addXp(farmXp, accXp),
       ...(bonusCoins > 0 ? { wallet: this.wallet(), bonusCoins } : {}),
       ...(cards.length > 0 ? { cards } : {}),
     };
@@ -717,8 +679,14 @@ export class MockApi implements IApi {
         sell * qty * this.bonus('gold', start, end, album),
         u('g'),
       );
-      // XP por unidade produzida (= lucro/2), com o buff de XP prorrateado
-      const xp = stochasticRound(def.xp * n * (1 + this.bonus('xp', start, end, album)), u('fx'));
+      const farmXp = stochasticRound(
+        def.xp * (1 + this.bonus('farm_xp', start, end, album)),
+        u('fx'),
+      );
+      const accXp = stochasticRound(
+        def.xp * (1 + this.bonus('account_xp', start, end, album)),
+        u('ax'),
+      );
       animal.lastCollectFc = n >= def.maxStock ? this.s.farmClock : end;
       const inv = this.addItem(def.productItemId, qty);
       if (bonusCoins > 0) this.addCoins(bonusCoins);
@@ -727,7 +695,7 @@ export class MockApi implements IApi {
         animals: [{ ...animal }],
         inventoryChanges: [inv],
         gained: [{ itemId: def.productItemId, qty }],
-        xp: this.addXp(xp),
+        xp: this.addXp(farmXp, accXp),
         ...(bonusCoins > 0 ? { wallet: this.wallet(), bonusCoins } : {}),
       };
     });
@@ -739,7 +707,16 @@ export class MockApi implements IApi {
       if (!item) fail('NOT_FOUND', `item ${p.itemId}`);
       if (!item.shopBuyable) fail('NOT_FOR_SALE');
       this.requireQty(p.qty);
-      this.addCoins(-item.basePrice * p.qty);
+      // Mercador: desconto em sementes enquanto a carta está ativa (+ álbum). Arredonda para cima.
+      const discount =
+        item.kind === 'seed'
+          ? Math.min(
+              0.9,
+              activeMagnitude(this.s.buffs, 'merchant', this.s.farmClock) +
+                albumBonus(this.album(), 'merchant'),
+            )
+          : 0;
+      this.addCoins(-Math.ceil(item.basePrice * p.qty * (1 - discount)));
       const inv = this.addItem(item.id, p.qty);
       return { ...base, wallet: this.wallet(), inventoryChanges: [inv] };
     });
@@ -793,15 +770,11 @@ export class MockApi implements IApi {
       }
       inst.status = 'used';
       inst.usedAt = this.now();
-      // álbum para sempre (+1 uso) e 1 cópia (item card_*) que pode ir para a Steam
-      const uses = (this.s.albumUses.get(def.id) ?? 0) + 1;
-      this.s.albumUses.set(def.id, uses);
-      const inv = this.addItem(def.id, 1);
+      const inv = this.addItem(def.id, 1); // vira cópia no álbum
       return {
         ...base,
         cards: [{ ...inst }],
         inventoryChanges: [inv],
-        album: [{ cardId: def.id, buff: def.buff, rarity: def.rarity, copies: uses }],
         ...(activeBuffs ? { activeBuffs } : {}),
         ...(touched.size > 0 ? { plots: [...touched.values()].map((x) => ({ ...x })) } : {}),
       };
