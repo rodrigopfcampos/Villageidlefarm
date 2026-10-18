@@ -28,5 +28,15 @@
     "habitat": "barn",
     "xp": 15,
     "unlockLevel": 5
+  },
+  {
+    "animalType": "animal_sheep",
+    "buyPrice": 1500,
+    "productItemId": "prod_wool",
+    "produceSeconds": 5400,
+    "maxStock": 2,
+    "habitat": "barn",
+    "xp": 18,
+    "unlockLevel": 6
   }
 ]

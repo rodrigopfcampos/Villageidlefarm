@@ -1,7 +1,14 @@
 // Liga as peças do cliente: bus + store + api. Criado no Boot e lido pelas cenas com getServices().
 // Hoje usa sempre a MockApi; o agente Servidor (A2) troca por net/api.ts quando existir.
 
-import { ECONOMY, layoutPlotSlots, toApiError, type FarmLayout, type IApi } from '@vif/shared';
+import {
+  ECONOMY,
+  NIGHT_EVENT,
+  layoutPlotSlots,
+  toApiError,
+  type FarmLayout,
+  type IApi,
+} from '@vif/shared';
 import { bus, type EventBus } from './bus';
 import { ClientStore } from './store';
 import { MockApi } from '../net/mockApi';
@@ -41,13 +48,25 @@ export async function run<T>(op: string, call: () => Promise<T>): Promise<T | nu
   }
 }
 
-/** Heartbeat a cada 5 min e quando a aba volta a ficar visível. Retorna função para parar. */
+/**
+ * Heartbeat: a cada 5 min normalmente e a cada 1 min durante o evento noturno (19h–21h locais,
+ * estimado pelo relógio do aparelho só para agendar; quem decide a presença é o servidor).
+ * Também dispara quando a aba volta a ficar visível. Retorna função para parar.
+ */
 export function startHeartbeat(s: Services): () => void {
+  let lastBeat = performance.now();
   const beat = async () => {
+    lastBeat = performance.now();
     const r = await run('heartbeat', () => s.api.heartbeat());
-    if (r) s.store.syncClock(r.farmClock, r.serverNow);
+    if (r) s.store.apply({ farmClock: r.farmClock, serverNow: r.serverNow, plots: r.plots });
   };
-  const timer = setInterval(beat, ECONOMY.HEARTBEAT_INTERVAL_MS);
+  const tick = () => {
+    const h = new Date().getHours();
+    const inEvent = h >= NIGHT_EVENT.startHour && h < NIGHT_EVENT.endHour;
+    const interval = inEvent ? ECONOMY.EVENT_HEARTBEAT_INTERVAL_MS : ECONOMY.HEARTBEAT_INTERVAL_MS;
+    if (performance.now() - lastBeat >= interval - 1000) void beat();
+  };
+  const timer = setInterval(tick, ECONOMY.EVENT_HEARTBEAT_INTERVAL_MS);
   const onVis = () => {
     if (document.visibilityState === 'visible') void beat();
   };

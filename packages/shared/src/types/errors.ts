@@ -2,7 +2,7 @@
 // a API real converte para ApiError com o mesmo `code`.
 
 export const ERROR_CODES = [
-  // --- lista da seção 6 do plano ---
+  // --- lista da seção 6 do plano (sem os códigos do mercado interno, cancelado) ---
   'NOT_AUTHENTICATED',
   'NOT_OWNER',
   'NOT_READY',
@@ -10,11 +10,6 @@ export const ERROR_CODES = [
   'SLOT_OCCUPIED',
   'INSUFFICIENT_FUNDS',
   'INSUFFICIENT_ITEMS',
-  'NOT_TRADABLE',
-  'PRICE_OUT_OF_RANGE',
-  'LISTING_GONE',
-  'LISTING_LIMIT',
-  'OWN_LISTING',
   'RATE_LIMITED',
   'INVALID_TZ',
   'TZ_CHANGE_TOO_SOON',
@@ -31,12 +26,27 @@ export const ERROR_CODES = [
   'LEVEL_TOO_LOW',
   /** A loja NPC não vende (ou não compra) este item. */
   'NOT_FOR_SALE',
-  /** Id inexistente (slot, item, animal, anúncio, jogador). */
+  /** Id inexistente (slot, item, animal, carta, jogador). */
   'NOT_FOUND',
   /** Parâmetro inválido (quantidade não inteira, <= 0, acima do limite, item do tipo errado…). */
   'INVALID_INPUT',
   /** Animal ainda sem produção para coletar. */
   'NOTHING_TO_COLLECT',
+  // --- decisões do dono (DECISOES.md): cartas, evento, Steam ---
+  /** Já há o máximo de cartas ativas (1, ou 2 com VIP). */
+  'CARD_SLOT_FULL',
+  /** Já existe uma carta ativa do mesmo buff. */
+  'BUFF_ALREADY_ACTIVE',
+  /** A carta já foi usada (ou não pertence ao jogador). */
+  'CARD_ALREADY_USED',
+  /** Limite de retiradas para a Steam na janela de 7 h. */
+  'EXTRACTION_QUOTA',
+  /** O item não pode sair para a Steam (sementes, moedas…). */
+  'NOT_EXTRACTABLE',
+  /** Presença insuficiente no evento noturno (precisa de 30 min ativo). */
+  'NOT_ACTIVE',
+  /** A ponte com a Steam está fora do ar ou não configurada. */
+  'STEAM_UNAVAILABLE',
   /** Recurso ainda não implementado (só cliente/mock). */
   'NOT_IMPLEMENTED',
   /** Falha de rede (só cliente). */
@@ -91,11 +101,6 @@ export const ERROR_MESSAGES_PT: Record<ErrorCode, string> = {
   SLOT_OCCUPIED: 'O canteiro já está ocupado.',
   INSUFFICIENT_FUNDS: 'Moedas insuficientes.',
   INSUFFICIENT_ITEMS: 'Itens insuficientes.',
-  NOT_TRADABLE: 'Este item não pode ser negociado.',
-  PRICE_OUT_OF_RANGE: 'Preço fora do permitido.',
-  LISTING_GONE: 'O anúncio não está mais disponível.',
-  LISTING_LIMIT: 'Limite de anúncios atingido.',
-  OWN_LISTING: 'Você não pode comprar o próprio anúncio.',
   RATE_LIMITED: 'Muitas ações seguidas. Espere um pouco.',
   INVALID_TZ: 'Fuso horário inválido.',
   TZ_CHANGE_TOO_SOON: 'O fuso só pode ser trocado a cada 30 dias.',
@@ -110,6 +115,13 @@ export const ERROR_MESSAGES_PT: Record<ErrorCode, string> = {
   NOT_FOUND: 'Não encontrado.',
   INVALID_INPUT: 'Pedido inválido.',
   NOTHING_TO_COLLECT: 'Nada para coletar ainda.',
+  CARD_SLOT_FULL: 'Você já tem o máximo de cartas ativas.',
+  BUFF_ALREADY_ACTIVE: 'Já existe uma carta desse tipo ativa.',
+  CARD_ALREADY_USED: 'Essa carta já foi usada.',
+  EXTRACTION_QUOTA: 'Limite de retiradas para a Steam atingido. Tente mais tarde.',
+  NOT_EXTRACTABLE: 'Este item não pode ir para a Steam.',
+  NOT_ACTIVE: 'Fique ativo no evento por 30 minutos para ganhar a carta.',
+  STEAM_UNAVAILABLE: 'A Steam não está disponível agora.',
   NOT_IMPLEMENTED: 'Ainda não disponível.',
   NETWORK_ERROR: 'Sem conexão. Tente de novo.',
   UNKNOWN: 'Algo deu errado.',

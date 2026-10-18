@@ -4,7 +4,9 @@
 
 import {
   estimateFarmClock,
+  type ActiveBuff,
   type AnimalState,
+  type CardInstance,
   type BootstrapResult,
   type EpochMs,
   type FarmClockSeconds,
@@ -31,7 +33,10 @@ export class ClientStore {
   profile: Profile | null = null;
   farm: FarmInfo | null = null;
   wallet: Wallet = { coins: 0, gems: 0 };
-  progress: ProgressState = { level: 1, xp: 0 };
+  progress: ProgressState = { level: 1, xp: 0, accountLevel: 1, accountXp: 0 };
+  /** Cartas ainda não usadas (as usadas viram itens `card_*` no inventário = álbum). */
+  readonly cards = new Map<string, CardInstance>();
+  activeBuffs: ActiveBuff[] = [];
   offlineReport: OfflineReport | null = null;
   readonly inventory = new Map<ItemId, number>();
   readonly plots = new Map<PlotSlotId, PlotState>();
@@ -71,6 +76,12 @@ export class ClientStore {
     return this.serverNow + Math.max(0, this.mono() - this.receivedAt);
   }
 
+  /** Buffs ainda em vigor pelo relógio estimado (só para a interface). */
+  currentBuffs(): ActiveBuff[] {
+    const fc = this.estimatedFarmClock();
+    return this.activeBuffs.filter((b) => b.endsFc > fc);
+  }
+
   /** Último valor confirmado pelo servidor. */
   get lastFarmClock(): FarmClockSeconds {
     return this.farmClock;
@@ -83,7 +94,11 @@ export class ClientStore {
     this.profile = b.profile;
     this.farm = farm;
     this.wallet = { ...b.wallet };
-    this.progress = { level: b.profile.level, xp: b.profile.xp };
+    const { level, xp, accountLevel, accountXp } = b.profile;
+    this.progress = { level, xp, accountLevel, accountXp };
+    this.cards.clear();
+    for (const c of b.cards) if (c.status === 'unused') this.cards.set(c.id, { ...c });
+    this.activeBuffs = b.activeBuffs.map((x) => ({ ...x }));
     this.offlineReport = b.offlineReport;
     this.inventory.clear();
     for (const e of b.inventory) if (e.qty > 0) this.inventory.set(e.itemId, e.qty);
@@ -102,7 +117,7 @@ export class ClientStore {
     this.syncClock(r.farmClock, r.serverNow);
     if (r.wallet) {
       this.wallet = { ...r.wallet };
-      this.bus.emit('wallet:changed', this.wallet);
+      this.bus.emit('wallet:changed', { ...this.wallet, bonusCoins: r.bonusCoins });
     }
     if (r.inventoryChanges && r.inventoryChanges.length > 0) {
       for (const e of r.inventoryChanges) {
@@ -121,9 +136,26 @@ export class ClientStore {
     }
     if (r.xp) {
       const leveledUp = r.xp.level > this.progress.level;
+      const accountLeveledUp = r.xp.accountLevel > this.progress.accountLevel;
       this.progress = { ...r.xp };
       if (this.profile) this.profile = { ...this.profile, ...r.xp };
-      this.bus.emit('xp:changed', { ...this.progress, leveledUp });
+      this.bus.emit('xp:changed', { ...this.progress, leveledUp, accountLeveledUp });
+    }
+    if (r.cards && r.cards.length > 0) {
+      const dropped: CardInstance[] = [];
+      for (const c of r.cards) {
+        if (c.status === 'unused') {
+          if (!this.cards.has(c.id)) dropped.push(c);
+          this.cards.set(c.id, { ...c });
+        } else {
+          this.cards.delete(c.id);
+        }
+      }
+      this.bus.emit('cards:changed', { changed: r.cards, dropped });
+    }
+    if (r.activeBuffs) {
+      this.activeBuffs = r.activeBuffs.map((x) => ({ ...x }));
+      this.bus.emit('buffs:changed', { active: this.activeBuffs });
     }
   }
 

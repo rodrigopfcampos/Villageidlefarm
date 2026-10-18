@@ -1,5 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { CROPS_BY_ID, ITEMS_BY_ID, STARTER_KIT, validateCatalog } from '../src/catalog/index';
+import {
+  CARDS,
+  CARDS_BY_ID,
+  CARDS_CONFIG,
+  CROPS_BY_ID,
+  ITEMS,
+  ITEMS_BY_ID,
+  STARTER_KIT,
+  validateCatalog,
+} from '../src/catalog/index';
 import { ERROR_CODES, ERROR_MESSAGES_PT, ApiError, toApiError } from '../src/types/errors';
 import { RPC_NAMES } from '../src/types/api';
 import { CLIENT_EVENT_NAMES } from '../src/types/events';
@@ -19,14 +28,51 @@ describe('catálogo', () => {
     expect(validateCatalog()).toEqual([]);
   });
 
-  it('tem as 3 culturas do MVP com os tempos do plano', () => {
-    expect(CROPS_BY_ID.get('crop_carrot')?.growSeconds).toBe(120);
-    expect(CROPS_BY_ID.get('crop_potato')?.growSeconds).toBe(600);
-    expect(CROPS_BY_ID.get('crop_strawberry')?.growSeconds).toBe(3600);
-    for (const c of CROPS_BY_ID.values()) {
-      expect(ITEMS_BY_ID.get(c.seedItemId)?.kind).toBe('seed');
-      expect(ITEMS_BY_ID.get(c.yieldItemId)?.kind).toBe('crop');
+  it('culturas seguem a tabela do BALANCEAMENTO (tempo, semente, venda, margem)', () => {
+    const table: [string, number, number, number][] = [
+      ['carrot', 120, 4, 6],
+      ['potato', 600, 10, 18],
+      ['strawberry', 3600, 40, 82],
+      ['pumpkin', 14400, 140, 280],
+      ['watermelon', 28800, 240, 480],
+    ];
+    let lastProfitPerHour = Infinity;
+    for (const [name, secs, seed, sell] of table) {
+      const c = CROPS_BY_ID.get(`crop_${name}`)!;
+      expect(c.growSeconds).toBe(secs);
+      expect(ITEMS_BY_ID.get(c.seedItemId)).toMatchObject({ kind: 'seed', basePrice: seed });
+      expect(ITEMS_BY_ID.get(c.yieldItemId)).toMatchObject({ kind: 'crop', sellPrice: sell });
+      expect(sell).toBeGreaterThanOrEqual(seed * 1.5);
+      const profitPerHour = ((sell - seed) * 3600) / secs;
+      expect(profitPerHour).toBeLessThan(lastProfitPerHour); // cai com a duração
+      lastProfitPerHour = profitPerHour;
     }
+  });
+
+  it('steamExtractable: colheitas, produtos e cartas sim; sementes não', () => {
+    for (const i of ITEMS) {
+      const expected = i.kind !== 'seed' && i.kind !== 'currency';
+      expect(i.steamExtractable, i.id).toBe(expected);
+    }
+  });
+
+  it('cartas: 8 buffs × 5 raridades, durações 1h..3h, Adubo instantâneo, arte provisória', () => {
+    expect(CARDS).toHaveLength(40);
+    expect(CARDS_CONFIG.dropChancePerPlotHour).toBe(0.0125);
+    expect(CARDS_CONFIG.provisionalArtMapping).toBe(true);
+    expect(CARDS_BY_ID.get('card_gold_common')).toMatchObject({
+      durationSeconds: 3600,
+      magnitude: 0.5,
+      artKey: 'card/art_1',
+      iconKey: 'buff/icon_1',
+      frameKey: 'card/frame_common',
+    });
+    expect(CARDS_BY_ID.get('card_luck_legendary')?.durationSeconds).toBe(10800);
+    expect(CARDS_BY_ID.get('card_fertilizer_legendary')).toMatchObject({
+      durationSeconds: 0,
+      magnitude: 5400,
+    });
+    expect(ITEMS_BY_ID.get('card_merchant_rare')?.kind).toBe('card');
   });
 
   it('kit inicial só usa itens existentes', () => {
@@ -49,8 +95,10 @@ describe('catálogo', () => {
         },
       ],
       animals: [],
+      cards: { ...CARDS_CONFIG, cards: [] },
     });
     expect(errs.length).toBeGreaterThanOrEqual(3);
+    expect(errs.some((e) => e.includes('falta card_gold_common'))).toBe(true);
   });
 });
 

@@ -9,6 +9,10 @@ export const ATLAS_CATEGORIES = [
   'characters',
   'pets',
   'vehicles',
+  'buildings',
+  'crops',
+  'tiles',
+  'ui',
 ] as const;
 export type AtlasCategory = (typeof ATLAS_CATEGORIES)[number];
 

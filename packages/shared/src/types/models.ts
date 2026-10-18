@@ -1,8 +1,9 @@
 // Tipos de domínio compartilhados entre cliente, mock e servidor.
 // Regras: moeda é sempre número INTEIRO; tempos de produção em segundos do "relógio da fazenda" (farm clock);
 // instantes reais (serverNow etc.) em milissegundos Unix (UTC) vindos do servidor.
+// Decisões do dono (docs/DECISOES.md): Steam PC, sem mercado interno, cartas de buff, evento noturno.
 
-/** Id legível do catálogo, ex.: "seed_carrot", "crop_carrot", "prod_egg". */
+/** Id legível do catálogo, ex.: "seed_carrot", "crop_carrot", "prod_egg", "card_gold_rare". */
 export type ItemId = string;
 /** Id de cultura, ex.: "crop_carrot" (igual ao item colhido). */
 export type CropId = string;
@@ -19,6 +20,7 @@ export type FarmClockSeconds = number;
 
 export type ItemKind = 'seed' | 'crop' | 'animal_product' | 'decor' | 'skin' | 'card' | 'currency';
 export type Rarity = 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
+export const RARITIES: readonly Rarity[] = ['common', 'uncommon', 'rare', 'epic', 'legendary'];
 export type Habitat = 'coop' | 'barn' | 'pond';
 
 export interface ItemDef {
@@ -31,11 +33,9 @@ export interface ItemDef {
   sellPrice: number | null;
   /** Se a loja NPC vende este item ao jogador. */
   shopBuyable: boolean;
-  /** Pode ir ao mercado entre jogadores. */
-  tradable: boolean;
-  minPrice: number;
-  maxPrice: number;
   stackable: boolean;
+  /** Pode ser retirado para o inventário Steam (cartas usadas, skins, colheitas, produtos). */
+  steamExtractable: boolean;
   /** Quadro no atlas, ex.: "icon/carrot" (atlas_icons). */
   spriteKey: string;
 }
@@ -47,6 +47,7 @@ export interface CropDef {
   growSeconds: number;
   yieldMin: number;
   yieldMax: number;
+  /** XP de fazenda e de conta por colheita. */
   xp: number;
   unlockLevel: number;
 }
@@ -62,6 +63,103 @@ export interface AnimalDef {
   unlockLevel: number;
 }
 
+// ---------- cartas de buff ----------
+
+export type BuffKind =
+  | 'gold'
+  | 'bountiful_harvest'
+  | 'animals'
+  | 'account_xp'
+  | 'fertilizer'
+  | 'farm_xp'
+  | 'luck'
+  | 'merchant';
+
+export const BUFF_KINDS: readonly BuffKind[] = [
+  'gold',
+  'bountiful_harvest',
+  'animals',
+  'account_xp',
+  'fertilizer',
+  'farm_xp',
+  'luck',
+  'merchant',
+];
+
+export interface BuffDef {
+  kind: BuffKind;
+  name: string;
+  description: string;
+  /** Efeito instantâneo (Adubo): não ocupa vaga de carta ativa. */
+  instant: boolean;
+  artKey: string;
+  iconKey: string;
+}
+
+/**
+ * Uma das 40 cartas (8 buffs × 5 raridades). Também é um ItemId (kind "card"):
+ * a carta USADA vira 1 unidade desse item no inventário = cópia no álbum.
+ *
+ * `magnitude` por buff: gold/animals/farm_xp/account_xp = fração extra (0.5 = +50%);
+ * bountiful_harvest = unidades extras; luck = fração extra de chance (1.0 = +100%);
+ * merchant = desconto (0.25 = −25%); fertilizer = segundos de avanço instantâneo.
+ */
+export interface CardDef {
+  id: ItemId;
+  buff: BuffKind;
+  rarity: Rarity;
+  /** 0 para cartas instantâneas. */
+  durationSeconds: number;
+  magnitude: number;
+  artKey: string;
+  iconKey: string;
+  frameKey: string;
+}
+
+export type CardSource = 'drop' | 'night_event' | 'system';
+export type CardInstanceStatus = 'unused' | 'used';
+
+/** Carta ganha e ainda não usada (única, não empilha, não sai para a Steam). */
+export interface CardInstance {
+  id: string;
+  cardId: ItemId;
+  source: CardSource;
+  status: CardInstanceStatus;
+  obtainedAt: EpochMs;
+  usedAt: EpochMs | null;
+}
+
+/** Buff em vigor. A janela é medida no relógio da fazenda; `endsAt` é só estimativa para a interface. */
+export interface ActiveBuff {
+  instanceId: string;
+  cardId: ItemId;
+  buff: BuffKind;
+  rarity: Rarity;
+  magnitude: number;
+  startedFc: FarmClockSeconds;
+  endsFc: FarmClockSeconds;
+  startedAt: EpochMs;
+  endsAt: EpochMs;
+}
+
+export interface AlbumSlot {
+  cardId: ItemId;
+  buff: BuffKind;
+  rarity: Rarity;
+  /** Cópias usadas guardadas (= quantidade do item da carta no inventário). Slot cheio se >= 1. */
+  copies: number;
+}
+
+export interface Album {
+  slots: AlbumSlot[];
+  /** Buffs cuja linha (5 raridades) está completa. */
+  completedLines: BuffKind[];
+  /** Bônus permanente em % por buff (só linhas completas aparecem). */
+  bonusPercent: Partial<Record<BuffKind, number>>;
+}
+
+// ---------- fazenda ----------
+
 /** Definição de canteiro (vem do layout do Tiled; vira seed de `plot_slots`). */
 export interface PlotSlotDef {
   slotId: PlotSlotId;
@@ -76,7 +174,7 @@ export interface PlotState {
   cropId: CropId | null;
   /** farm clock em que foi plantado (null se vazio). */
   plantedFc: FarmClockSeconds | null;
-  /** farm clock em que fica pronto (null se vazio). */
+  /** farm clock em que fica pronto (null se vazio). Diminui com Adubo e com o evento noturno. */
   readyFc: FarmClockSeconds | null;
 }
 
@@ -98,18 +196,22 @@ export interface Wallet {
   gems: number;
 }
 
+/** Dois trilhos de XP: fazenda (libera culturas, canteiros, retirada) e conta. */
 export interface ProgressState {
   level: number;
   xp: number;
+  accountLevel: number;
+  accountXp: number;
 }
 
-export interface Profile {
+export interface Profile extends ProgressState {
   id: string;
+  /** Nome exibido (vem da Steam em produção). */
   nickname: string;
   avatar: string;
   timezone: string;
-  level: number;
-  xp: number;
+  /** VIP ativo (microtransação Steam, fase de monetização). Muda limites de cartas e retirada. */
+  vip: boolean;
 }
 
 export interface FarmSnapshot {
@@ -135,8 +237,25 @@ export interface ServerTime {
   serverNow: EpochMs;
 }
 
+// ---------- tempo e evento ----------
+
 export type DayPhase = 'dawn' | 'day' | 'dusk' | 'night';
 export type WeatherKind = 'clear' | 'cloudy' | 'rain' | 'storm' | 'snow';
+
+export interface NightEventState {
+  /** 19h–21h no horário local do perfil. */
+  active: boolean;
+  /** Multiplicador de crescimento para quem está presente (1.5). */
+  speedMult: number;
+  /** Segundos de presença ativa no evento de hoje (data local). */
+  attendanceSeconds: number;
+  /** Presença necessária para a carta garantida (1800). */
+  requiredSeconds: number;
+  /** Já resgatou a carta garantida de hoje. */
+  cardClaimed: boolean;
+  /** Fim do evento de hoje em ms Unix, ou null se não ativo. */
+  endsAt: EpochMs | null;
+}
 
 export interface WorldState {
   serverNow: EpochMs;
@@ -144,47 +263,38 @@ export interface WorldState {
   localHour: number;
   phase: DayPhase;
   weather: WeatherKind;
-  nightEventActive: boolean;
-  /** Fim do evento em ms Unix, ou null se não ativo. */
-  eventEndsAt: EpochMs | null;
+  nightEvent: NightEventState;
 }
 
-export type ListingStatus = 'active' | 'sold' | 'cancelled' | 'expired';
+// ---------- Steam: retirada e volta ----------
 
-export interface MarketListing {
-  id: string;
-  sellerId: string;
-  sellerNickname?: string;
-  itemId: ItemId;
-  instanceId: string | null;
-  qtyTotal: number;
-  qtyLeft: number;
-  priceEach: number;
-  status: ListingStatus;
-  createdAt: EpochMs;
-  expiresAt: EpochMs;
-}
+export type ExtractionStatus = 'pending' | 'granted' | 'failed' | 'returned';
 
-export interface MarketTrade {
+/**
+ * Registro de item que saiu do jogo para a Steam (pending/granted/failed) ou voltou da Steam (returned).
+ * Itens saem do inventário do jogo na hora do pedido (escrow); `failed` devolve.
+ */
+export interface Extraction {
   id: string;
-  listingId: string;
-  buyerId: string;
-  sellerId: string;
   itemId: ItemId;
   qty: number;
-  priceEach: number;
-  fee: number;
+  status: ExtractionStatus;
+  /** Id do item no Steam Inventory Service (quando conhecido). */
+  steamItemId?: string;
   createdAt: EpochMs;
 }
 
-export interface PricePoint {
-  /** Início do intervalo (ms Unix). */
-  t: EpochMs;
-  avgPrice: number;
-  minPrice: number;
-  maxPrice: number;
-  volume: number;
+export interface ExtractionQuota {
+  /** Retiradas que contam na janela (pending + granted). */
+  used: number;
+  /** 1 sem VIP, 4 com VIP. */
+  limit: number;
+  windowHours: number;
+  /** Quando abre a próxima vaga (ms Unix) ou null se já há vaga. */
+  nextSlotAt: EpochMs | null;
 }
+
+// ---------- visitas ----------
 
 export interface PublicProfile {
   id: string;

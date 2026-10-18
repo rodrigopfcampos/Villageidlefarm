@@ -1,0 +1,490 @@
+{
+  "provisionalArtMapping": true,
+  "dropChancePerPlotHour": 0.0125,
+  "rarityWeights": {
+    "common": 55,
+    "uncommon": 27,
+    "rare": 12,
+    "epic": 5,
+    "legendary": 1
+  },
+  "durationSeconds": {
+    "common": 3600,
+    "uncommon": 5400,
+    "rare": 7200,
+    "epic": 9000,
+    "legendary": 10800
+  },
+  "album": {
+    "slots": 40,
+    "lineBonusPercent": 2
+  },
+  "buffs": [
+    {
+      "kind": "gold",
+      "name": "Ouro",
+      "description": "+50% de moedas (valor de venda NPC) sobre o que for produzido na janela",
+      "instant": false,
+      "artKey": "card/art_1",
+      "iconKey": "buff/icon_1"
+    },
+    {
+      "kind": "bountiful_harvest",
+      "name": "Colheita farta",
+      "description": "+1 unidade por colheita (proporcional à parte do cultivo na janela)",
+      "instant": false,
+      "artKey": "card/art_2",
+      "iconKey": "buff/icon_2"
+    },
+    {
+      "kind": "animals",
+      "name": "Animais",
+      "description": "+50% de produção dos animais na janela",
+      "instant": false,
+      "artKey": "card/art_3",
+      "iconKey": "buff/icon_3"
+    },
+    {
+      "kind": "account_xp",
+      "name": "XP de conta",
+      "description": "+50% de XP de conta na janela",
+      "instant": false,
+      "artKey": "card/art_4",
+      "iconKey": "buff/icon_4"
+    },
+    {
+      "kind": "fertilizer",
+      "name": "Adubo",
+      "description": "avança na hora todos os canteiros (segundos por raridade)",
+      "instant": true,
+      "artKey": "card/art_5",
+      "iconKey": "buff/icon_5"
+    },
+    {
+      "kind": "farm_xp",
+      "name": "XP de fazenda",
+      "description": "+50% de XP de fazenda na janela",
+      "instant": false,
+      "artKey": "card/art_6",
+      "iconKey": "buff/icon_6"
+    },
+    {
+      "kind": "luck",
+      "name": "Sorte",
+      "description": "+100% de chance de carta na janela",
+      "instant": false,
+      "artKey": "card/art_7",
+      "iconKey": "buff/icon_7"
+    },
+    {
+      "kind": "merchant",
+      "name": "Mercador",
+      "description": "-25% no preço das sementes enquanto ativa",
+      "instant": false,
+      "artKey": "card/art_8",
+      "iconKey": "buff/icon_8"
+    }
+  ],
+  "cards": [
+    {
+      "id": "card_gold_common",
+      "buff": "gold",
+      "rarity": "common",
+      "durationSeconds": 3600,
+      "magnitude": 0.5,
+      "artKey": "card/art_1",
+      "iconKey": "buff/icon_1",
+      "frameKey": "card/frame_common"
+    },
+    {
+      "id": "card_gold_uncommon",
+      "buff": "gold",
+      "rarity": "uncommon",
+      "durationSeconds": 5400,
+      "magnitude": 0.5,
+      "artKey": "card/art_1",
+      "iconKey": "buff/icon_1",
+      "frameKey": "card/frame_uncommon"
+    },
+    {
+      "id": "card_gold_rare",
+      "buff": "gold",
+      "rarity": "rare",
+      "durationSeconds": 7200,
+      "magnitude": 0.5,
+      "artKey": "card/art_1",
+      "iconKey": "buff/icon_1",
+      "frameKey": "card/frame_rare"
+    },
+    {
+      "id": "card_gold_epic",
+      "buff": "gold",
+      "rarity": "epic",
+      "durationSeconds": 9000,
+      "magnitude": 0.5,
+      "artKey": "card/art_1",
+      "iconKey": "buff/icon_1",
+      "frameKey": "card/frame_epic"
+    },
+    {
+      "id": "card_gold_legendary",
+      "buff": "gold",
+      "rarity": "legendary",
+      "durationSeconds": 10800,
+      "magnitude": 0.5,
+      "artKey": "card/art_1",
+      "iconKey": "buff/icon_1",
+      "frameKey": "card/frame_legendary"
+    },
+    {
+      "id": "card_bountiful_harvest_common",
+      "buff": "bountiful_harvest",
+      "rarity": "common",
+      "durationSeconds": 3600,
+      "magnitude": 1,
+      "artKey": "card/art_2",
+      "iconKey": "buff/icon_2",
+      "frameKey": "card/frame_common"
+    },
+    {
+      "id": "card_bountiful_harvest_uncommon",
+      "buff": "bountiful_harvest",
+      "rarity": "uncommon",
+      "durationSeconds": 5400,
+      "magnitude": 1,
+      "artKey": "card/art_2",
+      "iconKey": "buff/icon_2",
+      "frameKey": "card/frame_uncommon"
+    },
+    {
+      "id": "card_bountiful_harvest_rare",
+      "buff": "bountiful_harvest",
+      "rarity": "rare",
+      "durationSeconds": 7200,
+      "magnitude": 1,
+      "artKey": "card/art_2",
+      "iconKey": "buff/icon_2",
+      "frameKey": "card/frame_rare"
+    },
+    {
+      "id": "card_bountiful_harvest_epic",
+      "buff": "bountiful_harvest",
+      "rarity": "epic",
+      "durationSeconds": 9000,
+      "magnitude": 1,
+      "artKey": "card/art_2",
+      "iconKey": "buff/icon_2",
+      "frameKey": "card/frame_epic"
+    },
+    {
+      "id": "card_bountiful_harvest_legendary",
+      "buff": "bountiful_harvest",
+      "rarity": "legendary",
+      "durationSeconds": 10800,
+      "magnitude": 1,
+      "artKey": "card/art_2",
+      "iconKey": "buff/icon_2",
+      "frameKey": "card/frame_legendary"
+    },
+    {
+      "id": "card_animals_common",
+      "buff": "animals",
+      "rarity": "common",
+      "durationSeconds": 3600,
+      "magnitude": 0.5,
+      "artKey": "card/art_3",
+      "iconKey": "buff/icon_3",
+      "frameKey": "card/frame_common"
+    },
+    {
+      "id": "card_animals_uncommon",
+      "buff": "animals",
+      "rarity": "uncommon",
+      "durationSeconds": 5400,
+      "magnitude": 0.5,
+      "artKey": "card/art_3",
+      "iconKey": "buff/icon_3",
+      "frameKey": "card/frame_uncommon"
+    },
+    {
+      "id": "card_animals_rare",
+      "buff": "animals",
+      "rarity": "rare",
+      "durationSeconds": 7200,
+      "magnitude": 0.5,
+      "artKey": "card/art_3",
+      "iconKey": "buff/icon_3",
+      "frameKey": "card/frame_rare"
+    },
+    {
+      "id": "card_animals_epic",
+      "buff": "animals",
+      "rarity": "epic",
+      "durationSeconds": 9000,
+      "magnitude": 0.5,
+      "artKey": "card/art_3",
+      "iconKey": "buff/icon_3",
+      "frameKey": "card/frame_epic"
+    },
+    {
+      "id": "card_animals_legendary",
+      "buff": "animals",
+      "rarity": "legendary",
+      "durationSeconds": 10800,
+      "magnitude": 0.5,
+      "artKey": "card/art_3",
+      "iconKey": "buff/icon_3",
+      "frameKey": "card/frame_legendary"
+    },
+    {
+      "id": "card_account_xp_common",
+      "buff": "account_xp",
+      "rarity": "common",
+      "durationSeconds": 3600,
+      "magnitude": 0.5,
+      "artKey": "card/art_4",
+      "iconKey": "buff/icon_4",
+      "frameKey": "card/frame_common"
+    },
+    {
+      "id": "card_account_xp_uncommon",
+      "buff": "account_xp",
+      "rarity": "uncommon",
+      "durationSeconds": 5400,
+      "magnitude": 0.5,
+      "artKey": "card/art_4",
+      "iconKey": "buff/icon_4",
+      "frameKey": "card/frame_uncommon"
+    },
+    {
+      "id": "card_account_xp_rare",
+      "buff": "account_xp",
+      "rarity": "rare",
+      "durationSeconds": 7200,
+      "magnitude": 0.5,
+      "artKey": "card/art_4",
+      "iconKey": "buff/icon_4",
+      "frameKey": "card/frame_rare"
+    },
+    {
+      "id": "card_account_xp_epic",
+      "buff": "account_xp",
+      "rarity": "epic",
+      "durationSeconds": 9000,
+      "magnitude": 0.5,
+      "artKey": "card/art_4",
+      "iconKey": "buff/icon_4",
+      "frameKey": "card/frame_epic"
+    },
+    {
+      "id": "card_account_xp_legendary",
+      "buff": "account_xp",
+      "rarity": "legendary",
+      "durationSeconds": 10800,
+      "magnitude": 0.5,
+      "artKey": "card/art_4",
+      "iconKey": "buff/icon_4",
+      "frameKey": "card/frame_legendary"
+    },
+    {
+      "id": "card_fertilizer_common",
+      "buff": "fertilizer",
+      "rarity": "common",
+      "durationSeconds": 0,
+      "magnitude": 1800,
+      "artKey": "card/art_5",
+      "iconKey": "buff/icon_5",
+      "frameKey": "card/frame_common"
+    },
+    {
+      "id": "card_fertilizer_uncommon",
+      "buff": "fertilizer",
+      "rarity": "uncommon",
+      "durationSeconds": 0,
+      "magnitude": 2700,
+      "artKey": "card/art_5",
+      "iconKey": "buff/icon_5",
+      "frameKey": "card/frame_uncommon"
+    },
+    {
+      "id": "card_fertilizer_rare",
+      "buff": "fertilizer",
+      "rarity": "rare",
+      "durationSeconds": 0,
+      "magnitude": 3600,
+      "artKey": "card/art_5",
+      "iconKey": "buff/icon_5",
+      "frameKey": "card/frame_rare"
+    },
+    {
+      "id": "card_fertilizer_epic",
+      "buff": "fertilizer",
+      "rarity": "epic",
+      "durationSeconds": 0,
+      "magnitude": 4500,
+      "artKey": "card/art_5",
+      "iconKey": "buff/icon_5",
+      "frameKey": "card/frame_epic"
+    },
+    {
+      "id": "card_fertilizer_legendary",
+      "buff": "fertilizer",
+      "rarity": "legendary",
+      "durationSeconds": 0,
+      "magnitude": 5400,
+      "artKey": "card/art_5",
+      "iconKey": "buff/icon_5",
+      "frameKey": "card/frame_legendary"
+    },
+    {
+      "id": "card_farm_xp_common",
+      "buff": "farm_xp",
+      "rarity": "common",
+      "durationSeconds": 3600,
+      "magnitude": 0.5,
+      "artKey": "card/art_6",
+      "iconKey": "buff/icon_6",
+      "frameKey": "card/frame_common"
+    },
+    {
+      "id": "card_farm_xp_uncommon",
+      "buff": "farm_xp",
+      "rarity": "uncommon",
+      "durationSeconds": 5400,
+      "magnitude": 0.5,
+      "artKey": "card/art_6",
+      "iconKey": "buff/icon_6",
+      "frameKey": "card/frame_uncommon"
+    },
+    {
+      "id": "card_farm_xp_rare",
+      "buff": "farm_xp",
+      "rarity": "rare",
+      "durationSeconds": 7200,
+      "magnitude": 0.5,
+      "artKey": "card/art_6",
+      "iconKey": "buff/icon_6",
+      "frameKey": "card/frame_rare"
+    },
+    {
+      "id": "card_farm_xp_epic",
+      "buff": "farm_xp",
+      "rarity": "epic",
+      "durationSeconds": 9000,
+      "magnitude": 0.5,
+      "artKey": "card/art_6",
+      "iconKey": "buff/icon_6",
+      "frameKey": "card/frame_epic"
+    },
+    {
+      "id": "card_farm_xp_legendary",
+      "buff": "farm_xp",
+      "rarity": "legendary",
+      "durationSeconds": 10800,
+      "magnitude": 0.5,
+      "artKey": "card/art_6",
+      "iconKey": "buff/icon_6",
+      "frameKey": "card/frame_legendary"
+    },
+    {
+      "id": "card_luck_common",
+      "buff": "luck",
+      "rarity": "common",
+      "durationSeconds": 3600,
+      "magnitude": 1.0,
+      "artKey": "card/art_7",
+      "iconKey": "buff/icon_7",
+      "frameKey": "card/frame_common"
+    },
+    {
+      "id": "card_luck_uncommon",
+      "buff": "luck",
+      "rarity": "uncommon",
+      "durationSeconds": 5400,
+      "magnitude": 1.0,
+      "artKey": "card/art_7",
+      "iconKey": "buff/icon_7",
+      "frameKey": "card/frame_uncommon"
+    },
+    {
+      "id": "card_luck_rare",
+      "buff": "luck",
+      "rarity": "rare",
+      "durationSeconds": 7200,
+      "magnitude": 1.0,
+      "artKey": "card/art_7",
+      "iconKey": "buff/icon_7",
+      "frameKey": "card/frame_rare"
+    },
+    {
+      "id": "card_luck_epic",
+      "buff": "luck",
+      "rarity": "epic",
+      "durationSeconds": 9000,
+      "magnitude": 1.0,
+      "artKey": "card/art_7",
+      "iconKey": "buff/icon_7",
+      "frameKey": "card/frame_epic"
+    },
+    {
+      "id": "card_luck_legendary",
+      "buff": "luck",
+      "rarity": "legendary",
+      "durationSeconds": 10800,
+      "magnitude": 1.0,
+      "artKey": "card/art_7",
+      "iconKey": "buff/icon_7",
+      "frameKey": "card/frame_legendary"
+    },
+    {
+      "id": "card_merchant_common",
+      "buff": "merchant",
+      "rarity": "common",
+      "durationSeconds": 3600,
+      "magnitude": 0.25,
+      "artKey": "card/art_8",
+      "iconKey": "buff/icon_8",
+      "frameKey": "card/frame_common"
+    },
+    {
+      "id": "card_merchant_uncommon",
+      "buff": "merchant",
+      "rarity": "uncommon",
+      "durationSeconds": 5400,
+      "magnitude": 0.25,
+      "artKey": "card/art_8",
+      "iconKey": "buff/icon_8",
+      "frameKey": "card/frame_uncommon"
+    },
+    {
+      "id": "card_merchant_rare",
+      "buff": "merchant",
+      "rarity": "rare",
+      "durationSeconds": 7200,
+      "magnitude": 0.25,
+      "artKey": "card/art_8",
+      "iconKey": "buff/icon_8",
+      "frameKey": "card/frame_rare"
+    },
+    {
+      "id": "card_merchant_epic",
+      "buff": "merchant",
+      "rarity": "epic",
+      "durationSeconds": 9000,
+      "magnitude": 0.25,
+      "artKey": "card/art_8",
+      "iconKey": "buff/icon_8",
+      "frameKey": "card/frame_epic"
+    },
+    {
+      "id": "card_merchant_legendary",
+      "buff": "merchant",
+      "rarity": "legendary",
+      "durationSeconds": 10800,
+      "magnitude": 0.25,
+      "artKey": "card/art_8",
+      "iconKey": "buff/icon_8",
+      "frameKey": "card/frame_legendary"
+    }
+  ]
+}

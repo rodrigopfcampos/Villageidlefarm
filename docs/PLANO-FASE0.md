@@ -1,5 +1,12 @@
 # Plano técnico da Fase 0: Village Idle Farm
 
+> **Atenção (2026-10-18):** as decisões do dono em [`DECISOES.md`](DECISOES.md) e [`BALANCEAMENTO.md`](BALANCEAMENTO.md) valem por cima deste plano. Mudanças principais:
+> - **Só Steam no PC** (Electron + Steamworks), paisagem, jogo pago, 18+, login pela Steam (não há convidado nem e-mail em produção).
+> - **Não existe mercado interno**: as seções de mercado (§3 `market_*`, §4 "Mercado sem duplicação", agente A6 Mercado) estão **canceladas**. No lugar: retirada para o mercado da Steam (1 item a cada 7 h, 4 com VIP) e volta.
+> - **Cartas de buff, álbum e evento noturno (×1.5 + carta garantida)** entram no jogo.
+> - **Culturas** seguem a tabela do BALANCEAMENTO (cenoura, batata, morango, abóbora, melancia).
+> - Novo plano de agentes em [`AGENTS.md`](AGENTS.md); contratos atualizados em [`CONTRACTS.md`](CONTRACTS.md).
+
 ## 1. As artes e o pipeline de assets
 
 ### O que foi encontrado nas imagens (medido com Python)

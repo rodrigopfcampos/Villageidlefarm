@@ -5,8 +5,8 @@
     "yieldItemId": "crop_carrot",
     "growSeconds": 120,
     "yieldMin": 1,
-    "yieldMax": 2,
-    "xp": 3,
+    "yieldMax": 1,
+    "xp": 1,
     "unlockLevel": 1
   },
   {
@@ -15,8 +15,8 @@
     "yieldItemId": "crop_potato",
     "growSeconds": 600,
     "yieldMin": 1,
-    "yieldMax": 2,
-    "xp": 10,
+    "yieldMax": 1,
+    "xp": 4,
     "unlockLevel": 1
   },
   {
@@ -24,9 +24,29 @@
     "seedItemId": "seed_strawberry",
     "yieldItemId": "crop_strawberry",
     "growSeconds": 3600,
-    "yieldMin": 2,
-    "yieldMax": 3,
-    "xp": 40,
+    "yieldMin": 1,
+    "yieldMax": 1,
+    "xp": 21,
     "unlockLevel": 1
+  },
+  {
+    "cropId": "crop_pumpkin",
+    "seedItemId": "seed_pumpkin",
+    "yieldItemId": "crop_pumpkin",
+    "growSeconds": 14400,
+    "yieldMin": 1,
+    "yieldMax": 1,
+    "xp": 70,
+    "unlockLevel": 3
+  },
+  {
+    "cropId": "crop_watermelon",
+    "seedItemId": "seed_watermelon",
+    "yieldItemId": "crop_watermelon",
+    "growSeconds": 28800,
+    "yieldMin": 1,
+    "yieldMax": 1,
+    "xp": 120,
+    "unlockLevel": 5
   }
 ]

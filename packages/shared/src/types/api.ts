@@ -1,21 +1,24 @@
 // Interface IApi: implementada por net/mockApi.ts (memória) e net/api.ts (Supabase, agente A2).
 // Toda chamada que mexe em valor recebe `requestId` (UUID gerado no cliente).
 // Erros: sempre ApiError (ver errors.ts).
+// Não existe mercado interno (DECISOES.md): o comércio é no mercado da Steam via retirada/volta.
 
 import type {
+  ActiveBuff,
+  Album,
   AnimalState,
   AnimalType,
+  CardInstance,
   EpochMs,
+  Extraction,
+  ExtractionQuota,
   FarmClockSeconds,
   FarmSnapshot,
   InventoryEntry,
   ItemId,
-  MarketListing,
-  MarketTrade,
   OfflineReport,
   PlotSlotId,
   PlotState,
-  PricePoint,
   Profile,
   ProgressState,
   PublicFarmSnapshot,
@@ -29,9 +32,13 @@ import type {
 /**
  * Retorno padrão de toda mutação. O cliente aplica no store sem recarregar tudo.
  * - `inventoryChanges`: quantidades ABSOLUTAS novas dos itens que mudaram (qty 0 = sumiu).
+ *   Inclui itens de carta usada (`card_*`) = cópias no álbum.
  * - `plots` / `animals`: estado completo das entidades que mudaram.
- * - `xp`: nível e xp totais depois da ação.
+ * - `xp`: níveis e xp totais depois da ação.
  * - `gained`: o que entrou no inventário nesta ação (deltas positivos), só para efeitos visuais.
+ * - `bonusCoins`: moedas extras de buffs (carta de Ouro, álbum) já somadas em `wallet`.
+ * - `cards`: cartas novas ou que mudaram (drop, uso).
+ * - `activeBuffs`: lista COMPLETA de buffs em vigor, quando mudou.
  */
 export interface MutationResult {
   wallet?: Wallet;
@@ -40,6 +47,9 @@ export interface MutationResult {
   animals?: AnimalState[];
   xp?: ProgressState;
   gained?: InventoryEntry[];
+  bonusCoins?: number;
+  cards?: CardInstance[];
+  activeBuffs?: ActiveBuff[];
   farmClock: FarmClockSeconds;
   serverNow: EpochMs;
 }
@@ -49,6 +59,9 @@ export interface BootstrapResult {
   wallet: Wallet;
   inventory: InventoryEntry[];
   farm: FarmSnapshot;
+  /** Cartas ainda não usadas. */
+  cards: CardInstance[];
+  activeBuffs: ActiveBuff[];
   offlineReport: OfflineReport;
   serverNow: EpochMs;
 }
@@ -58,6 +71,8 @@ export interface HeartbeatResult {
   serverNow: EpochMs;
   /** Crédito aplicado nesta sincronização (útil para depuração). */
   creditedSeconds: number;
+  /** Canteiros que o evento noturno acelerou nesta sincronização. */
+  plots?: PlotState[];
 }
 
 // ---------- parâmetros ----------
@@ -93,24 +108,19 @@ export interface SetTimezoneParams extends Mutation {
 }
 export type ClaimNightEventParams = Mutation;
 
-export interface MarketCreateListingParams extends Mutation {
+export interface CardActivateParams extends Mutation {
+  instanceId: string;
+}
+
+export interface ExtractionRequestParams extends Mutation {
   itemId: ItemId;
   qty: number;
-  priceEach: number;
 }
-export interface MarketBuyParams extends Mutation {
-  listingId: string;
-  qty: number;
+export interface SteamReturnSyncParams extends Mutation {
+  /** Itens do inventário Steam (lidos no cliente pelo Steamworks) que o jogador quer trazer de volta. */
+  steamItemIds: string[];
 }
-export interface MarketCancelParams extends Mutation {
-  listingId: string;
-}
-export type MarketSort = 'price_asc' | 'price_desc' | 'newest';
-export interface MarketSearchParams {
-  itemId?: ItemId;
-  sort: MarketSort;
-  page: number;
-}
+
 export interface Page<T> {
   items: T[];
   page: number;
@@ -123,14 +133,16 @@ export interface VisitInteractParams extends Mutation {
   kind: VisitInteractKind;
 }
 
-export interface MarketListingResult extends MutationResult {
-  listing: MarketListing;
-}
-export interface MarketBuyResult extends MutationResult {
-  trade: MarketTrade;
-}
 export interface ClaimNightEventResult extends MutationResult {
-  eventKey: string;
+  /** A carta garantida (também vem em `cards`). */
+  card: CardInstance;
+}
+export interface ExtractionResult extends MutationResult {
+  extraction: Extraction;
+  quota: ExtractionQuota;
+}
+export interface SteamReturnResult extends MutationResult {
+  returned: Extraction[];
 }
 export interface VisitCandidate extends PublicProfile {
   farmId: string;
@@ -153,18 +165,20 @@ export interface IApi {
   shopBuy(p: ShopTradeParams): Promise<MutationResult>;
   shopSell(p: ShopTradeParams): Promise<MutationResult>;
 
-  // Tempo
+  // Cartas
+  cardActivate(p: CardActivateParams): Promise<MutationResult>;
+  albumGet(): Promise<Album>;
+
+  // Tempo e evento noturno
   getWorldState(): Promise<WorldState>;
   setTimezone(p: SetTimezoneParams): Promise<Profile>;
   claimNightEvent(p: ClaimNightEventParams): Promise<ClaimNightEventResult>;
 
-  // Mercado
-  marketCreateListing(p: MarketCreateListingParams): Promise<MarketListingResult>;
-  marketBuy(p: MarketBuyParams): Promise<MarketBuyResult>;
-  marketCancel(p: MarketCancelParams): Promise<MarketListingResult>;
-  marketSearch(p: MarketSearchParams): Promise<Page<MarketListing>>;
-  marketMyListings(): Promise<MarketListing[]>;
-  marketPriceHistory(itemId: ItemId): Promise<PricePoint[]>;
+  // Steam (retirada e volta)
+  extractionQuota(): Promise<ExtractionQuota>;
+  extractionRequest(p: ExtractionRequestParams): Promise<ExtractionResult>;
+  extractionList(): Promise<Extraction[]>;
+  steamReturnSync(p: SteamReturnSyncParams): Promise<SteamReturnResult>;
 
   // Visitas
   visitListCandidates(page: number): Promise<Page<VisitCandidate>>;
@@ -185,15 +199,15 @@ export const RPC_NAMES = {
   collectAnimal: 'collect_animal',
   shopBuy: 'shop_buy',
   shopSell: 'shop_sell',
+  cardActivate: 'card_activate',
+  albumGet: 'album_get',
   getWorldState: 'get_world_state',
   setTimezone: 'set_timezone',
   claimNightEvent: 'claim_night_event',
-  marketCreateListing: 'market_create_listing',
-  marketBuy: 'market_buy',
-  marketCancel: 'market_cancel',
-  marketSearch: 'market_search',
-  marketMyListings: 'market_my_listings',
-  marketPriceHistory: 'market_price_history',
+  extractionQuota: 'extraction_quota',
+  extractionRequest: 'extraction_request',
+  extractionList: 'extraction_list',
+  steamReturnSync: 'steam_return_sync',
   visitListCandidates: 'visit_list_candidates',
   visitGetFarm: 'visit_get_farm',
   visitInteract: 'visit_interact',
@@ -203,11 +217,37 @@ export const RPC_NAMES = {
 export const ECONOMY = {
   /** Crédito máximo de produção offline (8 h). */
   OFFLINE_CAP_SECONDS: 28_800,
-  /** Intervalo do heartbeat com o jogo aberto. */
+  /** Intervalo do heartbeat com o jogo aberto (fora do evento). */
   HEARTBEAT_INTERVAL_MS: 5 * 60_000,
+  /** Intervalo do heartbeat durante o evento noturno. */
+  EVENT_HEARTBEAT_INTERVAL_MS: 60_000,
+  /** Heartbeats mais frequentes que isto recebem RATE_LIMITED. */
+  HEARTBEAT_MIN_INTERVAL_MS: 10_000,
   /** Quantidade máxima por compra/venda na loja NPC. */
   SHOP_MAX_QTY: 999,
-  MARKET_FEE_PERCENT: 5,
-  MARKET_MAX_ACTIVE_LISTINGS: 20,
-  MARKET_LISTING_HOURS: 48,
+  /** Cartas com duração ativas ao mesmo tempo. */
+  CARD_SLOTS: 1,
+  CARD_SLOTS_VIP: 2,
+  /** Retiradas para a Steam por janela deslizante. */
+  EXTRACTION_LIMIT: 1,
+  EXTRACTION_LIMIT_VIP: 4,
+  EXTRACTION_WINDOW_HOURS: 7,
+  /** Nível de fazenda mínimo para retirar (PROVISÓRIO: sugestão de DECISOES.md). */
+  EXTRACTION_MIN_LEVEL: 5,
+  /** Unidades por retirada (PROVISÓRIO: "1 unidade ou uma pilha?" está pendente). */
+  EXTRACTION_MAX_QTY: 1,
+  /** Troca de fuso: 1 vez a cada 30 dias; resgate do evento bloqueado por 24 h após trocar. */
+  TZ_CHANGE_COOLDOWN_DAYS: 30,
+  EVENT_TZ_LOCK_HOURS: 24,
+} as const;
+
+/** Regras do evento noturno (DECISOES.md / BALANCEAMENTO.md). */
+export const NIGHT_EVENT = {
+  startHour: 19,
+  endHour: 21,
+  speedMult: 1.5,
+  /** Presença ativa necessária para a carta garantida (30 min). */
+  requiredSeconds: 1800,
+  /** Depois da última interação, a presença vale por no máximo 5 min (sem interação = inativo). */
+  presenceWindowSeconds: 300,
 } as const;
