@@ -13,6 +13,8 @@ O resultado é idempotente: rodar duas vezes gera os mesmos arquivos.
 """
 from __future__ import annotations
 
+import sys as _sys
+_sys.dont_write_bytecode = True
 import argparse
 import json
 import math
@@ -944,6 +946,10 @@ def main():
         if args.all or args.map:
             import mapbuild
             mapbuild.build_map()
+        if args.all:
+            stale = [p for p in (OUT / "atlas").glob("atlas_*") if p.stem not in {f"atlas_{c}" for c in CATEGORIES}]
+            for p in stale:
+                p.unlink()
         write_manifest()
         write_asset_keys()
         if args.all:
