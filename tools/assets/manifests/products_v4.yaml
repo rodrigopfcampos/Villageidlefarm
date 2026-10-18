@@ -1,0 +1,27 @@
+# Produtos de animais e itens de exploração (v4/produtos_exploracao.jpg) -> atlas_icons (32x32, cada um
+# com a própria escala).
+#   linha 1: icon/truffle (trufa), goat_milk (leite de cabra), alpaca_wool (lã de alpaca, rolo), rabbit_fur
+#            (pelo de coelho), goose_egg (ovo de ganso, branco grande), turkey_feather (pena), turkey_egg (ovo pintado)
+#   linha 2: icon/fuel_can (galão), feed_sack (saco de ração), wrench (chave inglesa)
+sheet: products_v4
+source: v4/produtos_exploracao.jpg
+category: icons
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: true, min_L: 0, max_ab: 5}
+halo_tolerance: 14
+restore_enclosed: {close: 3, min_dE: 4.5, shadow_ab: 5}   # trufa escura
+min_piece_area: 600
+merge_distance: 8
+merge_big_area: 2000
+merge_distance_big: 0
+rows: [7, 3]
+scale: {mode: fit, margin: 2, each: [icon]}
+quantize: 48
+frame: {size: [32, 32], anchor: center}
+groups:
+  icon: {size: [32, 32]}
+names: [icon/truffle, icon/goat_milk, icon/alpaca_wool, icon/rabbit_fur, icon/goose_egg, icon/turkey_feather,
+        icon/turkey_egg, icon/fuel_can, icon/feed_sack, icon/wrench]

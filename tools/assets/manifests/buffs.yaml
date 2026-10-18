@@ -8,6 +8,7 @@ sheet: buffs
 source: v2/buffs_cartas.jpg
 category: cards
 entity_category: {buff: icons}
+drop_entities: [oldbuff]   # (v4) os mini ícones agora vêm de buff_icons_v4.yaml
 transparency: flood
 bg_tolerance: 6
 barrier_L: 4
@@ -29,12 +30,12 @@ scale:
   mode: art
   groups:
     card: {art_size: [44, 64], upscale: 3}   # arte ~110x160 na folha -> exatamente 44x64 -> x3 = 132x192
-    buff: {art_size: [24, 24], upscale: 1}   # ícone ~64 px -> 24x24 direto (12x12 ficava borrado demais)
+    oldbuff: {art_size: [24, 24], upscale: 1}   # ícone ~64 px -> 24x24 direto (12x12 ficava borrado demais)
 quantize: 48
 frame: {size: [132, 192], anchor: center}
 groups:
   card: {size: [132, 192]}
-  buff: {size: [24, 24]}
+  oldbuff: {size: [24, 24]}
 names:
   - card/art_1
   - card/art_2
@@ -44,11 +45,11 @@ names:
   - card/art_6
   - card/art_7
   - card/art_8
-  - buff/icon_1
-  - buff/icon_2
-  - buff/icon_3
-  - buff/icon_4
-  - buff/icon_5
-  - buff/icon_6
-  - buff/icon_7
-  - buff/icon_8
+  - oldbuff/icon_1
+  - oldbuff/icon_2
+  - oldbuff/icon_3
+  - oldbuff/icon_4
+  - oldbuff/icon_5
+  - oldbuff/icon_6
+  - oldbuff/icon_7
+  - oldbuff/icon_8

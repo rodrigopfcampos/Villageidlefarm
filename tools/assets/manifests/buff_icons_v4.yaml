@@ -1,0 +1,23 @@
+# Ícones de buff v4 (v4/icones_buff.jpg) -> buff/icon_1..8 (atlas_icons, 24x24). SUBSTITUEM os da folha
+# buffs_cartas.jpg. Ordem: 1 sol | 2 FOLHA | 3 FERRADURA AZUL | 4 coruja | 5 ampulheta | 6 gota com raio |
+# 7 ferradura dourada | 8 engrenagem.
+# ATENÇÃO: 2 e 3 não batem com as artes das cartas 2 (cesta) e 3 (ovelha). Ordem mantida; ver README.
+sheet: buff_icons_v4
+source: v4/icones_buff.jpg
+category: icons
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: false}
+hole_area: 0               # fundo preto do círculo fica opaco
+halo_tolerance: 10
+min_piece_area: 600
+merge_distance: 4
+merge_big_area: 2000
+merge_distance_big: 0
+rows: [8]
+scale: {mode: art, art_size: [24, 24], upscale: 1}
+quantize: 48
+frame: {size: [24, 24], anchor: center}
+names: [buff/icon_1, buff/icon_2, buff/icon_3, buff/icon_4, buff/icon_5, buff/icon_6, buff/icon_7, buff/icon_8]
