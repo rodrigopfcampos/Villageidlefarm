@@ -10,16 +10,6 @@
     "unlockLevel": 1
   },
   {
-    "cropId": "crop_strawberry",
-    "seedItemId": "seed_strawberry",
-    "yieldItemId": "crop_strawberry",
-    "growSeconds": 3600,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 19,
-    "unlockLevel": 1
-  },
-  {
     "cropId": "crop_potato",
     "seedItemId": "seed_potato",
     "yieldItemId": "crop_potato",
@@ -27,366 +17,36 @@
     "yieldMin": 1,
     "yieldMax": 1,
     "xp": 4,
-    "unlockLevel": 2
+    "unlockLevel": 1
   },
   {
-    "cropId": "crop_lettuce",
-    "seedItemId": "seed_lettuce",
-    "yieldItemId": "crop_lettuce",
-    "growSeconds": 1800,
+    "cropId": "crop_strawberry",
+    "seedItemId": "seed_strawberry",
+    "yieldItemId": "crop_strawberry",
+    "growSeconds": 3600,
     "yieldMin": 1,
     "yieldMax": 1,
-    "xp": 12,
-    "unlockLevel": 3
-  },
-  {
-    "cropId": "crop_corn",
-    "seedItemId": "seed_corn",
-    "yieldItemId": "crop_corn",
-    "growSeconds": 14400,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 82,
-    "unlockLevel": 5
-  },
-  {
-    "cropId": "crop_onion",
-    "seedItemId": "seed_onion",
-    "yieldItemId": "crop_onion",
-    "growSeconds": 300,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 3,
-    "unlockLevel": 6
+    "xp": 21,
+    "unlockLevel": 1
   },
   {
     "cropId": "crop_pumpkin",
     "seedItemId": "seed_pumpkin",
     "yieldItemId": "crop_pumpkin",
-    "growSeconds": 28800,
+    "growSeconds": 14400,
     "yieldMin": 1,
     "yieldMax": 1,
-    "xp": 170,
-    "unlockLevel": 7
-  },
-  {
-    "cropId": "crop_bell_pepper",
-    "seedItemId": "seed_bell_pepper",
-    "yieldItemId": "crop_bell_pepper",
-    "growSeconds": 3600,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 29,
-    "unlockLevel": 8
-  },
-  {
-    "cropId": "crop_cabbage",
-    "seedItemId": "seed_cabbage",
-    "yieldItemId": "crop_cabbage",
-    "growSeconds": 21600,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 148,
-    "unlockLevel": 9
+    "xp": 70,
+    "unlockLevel": 3
   },
   {
     "cropId": "crop_watermelon",
     "seedItemId": "seed_watermelon",
     "yieldItemId": "crop_watermelon",
-    "growSeconds": 43200,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 289,
-    "unlockLevel": 10
-  },
-  {
-    "cropId": "crop_garlic",
-    "seedItemId": "seed_garlic",
-    "yieldItemId": "crop_garlic",
-    "growSeconds": 600,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 7,
-    "unlockLevel": 11
-  },
-  {
-    "cropId": "crop_eggplant",
-    "seedItemId": "seed_eggplant",
-    "yieldItemId": "crop_eggplant",
-    "growSeconds": 7200,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 68,
-    "unlockLevel": 12
-  },
-  {
-    "cropId": "crop_kale",
-    "seedItemId": "seed_kale",
-    "yieldItemId": "crop_kale",
-    "growSeconds": 1800,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 21,
-    "unlockLevel": 13
-  },
-  {
-    "cropId": "crop_apple",
-    "seedItemId": "seed_apple",
-    "yieldItemId": "crop_apple",
     "growSeconds": 28800,
     "yieldMin": 1,
     "yieldMax": 1,
-    "xp": 256,
-    "unlockLevel": 14
-  },
-  {
-    "cropId": "crop_pear",
-    "seedItemId": "seed_pear",
-    "yieldItemId": "crop_pear",
-    "growSeconds": 14400,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 148,
-    "unlockLevel": 15
-  },
-  {
-    "cropId": "crop_broccoli",
-    "seedItemId": "seed_broccoli",
-    "yieldItemId": "crop_broccoli",
-    "growSeconds": 3600,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 46,
-    "unlockLevel": 16
-  },
-  {
-    "cropId": "crop_chili_pepper",
-    "seedItemId": "seed_chili_pepper",
-    "yieldItemId": "crop_chili_pepper",
-    "growSeconds": 600,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 10,
-    "unlockLevel": 17
-  },
-  {
-    "cropId": "crop_orange",
-    "seedItemId": "seed_orange",
-    "yieldItemId": "crop_orange",
-    "growSeconds": 43200,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 460,
-    "unlockLevel": 18
-  },
-  {
-    "cropId": "crop_spinach",
-    "seedItemId": "seed_spinach",
-    "yieldItemId": "crop_spinach",
-    "growSeconds": 1800,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 30,
-    "unlockLevel": 19
-  },
-  {
-    "cropId": "crop_grape",
-    "seedItemId": "seed_grape",
-    "yieldItemId": "crop_grape",
-    "growSeconds": 21600,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 282,
-    "unlockLevel": 20
-  },
-  {
-    "cropId": "crop_cauliflower",
-    "seedItemId": "seed_cauliflower",
-    "yieldItemId": "crop_cauliflower",
-    "growSeconds": 7200,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 114,
-    "unlockLevel": 21
-  },
-  {
-    "cropId": "crop_lemon",
-    "seedItemId": "seed_lemon",
-    "yieldItemId": "crop_lemon",
-    "growSeconds": 28800,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 408,
-    "unlockLevel": 22
-  },
-  {
-    "cropId": "crop_peach",
-    "seedItemId": "seed_peach",
-    "yieldItemId": "crop_peach",
-    "growSeconds": 14400,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 236,
-    "unlockLevel": 23
-  },
-  {
-    "cropId": "crop_celery",
-    "seedItemId": "seed_celery",
-    "yieldItemId": "crop_celery",
-    "growSeconds": 3600,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 74,
-    "unlockLevel": 24
-  },
-  {
-    "cropId": "crop_banana",
-    "seedItemId": "seed_banana",
-    "yieldItemId": "crop_banana",
-    "growSeconds": 43200,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 692,
-    "unlockLevel": 25
-  },
-  {
-    "cropId": "crop_ginger",
-    "seedItemId": "seed_ginger",
-    "yieldItemId": "crop_ginger",
-    "growSeconds": 1800,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 45,
-    "unlockLevel": 26
-  },
-  {
-    "cropId": "crop_cherry",
-    "seedItemId": "seed_cherry",
-    "yieldItemId": "crop_cherry",
-    "growSeconds": 21600,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 424,
-    "unlockLevel": 27
-  },
-  {
-    "cropId": "crop_asparagus",
-    "seedItemId": "seed_asparagus",
-    "yieldItemId": "crop_asparagus",
-    "growSeconds": 7200,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 172,
-    "unlockLevel": 28
-  },
-  {
-    "cropId": "crop_blueberry",
-    "seedItemId": "seed_blueberry",
-    "yieldItemId": "crop_blueberry",
-    "growSeconds": 3600,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 99,
-    "unlockLevel": 29
-  },
-  {
-    "cropId": "crop_fig",
-    "seedItemId": "seed_fig",
-    "yieldItemId": "crop_fig",
-    "growSeconds": 28800,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 650,
-    "unlockLevel": 30
-  },
-  {
-    "cropId": "crop_artichoke",
-    "seedItemId": "seed_artichoke",
-    "yieldItemId": "crop_artichoke",
-    "growSeconds": 14400,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 376,
-    "unlockLevel": 31
-  },
-  {
-    "cropId": "crop_kiwi",
-    "seedItemId": "seed_kiwi",
-    "yieldItemId": "crop_kiwi",
-    "growSeconds": 21600,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 568,
-    "unlockLevel": 32
-  },
-  {
-    "cropId": "crop_blackberry",
-    "seedItemId": "seed_blackberry",
-    "yieldItemId": "crop_blackberry",
-    "growSeconds": 7200,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 230,
-    "unlockLevel": 33
-  },
-  {
-    "cropId": "crop_leek",
-    "seedItemId": "seed_leek",
-    "yieldItemId": "crop_leek",
-    "growSeconds": 1800,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 73,
-    "unlockLevel": 34
-  },
-  {
-    "cropId": "crop_mango",
-    "seedItemId": "seed_mango",
-    "yieldItemId": "crop_mango",
-    "growSeconds": 43200,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 1240,
-    "unlockLevel": 35
-  },
-  {
-    "cropId": "crop_pomegranate",
-    "seedItemId": "seed_pomegranate",
-    "yieldItemId": "crop_pomegranate",
-    "growSeconds": 28800,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 922,
-    "unlockLevel": 36
-  },
-  {
-    "cropId": "crop_melon",
-    "seedItemId": "seed_melon",
-    "yieldItemId": "crop_melon",
-    "growSeconds": 14400,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 533,
-    "unlockLevel": 37
-  },
-  {
-    "cropId": "crop_pineapple",
-    "seedItemId": "seed_pineapple",
-    "yieldItemId": "crop_pineapple",
-    "growSeconds": 43200,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 1477,
-    "unlockLevel": 38
-  },
-  {
-    "cropId": "crop_green_apple",
-    "seedItemId": "seed_green_apple",
-    "yieldItemId": "crop_green_apple",
-    "growSeconds": 21600,
-    "yieldMin": 1,
-    "yieldMax": 1,
-    "xp": 854,
-    "unlockLevel": 39
+    "xp": 120,
+    "unlockLevel": 5
   }
 ]

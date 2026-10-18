@@ -45,7 +45,7 @@ export function proratedBonus(
   return bonus;
 }
 
-/** Buff em vigor no instante `fc` (soma das magnitudes; ex.: Céu limpo/Exploração no despacho). */
+/** Buff em vigor no instante `fc` (soma das magnitudes; para efeitos instantâneos como Mercador). */
 export function activeMagnitude(
   windows: readonly BuffWindow[],
   buff: BuffKind,

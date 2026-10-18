@@ -1,5 +1,5 @@
 {
-  "provisionalArtMapping": false,
+  "provisionalArtMapping": true,
   "dropChancePerPlotHour": 0.0125,
   "rarityWeights": {
     "common": 55,
@@ -23,15 +23,15 @@
     {
       "kind": "gold",
       "name": "Ouro",
-      "description": "+50% de moedas (venda NPC) sobre o que for produzido durante a janela",
+      "description": "+50% de moedas (valor de venda NPC) sobre o que for produzido na janela",
       "instant": false,
       "artKey": "card/art_1",
       "iconKey": "buff/icon_1"
     },
     {
-      "kind": "bountiful",
+      "kind": "bountiful_harvest",
       "name": "Colheita farta",
-      "description": "+1 unidade por colheita (parte do cultivo dentro da janela)",
+      "description": "+1 unidade por colheita (proporcional à parte do cultivo na janela)",
       "instant": false,
       "artKey": "card/art_2",
       "iconKey": "buff/icon_2"
@@ -39,15 +39,15 @@
     {
       "kind": "animals",
       "name": "Animais",
-      "description": "+50% na produção animal durante a janela",
+      "description": "+50% de produção dos animais na janela",
       "instant": false,
       "artKey": "card/art_3",
       "iconKey": "buff/icon_3"
     },
     {
-      "kind": "xp",
-      "name": "XP",
-      "description": "+50% de XP sobre o que for produzido durante a janela",
+      "kind": "account_xp",
+      "name": "XP de conta",
+      "description": "+50% de XP de conta na janela",
       "instant": false,
       "artKey": "card/art_4",
       "iconKey": "buff/icon_4"
@@ -55,31 +55,31 @@
     {
       "kind": "fertilizer",
       "name": "Adubo",
-      "description": "avança na hora todos os canteiros em 30/45/60/75/90 min",
+      "description": "avança na hora todos os canteiros (segundos por raridade)",
       "instant": true,
       "artKey": "card/art_5",
       "iconKey": "buff/icon_5"
     },
     {
-      "kind": "clear_sky",
-      "name": "Céu limpo",
-      "description": "metade da chance de resultado ruim nas viagens que saírem na janela",
+      "kind": "farm_xp",
+      "name": "XP de fazenda",
+      "description": "+50% de XP de fazenda na janela",
       "instant": false,
       "artKey": "card/art_6",
       "iconKey": "buff/icon_6"
     },
     {
-      "kind": "lucky",
+      "kind": "luck",
       "name": "Sorte",
-      "description": "+100% de chance de carta",
+      "description": "+100% de chance de carta na janela",
       "instant": false,
       "artKey": "card/art_7",
       "iconKey": "buff/icon_7"
     },
     {
-      "kind": "exploration",
-      "name": "Exploração",
-      "description": "+50% no lucro acima do preço da loja e sem desgaste nas viagens que saírem na janela",
+      "kind": "merchant",
+      "name": "Mercador",
+      "description": "-25% no preço das sementes enquanto ativa",
       "instant": false,
       "artKey": "card/art_8",
       "iconKey": "buff/icon_8"
@@ -88,7 +88,6 @@
   "cards": [
     {
       "id": "card_gold_common",
-      "name": "Ouro (Comum)",
       "buff": "gold",
       "rarity": "common",
       "durationSeconds": 3600,
@@ -99,7 +98,6 @@
     },
     {
       "id": "card_gold_uncommon",
-      "name": "Ouro (Incomum)",
       "buff": "gold",
       "rarity": "uncommon",
       "durationSeconds": 5400,
@@ -110,7 +108,6 @@
     },
     {
       "id": "card_gold_rare",
-      "name": "Ouro (Rara)",
       "buff": "gold",
       "rarity": "rare",
       "durationSeconds": 7200,
@@ -121,7 +118,6 @@
     },
     {
       "id": "card_gold_epic",
-      "name": "Ouro (Épica)",
       "buff": "gold",
       "rarity": "epic",
       "durationSeconds": 9000,
@@ -132,7 +128,6 @@
     },
     {
       "id": "card_gold_legendary",
-      "name": "Ouro (Lendária)",
       "buff": "gold",
       "rarity": "legendary",
       "durationSeconds": 10800,
@@ -142,9 +137,8 @@
       "frameKey": "card/frame_legendary"
     },
     {
-      "id": "card_bountiful_common",
-      "name": "Colheita farta (Comum)",
-      "buff": "bountiful",
+      "id": "card_bountiful_harvest_common",
+      "buff": "bountiful_harvest",
       "rarity": "common",
       "durationSeconds": 3600,
       "magnitude": 1,
@@ -153,9 +147,8 @@
       "frameKey": "card/frame_common"
     },
     {
-      "id": "card_bountiful_uncommon",
-      "name": "Colheita farta (Incomum)",
-      "buff": "bountiful",
+      "id": "card_bountiful_harvest_uncommon",
+      "buff": "bountiful_harvest",
       "rarity": "uncommon",
       "durationSeconds": 5400,
       "magnitude": 1,
@@ -164,9 +157,8 @@
       "frameKey": "card/frame_uncommon"
     },
     {
-      "id": "card_bountiful_rare",
-      "name": "Colheita farta (Rara)",
-      "buff": "bountiful",
+      "id": "card_bountiful_harvest_rare",
+      "buff": "bountiful_harvest",
       "rarity": "rare",
       "durationSeconds": 7200,
       "magnitude": 1,
@@ -175,9 +167,8 @@
       "frameKey": "card/frame_rare"
     },
     {
-      "id": "card_bountiful_epic",
-      "name": "Colheita farta (Épica)",
-      "buff": "bountiful",
+      "id": "card_bountiful_harvest_epic",
+      "buff": "bountiful_harvest",
       "rarity": "epic",
       "durationSeconds": 9000,
       "magnitude": 1,
@@ -186,9 +177,8 @@
       "frameKey": "card/frame_epic"
     },
     {
-      "id": "card_bountiful_legendary",
-      "name": "Colheita farta (Lendária)",
-      "buff": "bountiful",
+      "id": "card_bountiful_harvest_legendary",
+      "buff": "bountiful_harvest",
       "rarity": "legendary",
       "durationSeconds": 10800,
       "magnitude": 1,
@@ -198,7 +188,6 @@
     },
     {
       "id": "card_animals_common",
-      "name": "Animais (Comum)",
       "buff": "animals",
       "rarity": "common",
       "durationSeconds": 3600,
@@ -209,7 +198,6 @@
     },
     {
       "id": "card_animals_uncommon",
-      "name": "Animais (Incomum)",
       "buff": "animals",
       "rarity": "uncommon",
       "durationSeconds": 5400,
@@ -220,7 +208,6 @@
     },
     {
       "id": "card_animals_rare",
-      "name": "Animais (Rara)",
       "buff": "animals",
       "rarity": "rare",
       "durationSeconds": 7200,
@@ -231,7 +218,6 @@
     },
     {
       "id": "card_animals_epic",
-      "name": "Animais (Épica)",
       "buff": "animals",
       "rarity": "epic",
       "durationSeconds": 9000,
@@ -242,7 +228,6 @@
     },
     {
       "id": "card_animals_legendary",
-      "name": "Animais (Lendária)",
       "buff": "animals",
       "rarity": "legendary",
       "durationSeconds": 10800,
@@ -252,9 +237,8 @@
       "frameKey": "card/frame_legendary"
     },
     {
-      "id": "card_xp_common",
-      "name": "XP (Comum)",
-      "buff": "xp",
+      "id": "card_account_xp_common",
+      "buff": "account_xp",
       "rarity": "common",
       "durationSeconds": 3600,
       "magnitude": 0.5,
@@ -263,9 +247,8 @@
       "frameKey": "card/frame_common"
     },
     {
-      "id": "card_xp_uncommon",
-      "name": "XP (Incomum)",
-      "buff": "xp",
+      "id": "card_account_xp_uncommon",
+      "buff": "account_xp",
       "rarity": "uncommon",
       "durationSeconds": 5400,
       "magnitude": 0.5,
@@ -274,9 +257,8 @@
       "frameKey": "card/frame_uncommon"
     },
     {
-      "id": "card_xp_rare",
-      "name": "XP (Rara)",
-      "buff": "xp",
+      "id": "card_account_xp_rare",
+      "buff": "account_xp",
       "rarity": "rare",
       "durationSeconds": 7200,
       "magnitude": 0.5,
@@ -285,9 +267,8 @@
       "frameKey": "card/frame_rare"
     },
     {
-      "id": "card_xp_epic",
-      "name": "XP (Épica)",
-      "buff": "xp",
+      "id": "card_account_xp_epic",
+      "buff": "account_xp",
       "rarity": "epic",
       "durationSeconds": 9000,
       "magnitude": 0.5,
@@ -296,9 +277,8 @@
       "frameKey": "card/frame_epic"
     },
     {
-      "id": "card_xp_legendary",
-      "name": "XP (Lendária)",
-      "buff": "xp",
+      "id": "card_account_xp_legendary",
+      "buff": "account_xp",
       "rarity": "legendary",
       "durationSeconds": 10800,
       "magnitude": 0.5,
@@ -308,7 +288,6 @@
     },
     {
       "id": "card_fertilizer_common",
-      "name": "Adubo (Comum)",
       "buff": "fertilizer",
       "rarity": "common",
       "durationSeconds": 0,
@@ -319,7 +298,6 @@
     },
     {
       "id": "card_fertilizer_uncommon",
-      "name": "Adubo (Incomum)",
       "buff": "fertilizer",
       "rarity": "uncommon",
       "durationSeconds": 0,
@@ -330,7 +308,6 @@
     },
     {
       "id": "card_fertilizer_rare",
-      "name": "Adubo (Rara)",
       "buff": "fertilizer",
       "rarity": "rare",
       "durationSeconds": 0,
@@ -341,7 +318,6 @@
     },
     {
       "id": "card_fertilizer_epic",
-      "name": "Adubo (Épica)",
       "buff": "fertilizer",
       "rarity": "epic",
       "durationSeconds": 0,
@@ -352,7 +328,6 @@
     },
     {
       "id": "card_fertilizer_legendary",
-      "name": "Adubo (Lendária)",
       "buff": "fertilizer",
       "rarity": "legendary",
       "durationSeconds": 0,
@@ -362,9 +337,8 @@
       "frameKey": "card/frame_legendary"
     },
     {
-      "id": "card_clear_sky_common",
-      "name": "Céu limpo (Comum)",
-      "buff": "clear_sky",
+      "id": "card_farm_xp_common",
+      "buff": "farm_xp",
       "rarity": "common",
       "durationSeconds": 3600,
       "magnitude": 0.5,
@@ -373,9 +347,8 @@
       "frameKey": "card/frame_common"
     },
     {
-      "id": "card_clear_sky_uncommon",
-      "name": "Céu limpo (Incomum)",
-      "buff": "clear_sky",
+      "id": "card_farm_xp_uncommon",
+      "buff": "farm_xp",
       "rarity": "uncommon",
       "durationSeconds": 5400,
       "magnitude": 0.5,
@@ -384,9 +357,8 @@
       "frameKey": "card/frame_uncommon"
     },
     {
-      "id": "card_clear_sky_rare",
-      "name": "Céu limpo (Rara)",
-      "buff": "clear_sky",
+      "id": "card_farm_xp_rare",
+      "buff": "farm_xp",
       "rarity": "rare",
       "durationSeconds": 7200,
       "magnitude": 0.5,
@@ -395,9 +367,8 @@
       "frameKey": "card/frame_rare"
     },
     {
-      "id": "card_clear_sky_epic",
-      "name": "Céu limpo (Épica)",
-      "buff": "clear_sky",
+      "id": "card_farm_xp_epic",
+      "buff": "farm_xp",
       "rarity": "epic",
       "durationSeconds": 9000,
       "magnitude": 0.5,
@@ -406,9 +377,8 @@
       "frameKey": "card/frame_epic"
     },
     {
-      "id": "card_clear_sky_legendary",
-      "name": "Céu limpo (Lendária)",
-      "buff": "clear_sky",
+      "id": "card_farm_xp_legendary",
+      "buff": "farm_xp",
       "rarity": "legendary",
       "durationSeconds": 10800,
       "magnitude": 0.5,
@@ -417,9 +387,8 @@
       "frameKey": "card/frame_legendary"
     },
     {
-      "id": "card_lucky_common",
-      "name": "Sorte (Comum)",
-      "buff": "lucky",
+      "id": "card_luck_common",
+      "buff": "luck",
       "rarity": "common",
       "durationSeconds": 3600,
       "magnitude": 1.0,
@@ -428,9 +397,8 @@
       "frameKey": "card/frame_common"
     },
     {
-      "id": "card_lucky_uncommon",
-      "name": "Sorte (Incomum)",
-      "buff": "lucky",
+      "id": "card_luck_uncommon",
+      "buff": "luck",
       "rarity": "uncommon",
       "durationSeconds": 5400,
       "magnitude": 1.0,
@@ -439,9 +407,8 @@
       "frameKey": "card/frame_uncommon"
     },
     {
-      "id": "card_lucky_rare",
-      "name": "Sorte (Rara)",
-      "buff": "lucky",
+      "id": "card_luck_rare",
+      "buff": "luck",
       "rarity": "rare",
       "durationSeconds": 7200,
       "magnitude": 1.0,
@@ -450,9 +417,8 @@
       "frameKey": "card/frame_rare"
     },
     {
-      "id": "card_lucky_epic",
-      "name": "Sorte (Épica)",
-      "buff": "lucky",
+      "id": "card_luck_epic",
+      "buff": "luck",
       "rarity": "epic",
       "durationSeconds": 9000,
       "magnitude": 1.0,
@@ -461,9 +427,8 @@
       "frameKey": "card/frame_epic"
     },
     {
-      "id": "card_lucky_legendary",
-      "name": "Sorte (Lendária)",
-      "buff": "lucky",
+      "id": "card_luck_legendary",
+      "buff": "luck",
       "rarity": "legendary",
       "durationSeconds": 10800,
       "magnitude": 1.0,
@@ -472,56 +437,51 @@
       "frameKey": "card/frame_legendary"
     },
     {
-      "id": "card_exploration_common",
-      "name": "Exploração (Comum)",
-      "buff": "exploration",
+      "id": "card_merchant_common",
+      "buff": "merchant",
       "rarity": "common",
       "durationSeconds": 3600,
-      "magnitude": 0.5,
+      "magnitude": 0.25,
       "artKey": "card/art_8",
       "iconKey": "buff/icon_8",
       "frameKey": "card/frame_common"
     },
     {
-      "id": "card_exploration_uncommon",
-      "name": "Exploração (Incomum)",
-      "buff": "exploration",
+      "id": "card_merchant_uncommon",
+      "buff": "merchant",
       "rarity": "uncommon",
       "durationSeconds": 5400,
-      "magnitude": 0.5,
+      "magnitude": 0.25,
       "artKey": "card/art_8",
       "iconKey": "buff/icon_8",
       "frameKey": "card/frame_uncommon"
     },
     {
-      "id": "card_exploration_rare",
-      "name": "Exploração (Rara)",
-      "buff": "exploration",
+      "id": "card_merchant_rare",
+      "buff": "merchant",
       "rarity": "rare",
       "durationSeconds": 7200,
-      "magnitude": 0.5,
+      "magnitude": 0.25,
       "artKey": "card/art_8",
       "iconKey": "buff/icon_8",
       "frameKey": "card/frame_rare"
     },
     {
-      "id": "card_exploration_epic",
-      "name": "Exploração (Épica)",
-      "buff": "exploration",
+      "id": "card_merchant_epic",
+      "buff": "merchant",
       "rarity": "epic",
       "durationSeconds": 9000,
-      "magnitude": 0.5,
+      "magnitude": 0.25,
       "artKey": "card/art_8",
       "iconKey": "buff/icon_8",
       "frameKey": "card/frame_epic"
     },
     {
-      "id": "card_exploration_legendary",
-      "name": "Exploração (Lendária)",
-      "buff": "exploration",
+      "id": "card_merchant_legendary",
+      "buff": "merchant",
       "rarity": "legendary",
       "durationSeconds": 10800,
-      "magnitude": 0.5,
+      "magnitude": 0.25,
       "artKey": "card/art_8",
       "iconKey": "buff/icon_8",
       "frameKey": "card/frame_legendary"

@@ -12,14 +12,9 @@ import type {
   Extraction,
   FarmClockSeconds,
   InventoryEntry,
-  ItemId,
-  PlotSlotId,
   PlotState,
   ProgressState,
   PublicProfile,
-  TripState,
-  VehicleId,
-  VehicleState,
   Wallet,
   WeatherKind,
 } from './models';
@@ -31,31 +26,9 @@ export type PanelId =
   | 'cards'
   | 'album'
   | 'extraction'
-  | 'plant'
-  | 'unlock'
-  | 'explore'
   | 'social'
   | 'settings'
   | 'offline-report';
-
-/** Parâmetros dos painéis. `plant`/`unlock` exigem `slotId`. */
-export type PanelParams = {
-  slotId?: PlotSlotId;
-  itemId?: ItemId;
-  vehicleId?: VehicleId;
-};
-
-export type OpenPanelPayload =
-  | { panel: 'plant' | 'unlock'; params: PanelParams & { slotId: PlotSlotId } }
-  | { panel: Exclude<PanelId, 'plant' | 'unlock'>; params?: PanelParams };
-
-/** Ação do jogador no mundo (para animação, som e tutorial). */
-export type FarmActionKind = 'harvest' | 'collect' | 'plant' | 'water';
-export interface FarmActionPayload {
-  kind: FarmActionKind;
-  slotId?: PlotSlotId;
-  animalId?: string;
-}
 export type ToastKind = 'info' | 'success' | 'warning' | 'error';
 
 export interface ClientEvents {
@@ -65,7 +38,7 @@ export interface ClientEvents {
   /** Itens cuja quantidade mudou (quantidade absoluta). Itens `card_*` = cópias no álbum. */
   'inventory:changed': { changes: InventoryEntry[]; gained?: InventoryEntry[] };
   'wallet:changed': Wallet & { bonusCoins?: number };
-  'xp:changed': ProgressState & { leveledUp: boolean };
+  'xp:changed': ProgressState & { leveledUp: boolean; accountLeveledUp: boolean };
   /** Cartas novas/alteradas (drop, uso). `dropped` = só as recém-ganhas. */
   'cards:changed': { changed: CardInstance[]; dropped: CardInstance[] };
   /** Lista completa de buffs em vigor. */
@@ -76,10 +49,7 @@ export interface ClientEvents {
   'weather:changed': { weather: WeatherKind };
   'event:night-start': { endsAt: EpochMs };
   'event:night-end': Record<string, never>;
-  'ui:open-panel': OpenPanelPayload;
-  'farm:action': FarmActionPayload;
-  /** Exploração mudou (despacho, volta, recolha, compra, conserto, melhoria). */
-  'explore:changed': { vehicle?: VehicleState; trip?: TripState; tripsToday?: number };
+  'ui:open-panel': { panel: PanelId; params?: Record<string, unknown> };
   'ui:toast': { kind: ToastKind; text: string };
   'api:error': { error: ApiError; op: string };
   'extraction:changed': { extraction: Extraction };
@@ -107,8 +77,6 @@ export const CLIENT_EVENT_NAMES = [
   'event:night-start',
   'event:night-end',
   'ui:open-panel',
-  'farm:action',
-  'explore:changed',
   'ui:toast',
   'api:error',
   'extraction:changed',
