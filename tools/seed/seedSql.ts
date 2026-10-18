@@ -9,6 +9,7 @@ import {
   NIGHT_EVENT,
   RARITIES,
   STARTER_KIT,
+  xpForLevel,
   type Catalog,
   type PlotSlotDef,
 } from '../../packages/shared/src/index';
@@ -18,7 +19,12 @@ export interface SeedInput {
   catalog?: Catalog;
   /** Ponte com a Steam ligada (STEAM_UNAVAILABLE quando false). */
   steamBridgeEnabled?: boolean;
+  /** Quantos níveis entram na tabela de XP (o servidor lê a curva daqui). */
+  levels?: number;
 }
+
+/** Níveis gravados na tabela de XP (sobra para os níveis reservados de ECONOMIA.md). */
+export const SEED_LEVELS = 100;
 
 function lit(v: unknown): string {
   if (v === null || v === undefined) return 'null';
@@ -195,6 +201,15 @@ export function generateSeedSql(input: SeedInput): string {
       },
     ],
     ['steam', { bridgeEnabled: input.steamBridgeEnabled ?? true }],
+    // curva de XP: xpForLevel[N-1] = XP total para atingir o nível N (vem de @vif/shared)
+    [
+      'levels',
+      {
+        xpForLevel: Array.from({ length: input.levels ?? SEED_LEVELS }, (_, i) =>
+          xpForLevel(i + 1),
+        ),
+      },
+    ],
   ];
   out.push(
     `insert into public.game_config (key, value) values\n` +

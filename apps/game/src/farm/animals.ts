@@ -1,6 +1,13 @@
 // Regras visuais dos animais (puro): raça/poses pelo atlas, cercado pelo habitat, produto pronto.
 
-import type { AnimalDef, AnimalState, FarmClockSeconds, Habitat, LayoutPen, Rect } from '@vif/shared';
+import type {
+  AnimalDef,
+  AnimalState,
+  FarmClockSeconds,
+  Habitat,
+  LayoutPen,
+  Rect,
+} from '@vif/shared';
 
 /** "animal_chicken" -> "chicken" */
 export function speciesOf(animalType: string): string {
@@ -9,9 +16,9 @@ export function speciesOf(animalType: string): string {
 
 export interface Breed {
   breed: string;
-  /** Poses paradas (pose_*/idle_*), trocadas de vez em quando. */
+  /** Poses paradas (pose_N e idle_N), trocadas de vez em quando. */
   frames: string[];
-  /** Ciclo de caminhada, se a arte tiver (walk_*; de lado olhando para a direita). Vazio = pulinho. */
+  /** Ciclo de caminhada, se a arte tiver (walk_N; de lado olhando para a direita). Vazio = pulinho. */
   walk: string[];
 }
 
@@ -23,7 +30,10 @@ const ANIMAL_FRAME_RE = /^([a-z]+(?:_[a-z]+)*)\/([a-z]+)(?:_([a-z]+))?_(\d+)$/;
  * "<entidade>/pose_<n>", "<entidade>/idle[_dir]_<n>" e "<entidade>/walk[_dir]_<n>".
  */
 export function breedsFor(species: string, frames: readonly string[]): Breed[] {
-  const by = new Map<string, { still: { n: number; f: string }[]; walk: { n: number; f: string; d: string }[] }>();
+  const by = new Map<
+    string,
+    { still: { n: number; f: string }[]; walk: { n: number; f: string; d: string }[] }
+  >();
   for (const f of frames) {
     const m = ANIMAL_FRAME_RE.exec(f);
     if (!m) continue;
@@ -41,7 +51,10 @@ export function breedsFor(species: string, frames: readonly string[]): Breed[] {
     // caminhada: prefere a de lado (espelhada para a esquerda)
     const dirs = new Set(g.walk.map((w) => w.d));
     const dir = dirs.has('side') ? 'side' : [...dirs][0];
-    const walk = g.walk.filter((w) => w.d === dir).sort((a, b) => a.n - b.n).map((w) => w.f);
+    const walk = g.walk
+      .filter((w) => w.d === dir)
+      .sort((a, b) => a.n - b.n)
+      .map((w) => w.f);
     const still = g.still.sort((a, b) => a.n - b.n).map((x) => x.f);
     const framesOut = still.length > 0 ? still : walk.slice(0, 1);
     return framesOut.length > 0 ? { breed, frames: framesOut, walk } : null;
@@ -77,13 +90,24 @@ export function penFor(habitat: Habitat | undefined, pens: readonly LayoutPen[])
 }
 
 /** Previsão de produtos prontos (o servidor decide na coleta). */
-export function readyProducts(a: AnimalState, def: AnimalDef | undefined, fc: FarmClockSeconds): number {
+export function readyProducts(
+  a: AnimalState,
+  def: AnimalDef | undefined,
+  fc: FarmClockSeconds,
+): number {
   if (!def) return 0;
-  return Math.max(0, Math.min(Math.floor((fc - a.lastCollectFc) / def.produceSeconds), def.maxStock));
+  return Math.max(
+    0,
+    Math.min(Math.floor((fc - a.lastCollectFc) / def.produceSeconds), def.maxStock),
+  );
 }
 
 /** Ponto aleatório dentro do retângulo, com margem (para os pés do animal). */
-export function randomPointIn(r: Rect, margin: number, rnd: () => number): { x: number; y: number } {
+export function randomPointIn(
+  r: Rect,
+  margin: number,
+  rnd: () => number,
+): { x: number; y: number } {
   const m = Math.min(margin, r.width / 2, r.height / 2);
   return { x: r.x + m + rnd() * (r.width - 2 * m), y: r.y + m + rnd() * (r.height - 2 * m) };
 }

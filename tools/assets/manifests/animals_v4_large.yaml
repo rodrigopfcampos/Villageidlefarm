@@ -1,0 +1,64 @@
+# Animais grandes v4 -> atlas_animals. RAÇA PRINCIPAL (prioridade sobre v2/v3): cow, pig, sheep, goat, alpaca.
+# Cada animal tem uma cor só: vaca holandesa (preta e branca), porco rosa, ovelha branca, cabra cinza, alpaca creme.
+# Colunas 1-5 = ciclo de caminhada olhando para a DIREITA (walk_0..4; para a esquerda use flipX).
+# Coluna 6 = pastando (graze_0). As raças antigas por cor (cow_holstein/pose_n etc.) continuam como variantes.
+sheet: animals_v4_large
+source: v4/animais_grandes.jpg
+category: animals
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: true, min_L: 0, max_ab: 5}
+halo_tolerance: 16
+restore_enclosed: {close: 2, min_dE: 4.5, shadow_ab: 5}
+min_piece_area: 300
+merge_distance: 14         # grama e migalhas na frente da boca (pose pastando)
+merge_big_area: 900
+merge_distance_big: 0
+rows: [6, 6, 6, 6, 6]
+scale:
+  mode: fit
+  margin: 2
+  factors: {large: 0.57}     # escala fixa: vaca ~63 px de largura (mesmo tamanho dos animais v2/v3 no mapa)
+quantize: 32
+frame: {size: [80, 64], anchor: bottom}
+groups:
+  large: {entities: [cow, pig, sheep, goat, alpaca], size: [80, 64]}
+aliases:                     # nomes antigos usados pelo código
+  cow/idle_0: cow/walk_0
+  pig/idle_0: pig/walk_0
+  sheep/idle_0: sheep/walk_0
+  goat/idle_0: goat/walk_0
+  alpaca/idle_0: alpaca/walk_0
+names:
+  - cow/walk_0
+  - cow/walk_1
+  - cow/walk_2
+  - cow/walk_3
+  - cow/walk_4
+  - cow/graze_0
+  - pig/walk_0
+  - pig/walk_1
+  - pig/walk_2
+  - pig/walk_3
+  - pig/walk_4
+  - pig/graze_0
+  - sheep/walk_0
+  - sheep/walk_1
+  - sheep/walk_2
+  - sheep/walk_3
+  - sheep/walk_4
+  - sheep/graze_0
+  - goat/walk_0
+  - goat/walk_1
+  - goat/walk_2
+  - goat/walk_3
+  - goat/walk_4
+  - goat/graze_0
+  - alpaca/walk_0
+  - alpaca/walk_1
+  - alpaca/walk_2
+  - alpaca/walk_3
+  - alpaca/walk_4
+  - alpaca/graze_0

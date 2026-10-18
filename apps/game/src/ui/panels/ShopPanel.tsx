@@ -9,7 +9,6 @@ import { formatDurationShort } from '../format';
 import { animalBuyCheck, buyCheck } from '../rules';
 import { animalFrames } from '../sprites';
 import { STR, animalName, errorMessage, itemName } from '../strings';
-import { merchantDiscount } from './PlotPanels';
 
 type ShopTab = 'seeds' | 'animals';
 
@@ -21,9 +20,8 @@ export function ShopPanel() {
   const ui = useUi();
   useBus(['wallet:changed', 'inventory:changed', 'xp:changed', 'buffs:changed', 'animal:updated']);
   const [tab, setTab] = useState<ShopTab>('seeds');
-  const discount = merchantDiscount(ui.s);
   return (
-    <Panel title={STR.shop.title} onClose={ui.close} width={760}>
+    <Panel title={STR.shop.title} onClose={ui.close} width={900}>
       <div class="vif-shop-top">
         <Tabs
           tabs={[
@@ -37,14 +35,11 @@ export function ShopPanel() {
           {STR.you_have} <Coins n={ui.s.store.wallet.coins} />
         </span>
       </div>
-      {discount > 0 && tab === 'seeds' && (
-        <p class="vif-tag vif-tag--gold">{STR.shop.merchant(Math.round(discount * 100))}</p>
-      )}
       <ul class="vif-list">
         {tab === 'seeds'
           ? ITEMS.filter((i) => i.shopBuyable && i.kind === 'seed')
               .sort((a, b) => seedUnlockLevel(a) - seedUnlockLevel(b) || a.basePrice - b.basePrice)
-              .map((item) => <SeedRow key={item.id} item={item} discount={discount} />)
+              .map((item) => <SeedRow key={item.id} item={item} />)
           : [...ANIMALS]
               .sort((a, b) => a.unlockLevel - b.unlockLevel)
               .map((def) => <AnimalRow key={def.animalType} def={def} />)}
@@ -53,7 +48,7 @@ export function ShopPanel() {
   );
 }
 
-function SeedRow({ item, discount }: { item: ItemDef; discount: number }) {
+function SeedRow({ item }: { item: ItemDef }) {
   const ui = useUi();
   const { store, api } = ui.s;
   const [qty, setQty] = useState(1);
@@ -64,10 +59,9 @@ function SeedRow({ item, discount }: { item: ItemDef; discount: number }) {
     coins: store.wallet.coins,
     level: store.progress.level,
     unlockLevel: unlock,
-    merchantDiscount: discount,
   });
   const locked = check.reason === 'LEVEL_TOO_LOW';
-  const unit = buyCheck(item, 1, { coins: Infinity, level: Infinity, merchantDiscount: discount }).total;
+  const unit = item.basePrice;
   const maxAfford = Math.max(1, Math.min(999, Math.floor(store.wallet.coins / Math.max(1, unit))));
 
   const buy = async () => {

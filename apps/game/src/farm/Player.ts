@@ -1,8 +1,13 @@
 // Jogador: sprite do fazendeiro/fazendeira, andar (teclado ou caminho), ações animadas.
 
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 import type { Point, Rect } from '@vif/shared';
-import { FX_TEXTURES, animKey, ensureCharacterAnims, type PlayerCharacter } from '../scenes/Preload';
+import {
+  FX_TEXTURES,
+  animKey,
+  ensureCharacterAnims,
+  type PlayerCharacter,
+} from '../scenes/Preload';
 import { facingFrom, resolveAnim, type CharAction, type Facing } from './animKeys';
 import { entityDepth } from './buildings';
 import { PLAYER_FOOT, slideMove, type Collider } from './pathfinding';

@@ -1,0 +1,64 @@
+# Animais pequenos v4 -> atlas_animals. RAÇA PRINCIPAL: chicken (marrom), duck (marreco), goose (branco),
+# rabbit (branco), turkey (bronze). Colunas 1-5 = caminhada olhando para a DIREITA (walk_0..4; coelho: pulando;
+# o 5º quadro da galinha/pato/ganso/coelho é de pé, quase parado). Coluna 6 = comendo/bicando (graze_0).
+sheet: animals_v4_small
+source: v4/animais_pequenos.jpg
+category: animals
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: true, min_L: 0, max_ab: 5}
+halo_tolerance: 16
+restore_enclosed: {close: 2, min_dE: 4.5, shadow_ab: 5}
+min_piece_area: 300
+merge_distance: 14         # grama e migalhas na frente da boca (pose pastando)
+merge_big_area: 900
+merge_distance_big: 0
+rows: [6, 6, 6, 6, 6]
+scale:
+  mode: fit
+  margin: 2
+  factors: {small: 0.38, medium: 0.5}   # galinha ~25 px, ganso ~35 px (como v2/v3)
+quantize: 32
+frame: {size: [32, 36], anchor: bottom}
+groups:
+  small: {entities: [chicken, duck, rabbit], size: [32, 36]}
+  medium: {entities: [goose, turkey], size: [48, 48]}
+aliases:
+  chicken/idle_0: chicken/walk_0
+  duck/idle_0: duck/walk_0
+  goose/idle_0: goose/walk_0
+  rabbit/idle_0: rabbit/walk_0
+  turkey/idle_0: turkey/walk_0
+names:
+  - chicken/walk_0
+  - chicken/walk_1
+  - chicken/walk_2
+  - chicken/walk_3
+  - chicken/walk_4
+  - chicken/graze_0
+  - duck/walk_0
+  - duck/walk_1
+  - duck/walk_2
+  - duck/walk_3
+  - duck/walk_4
+  - duck/graze_0
+  - goose/walk_0
+  - goose/walk_1
+  - goose/walk_2
+  - goose/walk_3
+  - goose/walk_4
+  - goose/graze_0
+  - rabbit/walk_0
+  - rabbit/walk_1
+  - rabbit/walk_2
+  - rabbit/walk_3
+  - rabbit/walk_4
+  - rabbit/graze_0
+  - turkey/walk_0
+  - turkey/walk_1
+  - turkey/walk_2
+  - turkey/walk_3
+  - turkey/walk_4
+  - turkey/graze_0

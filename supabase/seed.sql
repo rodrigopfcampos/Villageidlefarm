@@ -144,5 +144,6 @@ insert into public.game_config (key, value) values
   ('night_event', '{"startHour":19,"endHour":21,"speedMult":1.5,"requiredSeconds":1800,"presenceWindowSeconds":300}'::jsonb),
   ('starter', '{"coins":100,"gems":0,"items":[{"itemId":"seed_carrot","qty":5}]}'::jsonb),
   ('cards', '{"dropChancePerPlotHour":0.0125,"rarityWeights":{"common":55,"uncommon":27,"rare":12,"epic":5,"legendary":1},"durationSeconds":{"common":3600,"uncommon":5400,"rare":7200,"epic":9000,"legendary":10800},"album":{"slots":40,"lineBonusPercent":2}}'::jsonb),
-  ('steam', '{"bridgeEnabled":true}'::jsonb)
+  ('steam', '{"bridgeEnabled":true}'::jsonb),
+  ('levels', '{"xpForLevel":[0,50,150,300,500,750,1050,1400,1800,2250,2750,3300,3900,4550,5250,6000,6800,7650,8550,9500,10500,11550,12650,13800,15000,16250,17550,18900,20300,21750,23250,24800,26400,28050,29750,31500,33300,35150,37050,39000,41000,43050,45150,47300,49500,51750,54050,56400,58800,61250,63750,66300,68900,71550,74250,77000,79800,82650,85550,88500,91500,94550,97650,100800,104000,107250,110550,113900,117300,120750,124250,127800,131400,135050,138750,142500,146300,150150,154050,158000,162000,166050,170150,174300,178500,182750,187050,191400,195800,200250,204750,209300,213900,218550,223250,228000,232800,237650,242550,247500]}'::jsonb)
 on conflict (key) do update set value = excluded.value;

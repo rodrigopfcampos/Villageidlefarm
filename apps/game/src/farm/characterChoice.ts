@@ -8,7 +8,9 @@ const KEY = 'vif.character';
 export function loadCharacter(): PlayerCharacter | null {
   try {
     const v = localStorage.getItem(KEY);
-    return (PLAYER_CHARACTERS as readonly string[]).includes(v ?? '') ? (v as PlayerCharacter) : null;
+    return (PLAYER_CHARACTERS as readonly string[]).includes(v ?? '')
+      ? (v as PlayerCharacter)
+      : null;
   } catch {
     return null;
   }

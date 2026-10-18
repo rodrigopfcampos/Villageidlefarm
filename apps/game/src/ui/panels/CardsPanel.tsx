@@ -17,7 +17,7 @@ import { Bar, Button, CardView, Glyph, Panel, Sprite, Tabs } from '../components
 import { useBus, useUi, useWindowHeight } from '../context';
 import { formatCountdown, formatDurationShort } from '../format';
 import { buffRemaining, cardActivateCheck, cardSlots } from '../rules';
-import { BUFF_NAMES, RARITY_NAMES, STR, buffEffectText, cardName, errorMessage } from '../strings';
+import { RARITY_NAMES, STR, buffDescription, buffName, cardName, errorMessage } from '../strings';
 
 type Tab = 'cards' | 'album';
 
@@ -126,9 +126,9 @@ function CardsTab() {
           <p class="vif-muted">{STR.cards.pick}</p>
         ) : (
           <div class="vif-carddetail">
-            <p class="vif-strong vif-big">{BUFF_NAMES[def.buff]}</p>
+            <p class="vif-strong vif-big">{buffName(def.buff)}</p>
             <p class={`vif-rarity vif-rarity--${def.rarity}`}>{RARITY_NAMES[def.rarity]}</p>
-            <p>{buffEffectText(def.buff, def.magnitude, formatDurationShort(def.magnitude))}</p>
+            <p>{buffDescription(def.buff)}</p>
             <dl class="vif-kv">
               <dt>{STR.cards.duration}</dt>
               <dd>{def.durationSeconds > 0 ? formatDurationShort(def.durationSeconds) : STR.cards.instant}</dd>
@@ -157,13 +157,13 @@ function AlbumTab() {
   const ui = useUi();
   const { store, api } = ui.s;
   useBus(['inventory:changed', 'farm:snapshot']);
-  // Mostra na hora pelo inventário (cópias = itens card_*) e troca pela resposta do servidor.
+  // O álbum é permanente (retirar para a Steam não esvazia): vale o servidor; o inventário só
+  // adianta na hora as cartas que acabaram de ser usadas.
   const local = buildAlbum((id) => store.qty(id));
   const [server, setServer] = useState<Album | null>(null);
   const invVersion = [...store.inventory.entries()].filter(([k]) => k.startsWith('card_')).join();
   useEffect(() => {
     let alive = true;
-    setServer(null);
     void api.albumGet().then(
       (a) => alive && setServer(a),
       () => undefined,
@@ -172,7 +172,7 @@ function AlbumTab() {
       alive = false;
     };
   }, [api, invVersion]);
-  const album = server ?? local;
+  const album = server ? mergeAlbum(server, local) : local;
   const have = album.slots.filter((s) => s.copies > 0).length;
   const pct = CARDS_CONFIG.album.lineBonusPercent;
   const cardH = useWindowHeight() < 900 ? 74 : 104;
@@ -200,7 +200,7 @@ function AlbumTab() {
               <header class="vif-album__head">
                 <span class="vif-album__buff">
                   <Sprite frames={[icon]} box={24} />
-                  {BUFF_NAMES[b]}
+                  {buffName(b)}
                 </span>
                 {done ? (
                   <span class="vif-album__bonus vif-album__bonus--on">
@@ -239,4 +239,17 @@ function AlbumTab() {
       </div>
     </div>
   );
+}
+
+/** Espaço cheio se o servidor OU o inventário local diz que sim; bônus pelas linhas completas. */
+export function mergeAlbum(server: Album, local: Album): Album {
+  const localById = new Map(local.slots.map((x) => [x.cardId, x.copies]));
+  const slots = server.slots.map((x) => ({ ...x, copies: Math.max(x.copies, localById.get(x.cardId) ?? 0) }));
+  const completedLines = BUFF_KINDS.filter((b) => {
+    const row = slots.filter((x) => x.buff === b);
+    return row.length > 0 && row.every((x) => x.copies > 0);
+  });
+  const bonusPercent: Album['bonusPercent'] = { ...server.bonusPercent };
+  for (const b of completedLines) bonusPercent[b] ??= CARDS_CONFIG.album.lineBonusPercent;
+  return { slots, completedLines, bonusPercent };
 }

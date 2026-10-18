@@ -3,7 +3,6 @@
 
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import {
-  CARDS_BY_ID,
   ECONOMY,
   ITEMS_BY_ID,
   type Extraction,
@@ -53,7 +52,6 @@ export function ExtractionPanel({ initialItem }: { initialItem?: ItemId }) {
   const check = extractionCheck(selItem, { have, level, quota, steamUnavailable: ui.steamUnavailable });
   const waitS = nextSlotSeconds(quota, serverNow);
   const tz = store.profile?.timezone ?? 'UTC';
-  const lastCopy = !!sel && CARDS_BY_ID.has(sel) && have === 1;
 
   const send = async () => {
     if (!sel) return;
@@ -137,11 +135,6 @@ export function ExtractionPanel({ initialItem }: { initialItem?: ItemId }) {
                   <span class="vif-confirm__text">
                     <span class="vif-strong">{STR.steam.confirmTitle}</span>
                     <span>{STR.steam.confirmText(itemName(sel))}</span>
-                    {lastCopy && (
-                      <span class="vif-warn">
-                        <Glyph name="warn" /> {STR.steam.lastCopy}
-                      </span>
-                    )}
                   </span>
                   <Button variant="flat" onClick={() => setConfirming(false)}>
                     {STR.cancel}

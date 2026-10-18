@@ -48,7 +48,8 @@ export class PlotsView {
     defs: readonly LayoutPlot[],
     private readonly levelOf: () => number,
   ) {
-    this.has = (atlas, frame) => scene.textures.exists(atlas) && scene.textures.get(atlas).has(frame);
+    this.has = (atlas, frame) =>
+      scene.textures.exists(atlas) && scene.textures.get(atlas).has(frame);
     for (const def of defs) this.plots.set(def.slotId, this.createPlot(def));
     this.tooltip = scene.add
       .text(0, 0, '', {
@@ -81,7 +82,17 @@ export class PlotsView {
       .setStrokeStyle(2, 0xfff2a8, 0.9)
       .setDepth(DEPTH.ground + 2)
       .setVisible(false);
-    return { def, soil, plants: [], sign: null, glow: null, sparkles: [], highlight, sig: '', visual: null };
+    return {
+      def,
+      soil,
+      plants: [],
+      sign: null,
+      glow: null,
+      sparkles: [],
+      highlight,
+      sig: '',
+      visual: null,
+    };
   }
 
   slotAt(x: number, y: number): string | null {
@@ -234,7 +245,12 @@ export class PlotsView {
       .setResolution(2);
     parts.push(priceText);
     if (this.has('atlas_ui', 'ui/coin')) {
-      const coin = this.scene.add.image(priceText.x - priceText.width / 2 - 9, -38, 'atlas_ui', 'ui/coin');
+      const coin = this.scene.add.image(
+        priceText.x - priceText.width / 2 - 9,
+        -38,
+        'atlas_ui',
+        'ui/coin',
+      );
       coin.setScale(0.4);
       parts.push(coin);
     }
@@ -264,7 +280,10 @@ export class PlotsView {
     }
     let text = '';
     if (v.kind === 'locked') {
-      text = this.levelOf() >= p.def.unlockLevel ? `Liberar: ${p.def.unlockCost} moedas` : `Nível ${p.def.unlockLevel} • ${p.def.unlockCost} moedas`;
+      text =
+        this.levelOf() >= p.def.unlockLevel
+          ? `Liberar: ${p.def.unlockCost} moedas`
+          : `Nível ${p.def.unlockLevel} • ${p.def.unlockCost} moedas`;
     } else if (v.kind === 'empty') text = 'Plantar';
     else if (v.kind === 'ready') text = 'Pronto! Clique para colher';
     else text = `Falta ${formatDuration(v.remaining)}`;

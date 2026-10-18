@@ -4,18 +4,12 @@
 // até a Steam confirmar; sorteios usam outra fonte de aleatoriedade) o teste aceita os dois.
 
 import { afterAll, describe, expect, it } from 'vitest';
-import {
-  ApiError,
-  CARDS,
-  ECONOMY,
-  RARITIES,
-  type ErrorCode,
-  type InventoryEntry,
-} from '@vif/shared';
+import { ApiError, ECONOMY, RARITIES, type ErrorCode, type InventoryEntry } from '@vif/shared';
 import { startTestDb } from './support/db';
 import {
   mockHarness,
   serverHarness,
+  type Harness,
   type HarnessFactory,
   type HarnessOptions,
 } from './support/harness';
@@ -28,6 +22,16 @@ afterAll(async () => {
 async function expectCode(p: Promise<unknown>, code: ErrorCode) {
   await expect(p).rejects.toBeInstanceOf(ApiError);
   await expect(p).rejects.toMatchObject({ code });
+}
+
+/** Usa as 5 cartas de Ouro (uma por vez, esperando cada janela acabar) para completar a linha. */
+async function useGoldLine(h: Harness) {
+  for (const r of RARITIES) {
+    const c = await h.grantCard(`card_gold_${r}`);
+    await h.api.cardActivate({ instanceId: c.id, requestId: h.rid() });
+    h.clock.advanceSeconds(3 * 3600);
+    await h.api.heartbeat();
+  }
 }
 
 const rich = (items: InventoryEntry[] = []) => ({ coins: 1_000_000, items });
@@ -495,15 +499,13 @@ for (const [name, factory] of targets) {
       expect(r2.plots!.every((p) => p.readyFc === p.plantedFc)).toBe(true);
     });
 
-    it('Mercador: −25% nas sementes enquanto ativo (arredonda para cima)', async () => {
+    it('Mercador foi removido (ECONOMIA.md): a loja cobra o preço cheio', async () => {
       const h = await rules();
       const m = await h.grantCard('card_merchant_common');
       await h.api.cardActivate({ instanceId: m.id, requestId: h.rid() });
       const r = await h.api.shopBuy({ itemId: 'seed_carrot', qty: 5, requestId: h.rid() });
-      expect(r.wallet!.coins).toBe(100 - 15);
-      h.clock.advanceSeconds(3600);
-      const r2 = await h.api.shopBuy({ itemId: 'seed_carrot', qty: 5, requestId: h.rid() });
-      expect(r2.wallet!.coins).toBe(85 - 20);
+      // a mock (A0) ainda dá o desconto antigo de 25%
+      expect(r.wallet!.coins).toBe(h.kind === 'mock' ? 100 - 15 : 100 - 20);
     });
 
     it('Colheita farta (+1) e XP de fazenda (+50%) com a janela cobrindo todo o cultivo', async () => {
@@ -516,16 +518,14 @@ for (const [name, factory] of targets) {
       h.clock.advanceSeconds(3600);
       const r = await h.api.harvest({ slotId: 'plot_01', requestId: h.rid() });
       expect(r.gained).toEqual([{ itemId: 'crop_strawberry', qty: 2 }]);
-      expect(r.xp!.accountXp).toBe(21);
       expect([31, 32]).toContain(r.xp!.xp); // 21 × 1,5 = 31,5 (arredondamento estocástico)
+      // XP único (ECONOMIA.md): "XP de conta" = XP da fazenda. A mock ainda tem dois trilhos.
+      if (h.kind === 'server') expect(r.xp!.accountXp).toBe(r.xp!.xp);
     });
 
     it('álbum: 40 espaços; linha completa dá +2% permanente', async () => {
-      const goldCards = CARDS.filter((c) => c.buff === 'gold').map((c) => ({
-        itemId: c.id,
-        qty: 1,
-      }));
-      const h = await rules({ starter: { coins: 0, items: goldCards } });
+      const h = await rules();
+      await useGoldLine(h);
       const album = await h.api.albumGet();
       expect(album.slots).toHaveLength(40);
       expect(album.completedLines).toEqual(['gold']);
@@ -543,8 +543,8 @@ for (const [name, factory] of targets) {
     });
 
     it('bônus de Ouro do álbum (+2%) aparece em média nas colheitas', async () => {
-      const goldCards = RARITIES.map((r) => ({ itemId: `card_gold_${r}`, qty: 1 }));
-      const h = await rules({ starter: rich([...goldCards]) });
+      const h = await rules({ starter: rich() });
+      await useGoldLine(h);
       let bonus = 0;
       for (let i = 0; i < 200; i++) {
         await h.api.shopBuy({ itemId: 'seed_carrot', qty: 1, requestId: h.rid() });
@@ -757,7 +757,7 @@ for (const [name, factory] of targets) {
         expect(await api.extractionQuota()).toMatchObject({ used: 0, nextSlotAt: null });
       });
 
-      it('carta usada pode sair (e some do álbum); carta não usada não', async () => {
+      it('carta usada pode sair (o álbum fica); carta não usada não', async () => {
         const h = await rules(lvl5);
         const c = await h.grantCard('card_gold_epic');
         await expectCode(
@@ -767,7 +767,10 @@ for (const [name, factory] of targets) {
         await h.api.cardActivate({ instanceId: c.id, requestId: h.rid() });
         await h.api.extractionRequest({ itemId: 'card_gold_epic', qty: 1, requestId: h.rid() });
         const album = await h.api.albumGet();
-        expect(album.slots.find((s) => s.cardId === 'card_gold_epic')?.copies).toBe(0);
+        // álbum permanente (ECONOMIA.md): retirar a cópia não esvazia o espaço. A mock ainda esvazia.
+        expect(album.slots.find((s) => s.cardId === 'card_gold_epic')?.copies).toBe(
+          h.kind === 'mock' ? 0 : 1,
+        );
       });
 
       it('volta da Steam: consome o item Steam e devolve ao jogo (idempotente)', async () => {

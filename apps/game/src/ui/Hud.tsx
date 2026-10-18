@@ -6,7 +6,7 @@ import { Bar, Button, Coins, Sprite } from './components';
 import { useBus, useUi } from './context';
 import { formatClock, formatCountdown, formatDurationShort, formatMinutesFloor } from './format';
 import { buffRemaining, nightEventView, xpView } from './rules';
-import { BUFF_NAMES, RARITY_NAMES, STR, cardName } from './strings';
+import { RARITY_NAMES, STR, buffName, cardName } from './strings';
 
 export function Hud() {
   const ui = useUi();
@@ -110,11 +110,14 @@ export function Hud() {
                   type="button"
                   key={b.instanceId}
                   class={`vif-buff vif-buff--${b.rarity}`}
-                  title={`${BUFF_NAMES[b.buff]} (${RARITY_NAMES[b.rarity]}) — ${STR.cards.remaining(formatDurationShort(left))}`}
+                  title={`${buffName(b.buff)} (${RARITY_NAMES[b.rarity]}) — ${STR.cards.remaining(formatDurationShort(left))}`}
                   onClick={() => ui.open({ id: 'cards' })}
                 >
-                  <Sprite frames={[def?.iconKey ?? '']} box={28} fallback={BUFF_NAMES[b.buff].slice(0, 2)} />
-                  <span class="vif-buff__time">{formatCountdown(left)}</span>
+                  <Sprite frames={[def?.iconKey ?? '']} box={28} fallback={buffName(b.buff).slice(0, 2)} />
+                  <span class="vif-buff__txt">
+                    <span class="vif-buff__name">{buffName(b.buff)}</span>
+                    <span class="vif-buff__time">{formatCountdown(left)}</span>
+                  </span>
                 </button>
               );
             })

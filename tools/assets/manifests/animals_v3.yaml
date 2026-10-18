@@ -104,17 +104,7 @@ overrides:
   rabbit_gray/pose_0:
     clip_box: [845, 470, 925, 516]                          # tira as penas do peru de baixo
 aliases:
-  cow/idle_0: cow_holstein/pose_0
-  chicken/idle_0: chicken_brown/pose_0
-  pig/idle_0: pig_pink/pose_0
-  sheep/idle_0: sheep_white/pose_0
-  goat/idle_0: goat_gray/pose_0
-  duck/idle_0: duck_mallard/pose_0
-  duck/swim_0: duck_mallard/pose_3
-  goose/idle_0: goose_white/pose_0
-  alpaca/idle_0: alpaca_cream/pose_0
-  rabbit/idle_0: rabbit_white/pose_0
-  turkey/idle_0: turkey_bronze/pose_0
+  duck/swim_0: duck_mallard/pose_3   # os outros apelidos antigos (cow/idle_0...) agora apontam para a v4
 names:
   - chicken_brown/pose_0
   - chicken_brown/pose_1

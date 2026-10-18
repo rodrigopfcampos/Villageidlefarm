@@ -1,0 +1,78 @@
+# Sementes + estágios (v4) -> icon/seed_<nome> (atlas_icons, 32x32) e crop/<nome>_0..3 (atlas_crops).
+# Cada linha: pacotinho de semente, broto (0), crescendo (1), florido/quase (2), pronto para colher (3).
+# Ordem das linhas: melon, watermelon, pineapple, pear, lemon, mango, fig, kiwi, pomegranate.
+# Escala dos estágios: fator fixo 1.1 (a folha tem ~1 px por pixel de arte; ampliar mais borraria), o maior
+# estágio fica com ~100-140 px e cabe num canteiro (~135x125). Âncora na base (0.5, 1) = pé da planta.
+sheet: crops_fruits_2
+source: v4/frutas_2.jpg
+category: crops
+entity_category: {icon: icons}
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: false}
+hole_area: 0
+halo_tolerance: 10
+restore_enclosed: {close: 3, min_dE: 3, shadow_ab: 2}   # terra escura embaixo da planta é quase da cor do fundo
+min_piece_area: 120
+merge_distance: 12          # folhas, frutos e flores soltos
+merge_big_area: 800
+merge_distance_big: 0
+rows: [5, 5, 5, 5, 5, 5, 5, 5, 5]
+scale:
+  mode: fit
+  margin: 2
+  each: [icon]
+  factors: {crop: 1.1}
+quantize: 48
+frame: {size: [144, 120], anchor: bottom}
+groups:
+  icon: {size: [32, 32]}
+  crop: {size: [144, 120]}
+names:
+  - icon/seed_melon
+  - crop/melon_0
+  - crop/melon_1
+  - crop/melon_2
+  - crop/melon_3
+  - icon/seed_watermelon
+  - crop/watermelon_0
+  - crop/watermelon_1
+  - crop/watermelon_2
+  - crop/watermelon_3
+  - icon/seed_pineapple
+  - crop/pineapple_0
+  - crop/pineapple_1
+  - crop/pineapple_2
+  - crop/pineapple_3
+  - icon/seed_pear
+  - crop/pear_0
+  - crop/pear_1
+  - crop/pear_2
+  - crop/pear_3
+  - icon/seed_lemon
+  - crop/lemon_0
+  - crop/lemon_1
+  - crop/lemon_2
+  - crop/lemon_3
+  - icon/seed_mango
+  - crop/mango_0
+  - crop/mango_1
+  - crop/mango_2
+  - crop/mango_3
+  - icon/seed_fig
+  - crop/fig_0
+  - crop/fig_1
+  - crop/fig_2
+  - crop/fig_3
+  - icon/seed_kiwi
+  - crop/kiwi_0
+  - crop/kiwi_1
+  - crop/kiwi_2
+  - crop/kiwi_3
+  - icon/seed_pomegranate
+  - crop/pomegranate_0
+  - crop/pomegranate_1
+  - crop/pomegranate_2
+  - crop/pomegranate_3

@@ -55,7 +55,11 @@ begin
     v_active_buffs := private.active_buffs_json(v_uid, s.farm_clock);
   end if;
   update public.card_instances x set status = 'used', used_at = v_now where x.id = c.id returning * into c;
-  v_inv := private.add_item(v_uid, d.id, 1, request_id); -- vira cópia no álbum
+  -- entra no álbum para sempre + 1 cópia (item card_*) que pode ir para a Steam
+  insert into public.album_entries as a (player_id, card_id, copies, first_at)
+  values (v_uid, d.id, 1, v_now)
+  on conflict (player_id, card_id) do update set copies = a.copies + 1;
+  v_inv := private.add_item(v_uid, d.id, 1, request_id);
   perform private.ledger_note(v_uid, request_id, jsonb_build_object('cardInstanceId', c.id, 'cardId', d.id));
   res := private.base_json(s) || jsonb_build_object(
     'cards', jsonb_build_array(private.card_json(c)),
@@ -71,7 +75,8 @@ begin
 end
 $$;
 
--- Álbum: 40 espaços; cheio se houver >= 1 cópia; linha completa → bônus permanente. Leitura pura.
+-- Álbum: 1 espaço por carta do catálogo; cheio se a carta já foi usada alguma vez (permanente: retirar
+-- a cópia para a Steam não esvazia); linha completa → bônus permanente. Leitura pura.
 create or replace function public.album_get()
 returns jsonb
 language plpgsql
@@ -85,9 +90,9 @@ declare
 begin
   return jsonb_build_object(
     'slots', (select coalesce(jsonb_agg(jsonb_build_object('cardId', d.id, 'buff', d.buff, 'rarity', d.rarity,
-                                                           'copies', coalesce(i.qty, 0)) order by d.sort_order), '[]'::jsonb)
+                                                           'copies', coalesce(a.copies, 0)) order by d.sort_order), '[]'::jsonb)
                 from public.card_defs d
-                left join public.inventory i on i.player_id = v_uid and i.item_id = d.id),
+                left join public.album_entries a on a.player_id = v_uid and a.card_id = d.id),
     'completedLines', (select coalesce(jsonb_agg(c.buff), '[]'::jsonb) from private.album_completed(v_uid) c),
     'bonusPercent', (select coalesce(jsonb_object_agg(c.buff, v_pct), '{}'::jsonb) from private.album_completed(v_uid) c));
 end

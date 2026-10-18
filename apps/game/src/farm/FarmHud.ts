@@ -3,7 +3,12 @@
 // Os painéis de verdade (HUD, loja, cartas…) são DOM do agente Interface (A5).
 
 import Phaser from 'phaser';
-import { PLAYER_CHARACTERS, animKey, ensureCharacterAnims, type PlayerCharacter } from '../scenes/Preload';
+import {
+  PLAYER_CHARACTERS,
+  animKey,
+  ensureCharacterAnims,
+  type PlayerCharacter,
+} from '../scenes/Preload';
 
 export const FARM_HUD_KEY = 'FarmHud';
 
@@ -21,9 +26,10 @@ export class FarmHud extends Phaser.Scene {
   }
 
   create(): void {
-    const icon = this.textures.exists('atlas_ui') && this.textures.get('atlas_ui').has('ui/night_event')
-      ? this.add.image(0, 0, 'atlas_ui', 'ui/night_event').setScale(0.8)
-      : this.add.circle(0, 0, 18, 0x6a5acd);
+    const icon =
+      this.textures.exists('atlas_ui') && this.textures.get('atlas_ui').has('ui/night_event')
+        ? this.add.image(0, 0, 'atlas_ui', 'ui/night_event').setScale(0.8)
+        : this.add.circle(0, 0, 18, 0x6a5acd);
     this.badgeText = this.add
       .text(26, 0, '', {
         fontFamily: 'system-ui, sans-serif',
@@ -33,11 +39,16 @@ export class FarmHud extends Phaser.Scene {
       })
       .setOrigin(0, 0.5)
       .setResolution(2);
-    const bg = this.add.rectangle(-28, 0, 10, 44, 0x1d1838, 0.78).setOrigin(0, 0.5).setStrokeStyle(2, 0xbfa8ff, 0.8);
+    const bg = this.add
+      .rectangle(-28, 0, 10, 44, 0x1d1838, 0.78)
+      .setOrigin(0, 0.5)
+      .setStrokeStyle(2, 0xbfa8ff, 0.8);
     this.badge = this.add.container(0, 0, [bg, icon, this.badgeText]).setVisible(false);
     this.layout();
     this.scale.on(Phaser.Scale.Events.RESIZE, this.layout, this);
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.scale.off(Phaser.Scale.Events.RESIZE, this.layout, this));
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () =>
+      this.scale.off(Phaser.Scale.Events.RESIZE, this.layout, this),
+    );
     this.ready = true;
     for (const fn of this.pending.splice(0)) fn();
   }
@@ -104,7 +115,11 @@ export class FarmHud extends Phaser.Scene {
       if (anims.has('idle_down')) sprite.play(animKey(c, 'idle_down'));
       else sprite.setVisible(false);
       const label = this.add
-        .text(x, 72, LABELS[c], { fontFamily: 'system-ui, sans-serif', fontSize: '16px', color: '#fff4d0' })
+        .text(x, 72, LABELS[c], {
+          fontFamily: 'system-ui, sans-serif',
+          fontSize: '16px',
+          color: '#fff4d0',
+        })
         .setOrigin(0.5)
         .setResolution(2);
       card.on('pointerover', () => card.setFillStyle(0x6b4c28));

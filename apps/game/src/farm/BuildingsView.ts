@@ -2,7 +2,7 @@
 // A parte acima de overheadSplitY (telhado/copa) é um pedaço separado que fica semitransparente
 // quando o jogador está escondido atrás dela. Sem o atlas de prédios, a FarmScene usa o overhead.png.
 
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 import type { Rect } from '@vif/shared';
 import { FRAME_ATLAS } from '@vif/shared/generated/assetKeys';
 import {

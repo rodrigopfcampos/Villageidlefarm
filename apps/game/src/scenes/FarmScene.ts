@@ -46,7 +46,13 @@ import {
 import { FloatingText, type FloatEntry } from '../fx/FloatingText';
 import { WorldFx } from '../fx/WorldFx';
 import { TimeController } from '../time/TimeController';
-import { NPC_CHARACTERS, animKey, ensureCharacterAnims, prepareFarmAssets, type PlayerCharacter } from './Preload';
+import {
+  NPC_CHARACTERS,
+  animKey,
+  ensureCharacterAnims,
+  prepareFarmAssets,
+  type PlayerCharacter,
+} from './Preload';
 
 const GRID_CELL = 16;
 const TICK_MS = 1000;
@@ -107,7 +113,9 @@ export class FarmScene extends Phaser.Scene {
       this.worldH = mapInfo?.height ?? src.height;
       const img = this.add.image(0, 0, TEXTURE_KEYS.map).setOrigin(0).setDepth(DEPTH.map);
       if (src.width !== this.worldW || src.height !== this.worldH) {
-        console.warn(`[farm] mapa ${src.width}x${src.height} difere do manifest ${this.worldW}x${this.worldH}`);
+        console.warn(
+          `[farm] mapa ${src.width}x${src.height} difere do manifest ${this.worldW}x${this.worldH}`,
+        );
         img.setDisplaySize(this.worldW, this.worldH);
       }
     } else if (layout) {
@@ -228,7 +236,10 @@ export class FarmScene extends Phaser.Scene {
     const kb = this.input.keyboard;
     if (kb) {
       // enableCapture=false: não rouba as teclas dos campos de texto da interface DOM.
-      this.keys = kb.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT', false) as Record<string, Phaser.Input.Keyboard.Key>;
+      this.keys = kb.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT', false) as Record<
+        string,
+        Phaser.Input.Keyboard.Key
+      >;
       kb.on('keydown-C', () => {
         if (!this.typingInDom()) this.openChooser();
       });
@@ -276,12 +287,19 @@ export class FarmScene extends Phaser.Scene {
         if (dropped.length === 0) return;
         const at = this.feedbackPoint();
         this.floating?.show(at.x, at.y - 40, [
-          { text: dropped.length > 1 ? `${dropped.length} cartas!` : 'Carta ganha!', color: '#ffd76a', icon: ['atlas_cards', 'card/back'], big: true },
+          {
+            text: dropped.length > 1 ? `${dropped.length} cartas!` : 'Carta ganha!',
+            color: '#ffd76a',
+            icon: ['atlas_cards', 'card/back'],
+            big: true,
+          },
         ]);
       }),
       b.on('xp:changed', ({ leveledUp, level }) => {
         if (!leveledUp || !this.player) return;
-        this.floating?.show(this.player.x, this.player.y - 100, [{ text: `Nível ${level}!`, color: '#9fe8ff', big: true }]);
+        this.floating?.show(this.player.x, this.player.y - 100, [
+          { text: `Nível ${level}!`, color: '#9fe8ff', big: true },
+        ]);
       }),
     );
     this.animals?.sync(store.animals.values());
@@ -341,7 +359,9 @@ export class FarmScene extends Phaser.Scene {
       const t = this.time_.update();
       this.fx?.setState(t.hour, t.weather, t.nightEvent);
       if (t.nightEvent && store) {
-        const left = t.nightEndsAt ? Math.max(0, (t.nightEndsAt - store.estimatedServerNow()) / 1000) : 0;
+        const left = t.nightEndsAt
+          ? Math.max(0, (t.nightEndsAt - store.estimatedServerNow()) / 1000)
+          : 0;
         this.hud?.setNightBadge(true, `Evento noturno  ×1.5  ·  ${formatDuration(left)}`);
       } else {
         this.hud?.setNightBadge(false);
@@ -372,7 +392,8 @@ export class FarmScene extends Phaser.Scene {
     const wy = ptr.worldY;
     const animalId = this.animals?.animalAt(wx, wy) ?? null;
     if (animalId) {
-      if (this.animals?.hasProduct(animalId)) this.enqueue({ key: `animal:${animalId}`, run: () => this.collectJob(animalId) });
+      if (this.animals?.hasProduct(animalId))
+        this.enqueue({ key: `animal:${animalId}`, run: () => this.collectJob(animalId) });
       else this.enqueueWalk({ x: wx, y: wy + 30 });
       return;
     }
@@ -434,9 +455,13 @@ export class FarmScene extends Phaser.Scene {
   /** Andar até um ponto substitui andanças pendentes. */
   private enqueueWalk(target: Point): void {
     this.queue = this.queue.filter((j) => !j.key.startsWith('walk'));
-    if (this.currentJob?.startsWith('walk') || this.currentJob?.startsWith('goto')) this.player?.cancel();
+    if (this.currentJob?.startsWith('walk') || this.currentJob?.startsWith('goto'))
+      this.player?.cancel();
     this.showClickMarker(target);
-    this.enqueue({ key: `walk:${target.x},${target.y}`, run: async () => void (await this.walkTo(target)) });
+    this.enqueue({
+      key: `walk:${target.x},${target.y}`,
+      run: async () => void (await this.walkTo(target)),
+    });
   }
 
   private async pump(): Promise<void> {
@@ -466,7 +491,12 @@ export class FarmScene extends Phaser.Scene {
       return new Promise((res) => p.walkPath([target], (ok) => res(ok ? 'arrived' : 'canceled')));
     }
     const collider = this.collider;
-    const path = findPath(this.grid, { x: p.x, y: p.y }, target, (q) => !collidesAt(collider, q.x, q.y, PLAYER_FOOT));
+    const path = findPath(
+      this.grid,
+      { x: p.x, y: p.y },
+      target,
+      (q) => !collidesAt(collider, q.x, q.y, PLAYER_FOOT),
+    );
     if (!path) return Promise.resolve('unreachable');
     return new Promise((res) => p.walkPath(path, (ok) => res(ok ? 'arrived' : 'canceled')));
   }
@@ -482,11 +512,15 @@ export class FarmScene extends Phaser.Scene {
       { point: { x: cx, y: r.y + r.height + 16 }, facing: 'up' },
       { point: { x: cx, y: r.y - 4 }, facing: 'down' },
     ];
-    const free = options.filter((o) => !this.collider || !collidesAt(this.collider, o.point.x, o.point.y, PLAYER_FOOT));
+    const free = options.filter(
+      (o) => !this.collider || !collidesAt(this.collider, o.point.x, o.point.y, PLAYER_FOOT),
+    );
     const list = free.length > 0 ? free : options;
     if (!p) return list[0]!;
     return list.reduce((a, b) =>
-      Math.hypot(a.point.x - p.x, a.point.y - p.y) <= Math.hypot(b.point.x - p.x, b.point.y - p.y) ? a : b,
+      Math.hypot(a.point.x - p.x, a.point.y - p.y) <= Math.hypot(b.point.x - p.x, b.point.y - p.y)
+        ? a
+        : b,
     );
   }
 
@@ -566,7 +600,9 @@ export class FarmScene extends Phaser.Scene {
         { x: pos.x - side * 38, y: pos.y + 2 },
       ];
       const target =
-        candidates.find((c) => !this.collider || !collidesAt(this.collider, c.x, c.y, PLAYER_FOOT)) ?? candidates[0]!;
+        candidates.find(
+          (c) => !this.collider || !collidesAt(this.collider, c.x, c.y, PLAYER_FOOT),
+        ) ?? candidates[0]!;
       if ((await this.walkTo(target)) === 'canceled') return;
       const facing: Facing = p.x < pos.x ? 'right' : 'left';
       const before = this.snapshot();
@@ -597,7 +633,11 @@ export class FarmScene extends Phaser.Scene {
     return { x: this.player?.x ?? 0, y: (this.player?.y ?? 0) - 70 };
   }
 
-  private showGains(r: MutationResult, before: { coins: number; progress: ProgressState }, at: Point): void {
+  private showGains(
+    r: MutationResult,
+    before: { coins: number; progress: ProgressState },
+    at: Point,
+  ): void {
     const entries: FloatEntry[] = [];
     for (const g of r.gained ?? []) {
       if (g.qty <= 0 || g.itemId.startsWith('card_')) continue;
@@ -608,9 +648,11 @@ export class FarmScene extends Phaser.Scene {
       });
     }
     const coins = r.wallet ? r.wallet.coins - before.coins : 0;
-    if (coins > 0) entries.push({ text: `+${coins}`, color: '#ffe066', icon: ['atlas_ui', 'ui/coin'] });
+    if (coins > 0)
+      entries.push({ text: `+${coins}`, color: '#ffe066', icon: ['atlas_ui', 'ui/coin'] });
     const xp = r.xp ? r.xp.xp - before.progress.xp : 0;
-    if (xp > 0) entries.push({ text: `+${xp} XP`, color: '#b4f28a', icon: ['atlas_ui', 'ui/xp_star'] });
+    if (xp > 0)
+      entries.push({ text: `+${xp} XP`, color: '#b4f28a', icon: ['atlas_ui', 'ui/xp_star'] });
     if (entries.length > 0) this.floating?.show(at.x, at.y, entries);
   }
 
@@ -656,9 +698,11 @@ export class FarmScene extends Phaser.Scene {
       )
       .setOrigin(0.5)
       .setScrollFactor(0);
-    const onResize = (size: Phaser.Structs.Size) => text.setPosition(size.width / 2, size.height / 2);
+    const onResize = (size: Phaser.Structs.Size) =>
+      text.setPosition(size.width / 2, size.height / 2);
     this.scale.on(Phaser.Scale.Events.RESIZE, onResize);
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.scale.off(Phaser.Scale.Events.RESIZE, onResize));
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () =>
+      this.scale.off(Phaser.Scale.Events.RESIZE, onResize),
+    );
   }
 }
-

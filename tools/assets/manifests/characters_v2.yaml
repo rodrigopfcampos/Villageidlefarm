@@ -20,7 +20,7 @@
 #            water_side_0..4 (regando; 3 e 4 vêm da linha 4 da folha, mesmo personagem)
 sheet: characters_v2
 # ATUALIZAÇÃO: farmer_m agora vem de farmer_v3.yaml (folha fazendeiro_animais_v3.jpg). Daqui só ficam os
-# perfis do fazendeiro (idle_side_0/1, walk_side_0..3, walk_left_0..2). Os quadros "old_m" (frente/costas
+# (v4) nada do fazendeiro: farmer_m vem todo de farmer_v4.yaml. Os quadros "old_m" (frente/costas
 # antigos) e "farmer_mixed" (ações inconsistentes) são descartados.
 drop_entities: [old_m, farmer_mixed]
 source: v2/personagens_v2.jpg
@@ -44,28 +44,28 @@ aliases:
 names:
   # linha 1
   - old_m/idle_down_0
-  - farmer_m/idle_side_1
+  - old_m/idle_side_1
   - old_m/walk_up_0
   - old_m/idle_up_0
-  - farmer_m/idle_side_0
+  - old_m/idle_side_0
   # linha 2
   - old_m/walk_down_0
   - old_m/walk_down_1
-  - farmer_m/walk_side_3
+  - old_m/walk_side_3
   - old_m/idle_down_1
   - old_m/walk_up_2
   # linha 3
-  - farmer_m/walk_left_0
-  - farmer_m/walk_left_1
-  - farmer_m/walk_left_2
+  - old_m/walk_left_0
+  - old_m/walk_left_1
+  - old_m/walk_left_2
   - old_m/walk_up_1
   - old_m/walk_up_3
   # linha 4
   - old_m/walk_down_2
   - old_m/walk_down_3
-  - farmer_m/walk_side_0
-  - farmer_m/walk_side_1
-  - farmer_m/walk_side_2
+  - old_m/walk_side_0
+  - old_m/walk_side_1
+  - old_m/walk_side_2
   - farmer_mixed/plant_side_0
   - farmer_mixed/plant_side_1
   - farmer_mixed/plant_side_2

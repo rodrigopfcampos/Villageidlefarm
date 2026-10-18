@@ -89,7 +89,10 @@ export class TimeController {
       hour = 12;
     }
     const weather = this.forcedWeather ?? this.world?.weather ?? 'clear';
-    const nightEvent = this.forcedHour !== null ? nightEventAt(hour) : (this.world?.nightEvent.active ?? false) || nightEventAt(hour);
+    const nightEvent =
+      this.forcedHour !== null
+        ? nightEventAt(hour)
+        : (this.world?.nightEvent.active ?? false) || nightEventAt(hour);
     let nightEndsAt: EpochMs | null = null;
     if (nightEvent) {
       nightEndsAt =
@@ -108,7 +111,8 @@ export class TimeController {
     if (!prev || prev.phase !== snap.phase) {
       bus.emit('time:phase', { phase: snap.phase, localHour: Math.floor(snap.hour) });
     }
-    if (!prev || prev.weather !== snap.weather) bus.emit('weather:changed', { weather: snap.weather });
+    if (!prev || prev.weather !== snap.weather)
+      bus.emit('weather:changed', { weather: snap.weather });
     if (snap.nightEvent && (!prev || !prev.nightEvent)) {
       bus.emit('event:night-start', { endsAt: snap.nightEndsAt ?? 0 });
     } else if (!snap.nightEvent && prev?.nightEvent) {

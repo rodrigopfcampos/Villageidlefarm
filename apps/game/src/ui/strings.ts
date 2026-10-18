@@ -2,7 +2,7 @@
 // Regra: nenhum componente escreve texto solto; tudo vem daqui (STR, nomes e mensagens).
 
 import type { AnimalType, BuffKind, ErrorCode, ExtractionStatus, ItemId, Rarity } from '@vif/shared';
-import { ERROR_MESSAGES_PT } from '@vif/shared';
+import { BUFFS_BY_KIND, ERROR_MESSAGES_PT } from '@vif/shared';
 
 export const LOCALE = 'pt-BR';
 
@@ -63,6 +63,8 @@ export const STR = {
     plantBtn: 'Plantar',
     buyAndPlant: 'Comprar e plantar',
     lockedLevel: (lv: number) => `Nível ${lv}`,
+    moreLocked: (n: number, lv: number) =>
+      n === 1 ? `+1 cultura a partir do nível ${lv}` : `+${n} culturas a partir do nível ${lv}`,
     noMoney: 'Sem moedas',
     occupied: 'Este canteiro já está plantado.',
     readyIn: (t: string) => `Fica pronto em ${t}`,
@@ -114,7 +116,6 @@ export const STR = {
     locked: (lv: number) => `Libera no nível ${lv}`,
     grows: (t: string) => `Cresce em ${t}`,
     produces: (name: string, t: string) => `Dá ${name} a cada ${t}`,
-    merchant: (pct: number) => `Carta Mercador ativa: −${pct}% nas sementes`,
   },
 
   // Cartas e álbum
@@ -135,7 +136,8 @@ export const STR = {
     pick: 'Escolha uma carta para ver o efeito.',
     rule: 'Vale só para o que for produzido enquanto a carta está ativa.',
     copies: (n: number) => `×${n}`,
-    albumIntro: 'Cada carta usada entra no álbum. Complete uma linha para ganhar um bônus permanente.',
+    albumIntro:
+      'Cada carta usada entra no álbum para sempre (enviar a cópia para a Steam não tira do álbum). Complete uma linha para ganhar um bônus permanente.',
     lineDone: (pct: number) => `+${pct}%`,
     lineMissing: (n: number) => `faltam ${n}`,
     albumCount: (have: number, total: number) => `${have} / ${total} cartas`,
@@ -161,7 +163,6 @@ export const STR = {
     noItems: 'Nenhum item que possa ir para a Steam. Colheitas, produtos e cartas usadas podem.',
     confirmTitle: 'Confirmar envio',
     confirmText: (name: string) => `Enviar 1× ${name} para a Steam? O item sai do jogo agora.`,
-    lastCopy: 'É a sua última cópia: o espaço dela no álbum fica vazio.',
     send: 'Enviar 1 unidade',
     sent: (name: string) => `${name} enviado para a Steam!`,
     history: 'Histórico',
@@ -232,67 +233,105 @@ export const RARITY_NAMES: Record<Rarity, string> = {
   legendary: 'Lendária',
 };
 
-export const BUFF_NAMES: Record<BuffKind, string> = {
+/**
+ * Nomes dos buffs. O catálogo (cards.json) também traz `name`/`description`; este mapa só
+ * garante o texto traduzível. Buff novo sem entrada aqui usa o nome do catálogo.
+ */
+const BUFF_NAMES: Record<string, string> = {
   gold: 'Ouro',
   bountiful_harvest: 'Colheita farta',
   animals: 'Animais',
-  account_xp: 'XP de conta',
   fertilizer: 'Adubo',
-  farm_xp: 'XP de fazenda',
+  xp: 'XP',
+  farm_xp: 'XP',
+  account_xp: 'XP',
+  clear_sky: 'Céu limpo',
+  exploration: 'Exploração',
   luck: 'Sorte',
-  merchant: 'Mercador',
 };
 
-/** Texto do efeito de uma carta. `durationText` = tempo formatado do avanço do Adubo. */
-export function buffEffectText(buff: BuffKind, magnitude: number, durationText: string): string {
-  const pct = Math.round(magnitude * 100);
-  switch (buff) {
-    case 'gold':
-      return `+${pct}% de moedas na venda do que for produzido`;
-    case 'bountiful_harvest':
-      return `+${magnitude} unidade por colheita`;
-    case 'animals':
-      return `+${pct}% de produção dos animais`;
-    case 'account_xp':
-      return `+${pct}% de XP de conta`;
-    case 'farm_xp':
-      return `+${pct}% de XP de fazenda`;
-    case 'fertilizer':
-      return `Avança agora todos os canteiros em ${durationText}`;
-    case 'luck':
-      return `+${pct}% de chance de ganhar cartas`;
-    case 'merchant':
-      return `−${pct}% no preço das sementes`;
-  }
+export function buffName(kind: string): string {
+  return BUFF_NAMES[kind] ?? BUFFS_BY_KIND.get(kind as BuffKind)?.name ?? prettifyId(kind);
 }
 
-const ITEM_NAMES: Record<string, string> = {
-  seed_carrot: 'Semente de cenoura',
-  crop_carrot: 'Cenoura',
-  seed_potato: 'Semente de batata',
-  crop_potato: 'Batata',
-  seed_strawberry: 'Semente de morango',
-  crop_strawberry: 'Morango',
-  seed_pumpkin: 'Semente de abóbora',
-  crop_pumpkin: 'Abóbora',
-  seed_watermelon: 'Semente de melancia',
-  crop_watermelon: 'Melancia',
-  prod_egg: 'Ovo',
-  prod_duck_egg: 'Ovo de pata',
-  prod_milk: 'Leite',
-  prod_wool: 'Lã',
+/** Descrição do efeito (por enquanto, a do catálogo). */
+export function buffDescription(kind: string): string {
+  const d = BUFFS_BY_KIND.get(kind as BuffKind)?.description ?? '';
+  return d ? d.charAt(0).toUpperCase() + d.slice(1) : '';
+}
+
+/** Nome das culturas pelo nome base do ícone (icon/<base>); cobre os 40 ícones do atlas. */
+const CROP_NAMES: Record<string, string> = {
+  apple: 'Maçã',
+  artichoke: 'Alcachofra',
+  asparagus: 'Aspargo',
+  banana: 'Banana',
+  bell_pepper: 'Pimentão',
+  blackberry: 'Amora',
+  blueberry: 'Mirtilo',
+  broccoli: 'Brócolis',
+  cabbage: 'Repolho',
+  carrot: 'Cenoura',
+  cauliflower: 'Couve-flor',
+  celery: 'Aipo',
+  cherry: 'Cereja',
+  chili_pepper: 'Pimenta',
+  corn: 'Milho',
+  eggplant: 'Berinjela',
+  fig: 'Figo',
+  garlic: 'Alho',
+  ginger: 'Gengibre',
+  grape: 'Uva',
+  green_apple: 'Maçã verde',
+  kale: 'Couve',
+  kiwi: 'Kiwi',
+  leek: 'Alho-poró',
+  lemon: 'Limão',
+  lettuce: 'Alface',
+  mango: 'Manga',
+  melon: 'Melão',
+  onion: 'Cebola',
+  orange: 'Laranja',
+  peach: 'Pêssego',
+  pear: 'Pera',
+  pineapple: 'Abacaxi',
+  pomegranate: 'Romã',
+  potato: 'Batata',
+  pumpkin: 'Abóbora',
+  spinach: 'Espinafre',
+  strawberry: 'Morango',
+  watermelon: 'Melancia',
+};
+
+const PRODUCT_NAMES: Record<string, string> = {
+  egg: 'Ovo',
+  duck_egg: 'Ovo de pata',
+  milk: 'Leite',
+  wool: 'Lã',
+  goat_milk: 'Leite de cabra',
+  goose_egg: 'Ovo de ganso',
+  truffle: 'Trufa',
+  rabbit_fur: 'Pelo de coelho',
+  alpaca_wool: 'Lã de alpaca',
+  turkey_egg: 'Ovo de perua',
 };
 
 const ANIMAL_NAMES: Record<string, string> = {
-  animal_chicken: 'Galinha',
-  animal_duck: 'Pato',
-  animal_cow: 'Vaca',
-  animal_sheep: 'Ovelha',
+  chicken: 'Galinha',
+  duck: 'Pato',
+  rabbit: 'Coelho',
+  pig: 'Porco',
+  sheep: 'Ovelha',
+  goat: 'Cabra',
+  cow: 'Vaca',
+  goose: 'Ganso',
+  alpaca: 'Alpaca',
+  turkey: 'Peru',
 };
 
 /** "card_gold_rare" → "Ouro (Rara)" */
-export function cardName(buff: BuffKind, rarity: Rarity): string {
-  return `${BUFF_NAMES[buff]} (${RARITY_NAMES[rarity]})`;
+export function cardName(buff: string, rarity: Rarity): string {
+  return `${buffName(buff)} (${RARITY_NAMES[rarity]})`;
 }
 
 function prettifyId(id: string): string {
@@ -300,14 +339,23 @@ function prettifyId(id: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+function lowerFirst(s: string): string {
+  return s.charAt(0).toLowerCase() + s.slice(1);
+}
+
+/** Nome do item derivado do id (o catálogo não tem nome; ver pedido de contrato). */
 export function itemName(id: ItemId): string {
-  const known = ITEM_NAMES[id];
-  if (known) return known;
-  const m = /^card_(.+)_(common|uncommon|rare|epic|legendary)$/.exec(id);
-  if (m && m[1] && m[1] in BUFF_NAMES) return `Carta ${cardName(m[1] as BuffKind, m[2] as Rarity)}`;
+  let m = /^crop_(.+)$/.exec(id);
+  if (m?.[1]) return CROP_NAMES[m[1]] ?? prettifyId(id);
+  m = /^seed_(.+)$/.exec(id);
+  if (m?.[1]) return `Semente de ${lowerFirst(CROP_NAMES[m[1]] ?? prettifyId(m[1]))}`;
+  m = /^prod_(.+)$/.exec(id);
+  if (m?.[1]) return PRODUCT_NAMES[m[1]] ?? prettifyId(id);
+  m = /^card_(.+)_(common|uncommon|rare|epic|legendary)$/.exec(id);
+  if (m?.[1]) return `Carta ${cardName(m[1], m[2] as Rarity)}`;
   return prettifyId(id);
 }
 
 export function animalName(type: AnimalType): string {
-  return ANIMAL_NAMES[type] ?? prettifyId(type);
+  return ANIMAL_NAMES[type.replace(/^animal_/, '')] ?? prettifyId(type);
 }

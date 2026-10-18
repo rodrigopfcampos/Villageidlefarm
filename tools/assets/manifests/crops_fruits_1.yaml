@@ -1,0 +1,78 @@
+# Sementes + estágios (v4) -> icon/seed_<nome> (atlas_icons, 32x32) e crop/<nome>_0..3 (atlas_crops).
+# Cada linha: pacotinho de semente, broto (0), crescendo (1), florido/quase (2), pronto para colher (3).
+# Ordem das linhas: apple, green_apple, banana, orange, grape, blueberry, blackberry, peach, cherry.
+# Escala dos estágios: fator fixo 1.1 (a folha tem ~1 px por pixel de arte; ampliar mais borraria), o maior
+# estágio fica com ~100-140 px e cabe num canteiro (~135x125). Âncora na base (0.5, 1) = pé da planta.
+sheet: crops_fruits_1
+source: v4/frutas_1.jpg
+category: crops
+entity_category: {icon: icons}
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: false}
+hole_area: 0
+halo_tolerance: 10
+restore_enclosed: {close: 3, min_dE: 3, shadow_ab: 2}   # terra escura embaixo da planta é quase da cor do fundo
+min_piece_area: 120
+merge_distance: 12          # folhas, frutos e flores soltos
+merge_big_area: 800
+merge_distance_big: 0
+rows: [5, 5, 5, 5, 5, 5, 5, 5, 5]
+scale:
+  mode: fit
+  margin: 2
+  each: [icon]
+  factors: {crop: 1.1}
+quantize: 48
+frame: {size: [144, 120], anchor: bottom}
+groups:
+  icon: {size: [32, 32]}
+  crop: {size: [144, 120]}
+names:
+  - icon/seed_apple
+  - crop/apple_0
+  - crop/apple_1
+  - crop/apple_2
+  - crop/apple_3
+  - icon/seed_green_apple
+  - crop/green_apple_0
+  - crop/green_apple_1
+  - crop/green_apple_2
+  - crop/green_apple_3
+  - icon/seed_banana
+  - crop/banana_0
+  - crop/banana_1
+  - crop/banana_2
+  - crop/banana_3
+  - icon/seed_orange
+  - crop/orange_0
+  - crop/orange_1
+  - crop/orange_2
+  - crop/orange_3
+  - icon/seed_grape
+  - crop/grape_0
+  - crop/grape_1
+  - crop/grape_2
+  - crop/grape_3
+  - icon/seed_blueberry
+  - crop/blueberry_0
+  - crop/blueberry_1
+  - crop/blueberry_2
+  - crop/blueberry_3
+  - icon/seed_blackberry
+  - crop/blackberry_0
+  - crop/blackberry_1
+  - crop/blackberry_2
+  - crop/blackberry_3
+  - icon/seed_peach
+  - crop/peach_0
+  - crop/peach_1
+  - crop/peach_2
+  - crop/peach_3
+  - icon/seed_cherry
+  - crop/cherry_0
+  - crop/cherry_1
+  - crop/cherry_2
+  - crop/cherry_3

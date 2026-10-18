@@ -54,7 +54,8 @@ create table public.animal_defs (
 -- 8 buffs × 5 raridades; cada carta também é um item (kind 'card' = cópia no álbum).
 create table public.card_defs (
   id text primary key references public.items (id),
-  buff text not null check (buff in ('gold', 'bountiful_harvest', 'animals', 'account_xp', 'fertilizer', 'farm_xp', 'luck', 'merchant')),
+  -- sem lista fixa: buffs novos (ex.: clear_sky, exploration) entram só pelo seed do catálogo
+  buff text not null,
   rarity text not null check (rarity in ('common', 'uncommon', 'rare', 'epic', 'legendary')),
   -- 0 = instantânea (Adubo): não ocupa vaga
   duration_seconds bigint not null check (duration_seconds >= 0),
@@ -93,10 +94,9 @@ create table public.profiles (
   tz_changed_at timestamptz,
   -- VIP: microtransação Steam (fase de monetização). Só o servidor muda.
   vip boolean not null default false,
+  -- XP único (docs/ECONOMIA.md): "XP de conta" é o mesmo XP da fazenda
   level int not null default 1 check (level >= 1),
   xp bigint not null default 0 check (xp >= 0),
-  account_level int not null default 1 check (account_level >= 1),
-  account_xp bigint not null default 0 check (account_xp >= 0),
   last_heartbeat_at timestamptz,
   -- última mutação bem-sucedida = interação real (presença no evento, anti-bot)
   last_interaction_at timestamptz,
@@ -164,6 +164,17 @@ create table public.card_instances (
   check ((status = 'used') = (used_at is not null))
 );
 create index card_instances_owner_idx on public.card_instances (owner_id, status, seq);
+
+-- Álbum PERMANENTE (docs/ECONOMIA.md): toda carta usada entra aqui para sempre. Retirar a cópia
+-- (item card_*) para a Steam não tira o card nem o bônus da linha.
+create table public.album_entries (
+  player_id uuid not null references public.profiles (id) on delete cascade,
+  card_id text not null references public.card_defs (id),
+  -- quantas vezes a carta foi usada (nunca diminui)
+  copies bigint not null default 1 check (copies >= 1),
+  first_at timestamptz not null,
+  primary key (player_id, card_id)
+);
 
 -- Histórico de janelas de buff (inclui expiradas: colheitas longas ainda consultam).
 create table public.buff_windows (
@@ -269,6 +280,7 @@ alter table public.plots enable row level security;
 alter table public.animals enable row level security;
 alter table public.inventory enable row level security;
 alter table public.card_instances enable row level security;
+alter table public.album_entries enable row level security;
 alter table public.buff_windows enable row level security;
 alter table public.ledger enable row level security;
 alter table public.event_attendance enable row level security;
@@ -295,6 +307,7 @@ create policy own_read on public.animals for select to authenticated
   using (farm_id in (select f.id from public.farms f where f.owner_id = (select auth.uid())));
 create policy own_read on public.inventory for select to authenticated using (player_id = (select auth.uid()));
 create policy own_read on public.card_instances for select to authenticated using (owner_id = (select auth.uid()));
+create policy own_read on public.album_entries for select to authenticated using (player_id = (select auth.uid()));
 create policy own_read on public.buff_windows for select to authenticated using (player_id = (select auth.uid()));
 create policy own_read on public.ledger for select to authenticated using (player_id = (select auth.uid()));
 create policy own_read on public.event_attendance for select to authenticated using (player_id = (select auth.uid()));
@@ -310,7 +323,7 @@ revoke all on all sequences in schema public from anon, authenticated;
 grant select on public.items, public.crop_defs, public.animal_defs, public.card_defs, public.plot_slots,
   public.game_config to anon, authenticated;
 grant select on public.profiles, public.wallets, public.farms, public.plots, public.animals, public.inventory,
-  public.card_instances, public.buff_windows, public.ledger, public.event_attendance, public.event_claims,
+  public.card_instances, public.album_entries, public.buff_windows, public.ledger, public.event_attendance, public.event_claims,
   public.extractions, public.steam_items, public.notifications to authenticated;
 
 -- Realtime (canal user:{uid}): avisos de retirada/volta. A publicação existe em todo projeto Supabase.

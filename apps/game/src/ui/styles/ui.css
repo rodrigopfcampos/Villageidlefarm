@@ -1,19 +1,14 @@
 /* Interface DOM do Village Idle Farm (A5). Pixel art nítido: nine-slice com border-image
    usando os quadros do atlas ui (variáveis --img-* definidas em atlas.ts: applyCssImages). */
 
+/* Fonte pixel Tiny5 (SIL OFL 1.1, via @fontsource/tiny5; licença em fonts/OFL-Tiny5.txt).
+   Só tem peso 400: o destaque é por tamanho/cor, sem negrito sintético. */
 @font-face {
-  font-family: 'Pixelify Sans';
+  font-family: 'Tiny5';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./fonts/pixelify-sans-latin-400-normal.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Pixelify Sans';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('./fonts/pixelify-sans-latin-700-normal.woff2') format('woff2');
+  src: url('./fonts/tiny5-latin-400-normal.woff2') format('woff2');
 }
 
 :root {
@@ -30,8 +25,8 @@
   --vif-good: #2e7d32;
   --vif-bad: #b0352a;
   --vif-chip-bg: rgba(40, 24, 12, 0.88);
-  --vif-font: 'Pixelify Sans', 'Trebuchet MS', system-ui, sans-serif;
-  --vif-fs: clamp(14px, 6px + 1.05vh, 19px);
+  --vif-font: 'Tiny5', 'Trebuchet MS', system-ui, sans-serif;
+  --vif-fs: clamp(15px, 7px + 1.1vh, 20px);
   --vif-gap: 12px;
 }
 
@@ -42,8 +37,8 @@
   font-size: var(--vif-fs);
   line-height: 1.25;
   color: var(--vif-ink);
-  -webkit-font-smoothing: none;
-  font-smooth: never;
+  font-synthesis: none;
+  letter-spacing: 0.02em;
 }
 .vif-ui *,
 .vif-ui *::before,
@@ -275,7 +270,7 @@
 .vif-bar {
   position: relative;
   display: block;
-  height: 20px;
+  height: 22px;
   min-width: 120px;
   border: 6px solid #1d1d1d;
   border-width: 6px 10px;
@@ -314,8 +309,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
   color: #fff;
   text-shadow:
     1px 0 0 #000,
@@ -471,12 +465,12 @@
 }
 .vif-buff {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 1px;
-  min-width: 52px;
+  gap: 6px;
   min-height: 40px;
-  padding: 2px 4px;
+  padding: 2px 8px 2px 4px;
+  color: var(--vif-cream);
+  text-align: left;
   background: rgba(255, 255, 255, 0.06);
   border: 2px solid #5a3a20;
   cursor: pointer;
@@ -493,10 +487,18 @@
 .vif-buff--legendary {
   border-color: #d43c2c;
 }
+.vif-buff__txt {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.vif-buff__name {
+  font-size: 0.8em;
+}
 .vif-buff__time {
-  font-size: 11px;
+  font-size: 0.8em;
+  color: #ffe08a;
   font-variant-numeric: tabular-nums;
-  color: var(--vif-cream);
 }
 
 /* ---------- barra de botões ---------- */

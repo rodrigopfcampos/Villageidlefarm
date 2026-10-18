@@ -2,12 +2,12 @@
 
 import type { ComponentChildren, JSX } from 'preact';
 import { useEffect } from 'preact/hooks';
-import { CARDS_BY_ID, ITEMS_BY_ID, type ItemId } from '@vif/shared';
+import { CARDS_BY_ID, type ItemId } from '@vif/shared';
 import { CARD_ART_SLOT } from '@vif/shared/generated/assetKeys';
 import { firstFrame, frameSize, frameUrl, hasFrame } from './atlas';
 import { formatInt } from './format';
 import { itemFrames, isSeedFallback } from './sprites';
-import { RARITY_NAMES, STR, BUFF_NAMES, itemName } from './strings';
+import { RARITY_NAMES, STR, buffName, itemName } from './strings';
 import { useAtlas } from './context';
 
 // ---------- sprite ----------
@@ -253,7 +253,7 @@ export function CardView({ cardId, height, silhouette, showName = true, selected
   const art = frameUrl(def.artKey);
   const cx = slot?.cx ?? FRAME_W / 2;
   const cy = slot?.cy ?? FRAME_H / 2;
-  const name = BUFF_NAMES[def.buff];
+  const name = buffName(def.buff);
   const Tag = onClick ? 'button' : 'span';
   return (
     <Tag

@@ -1,0 +1,93 @@
+# Fazendeiro completo v4 (v4/fazendeiro_completo.jpg) -> atlas_characters. SUBSTITUI o farmer_m anterior
+# (de farmer_v3.yaml só ficam pickaxe_* e hoe_*, que não existem nesta folha; de personagens_v2 nada mais).
+# Direções reais (sem espelhar): down = de frente | up = de costas | left = olhando para a esquerda |
+# right = olhando para a direita. "side" = apelido de "right" (o código pode usar side + flipX para a esquerda).
+# Quadro a quadro (linha.coluna da folha):
+#   L1: 1 idle_down_0 | 2 idle_left_0 (3/4) | 3 idle_up_1 (3/4 costas) | 4 idle_up_0 | 5 idle_right_0
+#       6 idle_down_1 | 7 idle_down_2 | 8 idle_up_2 (3/4 costas) | 9 walk_up_3 (costas andando p/ direita)
+#   L2: 1 walk_down_0 | 2 walk_down_1 | 3 walk_right_0 | 4 walk_down_2 (3/4) | 5 walk_up_1 (3/4 costas andando)
+#       6-9 walk_left_0..3
+#   L3: 1 walk_left_4 | 2 idle_left_1 (3/4) | 3 walk_left_5 | 4 walk_up_0 | 5 walk_up_2 (3/4 costas)
+#       6 walk_left_6 | 7 walk_left_7
+#   L4: 1 idle_down_3 | 2 walk_down_3 (3/4 p/ esquerda) | 3 walk_right_1 | 4 walk_right_2 | 5 walk_right_3
+#       6-8 plant_right_0..2 (em pé, curvado, plantando muda) | 9-10 water_right_0..1 (em pé, regando)
+#   L5: 1-3 plant_kneel_0..2 (agachado plantando: abre cova, semente, muda)
+#   L6: 1-4 water_kneel_0..3 (agachado regando)
+# Contagem: walk_down 4, walk_up 4, walk_left 8, walk_right 4. Todas as ações olham para a direita.
+sheet: farmer_v4
+source: v4/fazendeiro_completo.jpg
+category: characters
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: true, min_L: 0, max_ab: 5}
+halo_tolerance: 14
+restore_enclosed: {close: 2, min_dE: 4.5, shadow_ab: 5}
+min_piece_area: 200
+merge_distance: 12          # muda, terra, gotas do regador
+merge_big_area: 900
+merge_distance_big: 0
+rows: [9, 9, 7, 10, 3, 4]
+scale: {mode: ref_height, ref: farmer_m/idle_down_0, target: 64}
+quantize: 64
+frame: {size: [48, 72], anchor: feet}
+aliases:
+  farmer_m/idle_side_0: farmer_m/idle_right_0
+  farmer_m/idle_side_1: farmer_m/idle_right_0
+  farmer_m/walk_side_0: farmer_m/walk_right_0
+  farmer_m/walk_side_1: farmer_m/walk_right_1
+  farmer_m/walk_side_2: farmer_m/walk_right_2
+  farmer_m/walk_side_3: farmer_m/walk_right_3
+  farmer_m/plant_side_0: farmer_m/plant_right_0
+  farmer_m/plant_side_1: farmer_m/plant_right_1
+  farmer_m/plant_side_2: farmer_m/plant_right_2
+  farmer_m/water_side_0: farmer_m/water_right_0
+  farmer_m/water_side_1: farmer_m/water_right_1
+  farmer_m/water_down_0: farmer_m/water_kneel_1   # nomes antigos da v3 (não há regar de frente/costas)
+  farmer_m/water_down_1: farmer_m/water_kneel_2
+  farmer_m/water_up_0: farmer_m/water_right_0
+  farmer_m/water_up_1: farmer_m/water_right_1
+names:
+  - farmer_m/idle_down_0
+  - farmer_m/idle_left_0
+  - farmer_m/idle_up_1
+  - farmer_m/idle_up_0
+  - farmer_m/idle_right_0
+  - farmer_m/idle_down_1
+  - farmer_m/idle_down_2
+  - farmer_m/idle_up_2
+  - farmer_m/walk_up_3
+  - farmer_m/walk_down_0
+  - farmer_m/walk_down_1
+  - farmer_m/walk_right_0
+  - farmer_m/walk_down_2
+  - farmer_m/walk_up_1
+  - farmer_m/walk_left_0
+  - farmer_m/walk_left_1
+  - farmer_m/walk_left_2
+  - farmer_m/walk_left_3
+  - farmer_m/walk_left_4
+  - farmer_m/idle_left_1
+  - farmer_m/walk_left_5
+  - farmer_m/walk_up_0
+  - farmer_m/walk_up_2
+  - farmer_m/walk_left_6
+  - farmer_m/walk_left_7
+  - farmer_m/idle_down_3
+  - farmer_m/walk_down_3
+  - farmer_m/walk_right_1
+  - farmer_m/walk_right_2
+  - farmer_m/walk_right_3
+  - farmer_m/plant_right_0
+  - farmer_m/plant_right_1
+  - farmer_m/plant_right_2
+  - farmer_m/water_right_0
+  - farmer_m/water_right_1
+  - farmer_m/plant_kneel_0
+  - farmer_m/plant_kneel_1
+  - farmer_m/plant_kneel_2
+  - farmer_m/water_kneel_0
+  - farmer_m/water_kneel_1
+  - farmer_m/water_kneel_2
+  - farmer_m/water_kneel_3

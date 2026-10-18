@@ -1,0 +1,36 @@
+# Exploração (v4/exploracao_destinos_resultados.jpg) -> atlas_explore (NOVO)
+#   explore/dest_village (vila), dest_city (cidade), dest_port (porto): medalhões redondos, 128x128
+#   explore/out_total_loss (caixa pegando fogo), out_robbery (saco com máscara), out_normal (cesta),
+#   out_good (saco de moedas), out_great (baú), out_jackpot (baú dourado com coroa): quadros 80x80
+# Âncora no centro. Reduzido com filtro de caixa (a folha não tem grade de pixel limpa).
+sheet: explore
+source: v4/exploracao_destinos_resultados.jpg
+category: explore
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: false}
+hole_area: 0
+halo_tolerance: 12
+min_piece_area: 400
+merge_distance: 14          # fumaça e moedas soltas
+merge_big_area: 2500
+merge_distance_big: 0
+rows: [3, 6]
+scale: {mode: fit, margin: 0, each: [dest, out]}
+quantize: 64
+frame: {size: [80, 80], anchor: center}
+groups:
+  dest: {prefix: explore/dest_, size: [128, 128]}
+  out: {prefix: explore/out_, size: [80, 80]}
+names:
+  - explore/dest_village
+  - explore/dest_city
+  - explore/dest_port
+  - explore/out_total_loss
+  - explore/out_robbery
+  - explore/out_normal
+  - explore/out_good
+  - explore/out_great
+  - explore/out_jackpot

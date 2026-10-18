@@ -1,0 +1,87 @@
+# Sementes + estágios (v4) -> icon/seed_<nome> (atlas_icons, 32x32) e crop/<nome>_0..3 (atlas_crops).
+# Cada linha: pacotinho de semente, broto (0), crescendo (1), florido/quase (2), pronto para colher (3).
+# Ordem das linhas: kale, spinach, cabbage, broccoli, cauliflower, celery, asparagus, artichoke, leek.
+# Escala dos estágios: fator fixo 1.1 (a folha tem ~1 px por pixel de arte; ampliar mais borraria), o maior
+# estágio fica com ~100-140 px e cabe num canteiro (~135x125). Âncora na base (0.5, 1) = pé da planta.
+sheet: crops_veg_2
+source: v4/verduras_2.jpg
+category: crops
+entity_category: {icon: icons}
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: false}
+hole_area: 0
+halo_tolerance: 10
+restore_enclosed: {close: 3, min_dE: 3, shadow_ab: 2}   # terra escura embaixo da planta é quase da cor do fundo
+min_piece_area: 120
+merge_distance: 12          # folhas, frutos e flores soltos
+merge_big_area: 800
+merge_distance_big: 0
+split_cuts:                 # nesta folha as linhas encostam umas nas outras (colunas 4 e 5): corta entre elas
+  - [560, 82, 1024, 83]
+  - [560, 142, 1024, 143]
+  - [560, 203, 1024, 204]
+  - [560, 263, 1024, 264]
+  - [560, 323, 1024, 324]
+  - [560, 384, 1024, 385]
+  - [560, 443, 1024, 444]
+  - [560, 503, 1024, 504]
+rows: [5, 5, 5, 5, 5, 5, 5, 5, 5]
+scale:
+  mode: fit
+  margin: 2
+  each: [icon]
+  factors: {crop: 1.1}
+quantize: 48
+frame: {size: [144, 120], anchor: bottom}
+groups:
+  icon: {size: [32, 32]}
+  crop: {size: [144, 120]}
+names:
+  - icon/seed_kale
+  - crop/kale_0
+  - crop/kale_1
+  - crop/kale_2
+  - crop/kale_3
+  - icon/seed_spinach
+  - crop/spinach_0
+  - crop/spinach_1
+  - crop/spinach_2
+  - crop/spinach_3
+  - icon/seed_cabbage
+  - crop/cabbage_0
+  - crop/cabbage_1
+  - crop/cabbage_2
+  - crop/cabbage_3
+  - icon/seed_broccoli
+  - crop/broccoli_0
+  - crop/broccoli_1
+  - crop/broccoli_2
+  - crop/broccoli_3
+  - icon/seed_cauliflower
+  - crop/cauliflower_0
+  - crop/cauliflower_1
+  - crop/cauliflower_2
+  - crop/cauliflower_3
+  - icon/seed_celery
+  - crop/celery_0
+  - crop/celery_1
+  - crop/celery_2
+  - crop/celery_3
+  - icon/seed_asparagus
+  - crop/asparagus_0
+  - crop/asparagus_1
+  - crop/asparagus_2
+  - crop/asparagus_3
+  - icon/seed_artichoke
+  - crop/artichoke_0
+  - crop/artichoke_1
+  - crop/artichoke_2
+  - crop/artichoke_3
+  - icon/seed_leek
+  - crop/leek_0
+  - crop/leek_1
+  - crop/leek_2
+  - crop/leek_3

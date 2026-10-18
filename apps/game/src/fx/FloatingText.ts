@@ -1,6 +1,6 @@
 // Textos flutuantes no mundo: +moedas, +XP, +itens, carta ganha, nível novo.
 
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 import { FX_DEPTH } from './depths';
 
 export interface FloatEntry {
@@ -20,7 +20,9 @@ export class FloatingText {
 
   /** Mostra várias linhas empilhadas subindo a partir de (x, y). */
   show(x: number, y: number, entries: readonly FloatEntry[]): void {
-    entries.forEach((e, i) => this.scene.time.delayedCall(i * 160, () => this.one(x, y - i * 22, e)));
+    entries.forEach((e, i) =>
+      this.scene.time.delayedCall(i * 160, () => this.one(x, y - i * 22, e)),
+    );
   }
 
   private one(x: number, y: number, e: FloatEntry): void {

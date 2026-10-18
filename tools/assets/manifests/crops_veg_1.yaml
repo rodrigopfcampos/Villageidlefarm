@@ -1,0 +1,78 @@
+# Sementes + estágios (v4) -> icon/seed_<nome> (atlas_icons, 32x32) e crop/<nome>_0..3 (atlas_crops).
+# Cada linha: pacotinho de semente, broto (0), crescendo (1), florido/quase (2), pronto para colher (3).
+# Ordem das linhas: onion, garlic, corn, eggplant, pumpkin, bell_pepper, chili_pepper, ginger, lettuce.
+# Escala dos estágios: fator fixo 1.1 (a folha tem ~1 px por pixel de arte; ampliar mais borraria), o maior
+# estágio fica com ~100-140 px e cabe num canteiro (~135x125). Âncora na base (0.5, 1) = pé da planta.
+sheet: crops_veg_1
+source: v4/verduras_1.jpg
+category: crops
+entity_category: {icon: icons}
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: false}
+hole_area: 0
+halo_tolerance: 10
+restore_enclosed: {close: 3, min_dE: 3, shadow_ab: 2}   # terra escura embaixo da planta é quase da cor do fundo
+min_piece_area: 120
+merge_distance: 12          # folhas, frutos e flores soltos
+merge_big_area: 800
+merge_distance_big: 0
+rows: [5, 5, 5, 5, 5, 5, 5, 5, 5]
+scale:
+  mode: fit
+  margin: 2
+  each: [icon]
+  factors: {crop: 1.1}
+quantize: 48
+frame: {size: [144, 120], anchor: bottom}
+groups:
+  icon: {size: [32, 32]}
+  crop: {size: [144, 120]}
+names:
+  - icon/seed_onion
+  - crop/onion_0
+  - crop/onion_1
+  - crop/onion_2
+  - crop/onion_3
+  - icon/seed_garlic
+  - crop/garlic_0
+  - crop/garlic_1
+  - crop/garlic_2
+  - crop/garlic_3
+  - icon/seed_corn
+  - crop/corn_0
+  - crop/corn_1
+  - crop/corn_2
+  - crop/corn_3
+  - icon/seed_eggplant
+  - crop/eggplant_0
+  - crop/eggplant_1
+  - crop/eggplant_2
+  - crop/eggplant_3
+  - icon/seed_pumpkin
+  - crop/pumpkin_0
+  - crop/pumpkin_1
+  - crop/pumpkin_2
+  - crop/pumpkin_3
+  - icon/seed_bell_pepper
+  - crop/bell_pepper_0
+  - crop/bell_pepper_1
+  - crop/bell_pepper_2
+  - crop/bell_pepper_3
+  - icon/seed_chili_pepper
+  - crop/chili_pepper_0
+  - crop/chili_pepper_1
+  - crop/chili_pepper_2
+  - crop/chili_pepper_3
+  - icon/seed_ginger
+  - crop/ginger_0
+  - crop/ginger_1
+  - crop/ginger_2
+  - crop/ginger_3
+  - icon/seed_lettuce
+  - crop/lettuce_0
+  - crop/lettuce_1
+  - crop/lettuce_2
+  - crop/lettuce_3

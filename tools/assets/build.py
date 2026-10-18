@@ -39,10 +39,12 @@ MAPSRC = ROOT / "assets-src" / "map"
 OUT = ROOT / "apps" / "game" / "public" / "assets"
 GENERATED = ROOT / "packages" / "shared" / "src" / "generated"
 
-CATEGORIES = ["icons", "cards", "animals", "characters", "pets", "vehicles", "buildings", "crops", "tiles", "ui"]
+CATEGORIES = ["icons", "cards", "animals", "characters", "pets", "vehicles", "buildings", "crops", "tiles", "ui",
+              "explore"]
 FRAME_CONSTS = {"icons": "ICON_FRAMES", "cards": "CARD_FRAMES", "animals": "ANIMAL_FRAMES",
                 "characters": "CHARACTER_FRAMES", "pets": "PET_FRAMES", "vehicles": "VEHICLE_FRAMES",
-                "buildings": "BUILDING_FRAMES", "crops": "CROP_FRAMES", "tiles": "TILE_FRAMES", "ui": "UI_FRAMES"}
+                "buildings": "BUILDING_FRAMES", "crops": "CROP_FRAMES", "tiles": "TILE_FRAMES", "ui": "UI_FRAMES",
+                "explore": "EXPLORE_FRAMES"}
 
 
 class BuildError(Exception):
@@ -660,7 +662,10 @@ def group_of(name: str, cfg: dict) -> str:
     groups = cfg.get("groups") or {}
     ent = name.split("/")[0]
     for g, gc in groups.items():
-        if ent in (gc.get("entities") or [g]):
+        if gc.get("prefix"):
+            if name.startswith(gc["prefix"]):
+                return g
+        elif ent in (gc.get("entities") or [g]):
             return g
     return ent
 
@@ -732,6 +737,13 @@ def scale_sprites(raw, cfg, sheet_name) -> list[Sprite]:
         for n in tights:
             groups.setdefault(group_of(n, cfg), []).append(n)
         margin = int(sc.get("margin", 2))
+        each = set(sc.get("each") or [])   # grupos em que cada sprite tem a própria escala (ícones)
+        for g, ns in list(groups.items()):
+            if g in each:
+                fw, fh = frame_nominal(cfg, g)
+                for n in ns:
+                    factors[n] = min((fw - margin) / tights[n].shape[1], (fh - margin) / tights[n].shape[0])
+                del groups[g]
         for g, ns in groups.items():
             fw, fh = frame_nominal(cfg, g)
             f = min(min((fw - margin) / tights[n].shape[1], (fh - margin) / tights[n].shape[0]) for n in ns)

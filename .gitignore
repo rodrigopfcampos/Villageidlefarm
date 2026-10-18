@@ -3,3 +3,5 @@ dist/
 tools/assets/debug/
 .env
 .env.*
+supabase/.temp/
+supabase/.branches/

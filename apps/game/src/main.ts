@@ -3,12 +3,14 @@
 import Phaser from 'phaser';
 import { createGameConfig } from './config';
 import { mountDevOverlay } from './core/devOverlay';
+import { mountUi } from './ui';
 
 const parent = document.getElementById('game');
 const uiRoot = document.getElementById('ui-root');
 if (!parent || !uiRoot) throw new Error('index.html precisa de #game e #ui-root');
 
 const game = new Phaser.Game(createGameConfig(parent));
+mountUi(uiRoot);
 mountDevOverlay(uiRoot);
 
 // Acesso pelo console do navegador para depuração: window.__game

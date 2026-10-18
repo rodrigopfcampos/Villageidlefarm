@@ -1,0 +1,52 @@
+# Configuração da Supabase CLI (desenvolvimento local e CI). Em produção as mesmas migrations são
+# enviadas com `supabase db push --include-seed` (ver docs/SERVER.md).
+project_id = "village-idle-farm"
+
+[api]
+enabled = true
+port = 54321
+# o schema "private" (funções internas) NUNCA é exposto
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[realtime]
+enabled = true
+
+[studio]
+enabled = true
+port = 54323
+
+[auth]
+enabled = true
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173"]
+jwt_expiry = 3600
+enable_signup = true
+# Só para desenvolvimento. Em produção o login é pela Steam (Edge Function steam-auth).
+enable_anonymous_sign_ins = true
+
+[auth.email]
+# não existe login por e-mail (DECISOES.md)
+enable_signup = false
+
+[edge_runtime]
+enabled = true
+policy = "per_worker"
+
+# recebe o ticket da Steam antes de existir sessão
+[functions.steam-auth]
+verify_jwt = false
+
+# chamada só pelo servidor (agendador/webhook) com a service role
+[functions.steam-extract]
+verify_jwt = true

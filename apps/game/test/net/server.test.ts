@@ -5,7 +5,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, describe, expect, it } from 'vitest';
-import { CATALOG, ECONOMY, type ErrorCode } from '@vif/shared';
+import { CATALOG, ECONOMY, RARITIES, levelForXp, type ErrorCode } from '@vif/shared';
 import { SupabaseApi, type RpcResponse } from '../../src/net/api';
 import { pgRpcClient, startTestDb, type TestDb } from './support/db';
 import { serverHarness } from './support/harness';
@@ -363,6 +363,59 @@ describe.skipIf(!db)('servidor: Steam (stub)', () => {
     ).rejects.toMatchObject({
       code: 'NOT_FOUND',
     });
+  });
+});
+
+describe.skipIf(!db)('servidor: regras de ECONOMIA.md', () => {
+  const d = db!;
+  const make = serverHarness(d);
+
+  it('álbum permanente: retirar a cópia para a Steam não tira o card nem o bônus da linha', async () => {
+    const h = await make({ xp: 500, timezone: 'UTC' });
+    for (const r of RARITIES) {
+      const c = await h.grantCard(`card_gold_${r}`);
+      await h.api.cardActivate({ instanceId: c.id, requestId: h.rid() });
+      h.clock.advanceSeconds(3 * 3600);
+      await h.api.heartbeat();
+    }
+    await h.api.extractionRequest({ itemId: 'card_gold_rare', qty: 1, requestId: h.rid() });
+    expect((await h.inspect()).inventory.card_gold_rare).toBeUndefined();
+    const album = await h.api.albumGet();
+    expect(album.completedLines).toEqual(['gold']);
+    expect(album.slots.find((s) => s.cardId === 'card_gold_rare')?.copies).toBe(1);
+  });
+
+  it('XP único: accountXp/accountLevel repetem o XP da fazenda', async () => {
+    const h = await make({ xp: 140 });
+    const c = await h.grantCard('card_account_xp_common');
+    await h.api.cardActivate({ instanceId: c.id, requestId: h.rid() });
+    await h.api.plant({ slotId: 'plot_01', seedItemId: 'seed_carrot', requestId: h.rid() });
+    h.clock.advanceSeconds(120);
+    const r = await h.api.harvest({ slotId: 'plot_01', requestId: h.rid() });
+    expect(r.xp).toMatchObject({ accountXp: r.xp!.xp, accountLevel: r.xp!.level });
+    expect([141, 142]).toContain(r.xp!.xp); // carta de "XP de conta" vale para o XP único
+  });
+
+  it('a curva de nível vem do seed (game_config.levels), igual a @vif/shared', async () => {
+    for (const xp of [0, 49, 50, 149, 150, 500, 12_345]) {
+      const r = await d.admin.query(`select private.level_for_xp($1) as l`, [xp]);
+      expect(r.rows[0].l, String(xp)).toBe(levelForXp(xp));
+    }
+  });
+
+  it('buffs novos (ex.: clear_sky) entram só como dados do catálogo', async () => {
+    const c = await d.admin.connect();
+    try {
+      await c.query('begin');
+      await c.query(
+        `insert into public.items (id, kind, rarity, base_price, steam_extractable) values ('card_clear_sky_common', 'card', 'common', 0, true);
+         insert into public.card_defs (id, buff, rarity, duration_seconds, magnitude, instant, buff_sort, rarity_sort, sort_order)
+         values ('card_clear_sky_common', 'clear_sky', 'common', 3600, 0.5, false, 99, 0, 99)`,
+      );
+    } finally {
+      await c.query('rollback');
+      c.release();
+    }
   });
 });
 

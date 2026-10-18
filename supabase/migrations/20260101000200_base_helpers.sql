@@ -71,24 +71,18 @@ as $$
   select (floor(p_x) + case when p_u < (p_x - floor(p_x)) then 1 else 0 end)::bigint
 $$;
 
--- Nível a partir do XP: xpForLevel(L) = 25 × (L−1) × L (igual a @vif/shared levelForXp).
+-- Nível a partir do XP. A curva NÃO fica no SQL: o seed grava em game_config.levels a lista
+-- "XP total para atingir o nível N" (N = 1, 2, …) gerada de @vif/shared xpForLevel. Trocar a curva
+-- (docs/ECONOMIA.md) é só regerar o seed.
 create or replace function private.level_for_xp(p_xp bigint)
 returns int
-language plpgsql
-immutable
+language sql
+stable
 set search_path = ''
 as $$
-declare
-  l int := greatest(1, floor((1 + sqrt(1 + 4 * greatest(p_xp, 0) / 25.0)) / 2)::int);
-begin
-  while 25::bigint * l * (l + 1) <= p_xp loop
-    l := l + 1;
-  end loop;
-  while l > 1 and 25::bigint * (l - 1) * l > p_xp loop
-    l := l - 1;
-  end loop;
-  return l;
-end
+  select greatest(1, count(*)::int)
+    from jsonb_array_elements(private.cfg('levels') -> 'xpForLevel') t
+   where (t #>> '{}')::bigint <= greatest(p_xp, 0)
 $$;
 
 -- Ponte com a Steam ligada? (game_config.steam.bridgeEnabled). Os testes podem forçar por transação.
@@ -263,7 +257,8 @@ language sql
 stable
 set search_path = ''
 as $$
-  select jsonb_build_object('level', p.level, 'xp', p.xp, 'accountLevel', p.account_level, 'accountXp', p.account_xp)
+  -- XP único: accountLevel/accountXp repetem o XP da fazenda até o contrato perder esses campos
+  select jsonb_build_object('level', p.level, 'xp', p.xp, 'accountLevel', p.level, 'accountXp', p.xp)
   from public.profiles p where p.id = p_uid
 $$;
 
@@ -275,20 +270,18 @@ set search_path = ''
 as $$
   select jsonb_build_object(
     'id', p.id, 'nickname', p.nickname, 'avatar', p.avatar, 'timezone', p.timezone, 'vip', p.vip,
-    'level', p.level, 'xp', p.xp, 'accountLevel', p.account_level, 'accountXp', p.account_xp)
+    'level', p.level, 'xp', p.xp, 'accountLevel', p.level, 'accountXp', p.xp)
   from public.profiles p where p.id = p_uid
 $$;
 
-create or replace function private.add_xp(p_uid uuid, p_farm_xp bigint, p_account_xp bigint)
+create or replace function private.add_xp(p_uid uuid, p_xp bigint)
 returns jsonb
 language sql
 set search_path = ''
 as $$
   update public.profiles p
-     set xp = p.xp + p_farm_xp,
-         level = private.level_for_xp(p.xp + p_farm_xp),
-         account_xp = p.account_xp + p_account_xp,
-         account_level = private.level_for_xp(p.account_xp + p_account_xp)
+     set xp = p.xp + p_xp,
+         level = private.level_for_xp(p.xp + p_xp)
    where p.id = p_uid;
   select private.progress_json(p_uid);
 $$;
@@ -537,7 +530,7 @@ $$;
 -- cartas e buffs (CONTRACTS §5): o efeito vale só para o que foi PRODUZIDO na janela
 -- ---------------------------------------------------------------------
 
--- Buffs cuja linha do álbum (5 raridades) está completa.
+-- Buffs cuja linha do álbum (todas as raridades) está completa. O álbum é permanente (album_entries).
 create or replace function private.album_completed(p_uid uuid)
 returns table (buff text)
 language sql
@@ -546,9 +539,9 @@ set search_path = ''
 as $$
   select d.buff
     from public.card_defs d
-    left join public.inventory i on i.player_id = p_uid and i.item_id = d.id
+    left join public.album_entries a on a.player_id = p_uid and a.card_id = d.id
    group by d.buff, d.buff_sort
-  having bool_and(coalesce(i.qty, 0) > 0)
+  having bool_and(a.card_id is not null)
    order by d.buff_sort
 $$;
 
@@ -589,6 +582,17 @@ stable
 set search_path = ''
 as $$
   select private.prorated_bonus(p_uid, p_buff, p_start, p_end) + private.album_bonus(p_uid, p_buff)
+$$;
+
+-- XP único: os buffs de XP (nome novo "xp" e os antigos farm_xp/account_xp) somam no mesmo XP.
+create or replace function private.xp_bonus(p_uid uuid, p_start bigint, p_end bigint)
+returns numeric
+language sql
+stable
+set search_path = ''
+as $$
+  select private.bonus(p_uid, 'xp', p_start, p_end) + private.bonus(p_uid, 'farm_xp', p_start, p_end)
+       + private.bonus(p_uid, 'account_xp', p_start, p_end)
 $$;
 
 -- Buff em vigor no instante p_fc (Mercador vale no instante da compra).
@@ -685,8 +689,7 @@ declare
   v_base bigint;
   v_qty bigint;
   v_bonus_coins bigint;
-  v_farm_xp bigint;
-  v_acc_xp bigint;
+  v_xp bigint;
   v_chance numeric;
   v_card public.card_instances;
   v_card_json jsonb := null;
@@ -716,10 +719,8 @@ begin
   select coalesce(i.sell_price, 0) into v_sell from public.items i where i.id = c.yield_item_id;
   v_bonus_coins := private.sround(v_sell * v_qty * private.bonus(p_uid, 'gold', p.planted_fc, p.ready_fc),
                                   private.unit(v_key || 'gold'));
-  v_farm_xp := private.sround(c.xp * (1 + private.bonus(p_uid, 'farm_xp', p.planted_fc, p.ready_fc)),
-                              private.unit(v_key || 'fx'));
-  v_acc_xp := private.sround(c.xp * (1 + private.bonus(p_uid, 'account_xp', p.planted_fc, p.ready_fc)),
-                             private.unit(v_key || 'ax'));
+  v_xp := private.sround(c.xp * (1 + private.xp_bonus(p_uid, p.planted_fc, p.ready_fc)),
+                         private.unit(v_key || 'fx'));
   -- drop: 1,25% por hora-canteiro de cultivo NOMINAL × (1 + Sorte), máx. 1
   v_chance := least(1, (c.grow_seconds / 3600.0) * (private.cfg('cards') ->> 'dropChancePerPlotHour')::numeric
                        * (1 + greatest(0, private.bonus(p_uid, 'luck', p.planted_fc, p.ready_fc))));
@@ -731,7 +732,7 @@ begin
      set crop_id = null, planted_fc = null, ready_fc = null
    where farm_id = p_farm and slot_id = p_slot
   returning * into p;
-  return jsonb_build_object('itemId', c.yield_item_id, 'qty', v_qty, 'farmXp', v_farm_xp, 'accXp', v_acc_xp,
+  return jsonb_build_object('itemId', c.yield_item_id, 'qty', v_qty, 'xp', v_xp,
                             'bonusCoins', v_bonus_coins, 'card', v_card_json, 'plot', private.plot_json(p));
 end
 $$;
@@ -750,8 +751,7 @@ declare
   v_gained_list jsonb := '[]'::jsonb;
   v_plots jsonb := '[]'::jsonb;
   v_cards jsonb := '[]'::jsonb;
-  v_farm_xp bigint := 0;
-  v_acc_xp bigint := 0;
+  v_xp bigint := 0;
   v_bonus bigint := 0;
   h jsonb;
   res jsonb;
@@ -765,8 +765,7 @@ begin
       v_items := v_items || v_item;
     end if;
     v_gained := jsonb_set(v_gained, array[v_item], to_jsonb(coalesce((v_gained ->> v_item)::bigint, 0) + (h ->> 'qty')::bigint));
-    v_farm_xp := v_farm_xp + (h ->> 'farmXp')::bigint;
-    v_acc_xp := v_acc_xp + (h ->> 'accXp')::bigint;
+    v_xp := v_xp + (h ->> 'xp')::bigint;
     v_bonus := v_bonus + (h ->> 'bonusCoins')::bigint;
     v_plots := v_plots || jsonb_build_array(h -> 'plot');
     if jsonb_typeof(h -> 'card') = 'object' then
@@ -783,7 +782,7 @@ begin
   end if;
   res := p_base || jsonb_build_object(
     'plots', v_plots, 'inventoryChanges', v_changes, 'gained', v_gained_list,
-    'xp', private.add_xp(p_uid, v_farm_xp, v_acc_xp));
+    'xp', private.add_xp(p_uid, v_xp));
   if v_bonus > 0 then
     res := res || jsonb_build_object('wallet', private.wallet_json(p_uid), 'bonusCoins', v_bonus);
   end if;

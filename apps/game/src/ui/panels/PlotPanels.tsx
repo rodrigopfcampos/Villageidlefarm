@@ -5,7 +5,6 @@ import { useState } from 'preact/hooks';
 import {
   CROPS,
   ITEMS_BY_ID,
-  activeMagnitude,
   layoutPlotSlots,
   secondsRemaining,
   looksReady,
@@ -18,18 +17,12 @@ import type { Services } from '../../core/services';
 import { Button, Coins, Glyph, ItemIcon, Panel } from '../components';
 import { useBus, useUi } from '../context';
 import { formatCountdown, formatDurationShort, formatInt } from '../format';
-import { cropEconomy, plantOption, plotAccepts, unlockCheck } from '../rules';
+import { cropEconomy, plantOption, plantableCrops, plotAccepts, unlockCheck } from '../rules';
 import { STR, errorMessage, itemName } from '../strings';
 
 export function slotDefFor(s: Services, slotId: string): PlotSlotDef | undefined {
   const defs = s.layout ? layoutPlotSlots(s.layout) : DEFAULT_SLOTS;
   return defs.find((d) => d.slotId === slotId);
-}
-
-/** Desconto do Mercador ativo agora (só para mostrar o preço; o servidor confirma). */
-export function merchantDiscount(s: Services): number {
-  const fc = s.store.estimatedFarmClock();
-  return Math.min(0.9, activeMagnitude(s.store.currentBuffs(), 'merchant', fc));
 }
 
 function slotLabel(slotId: string): string {
@@ -48,8 +41,7 @@ export function PlantPanel({ slotId }: { slotId: string }) {
   if (plot && !plot.unlocked) return <UnlockPanel slotId={slotId} />;
 
   const level = store.progress.level;
-  const discount = merchantDiscount(ui.s);
-  const crops = [...CROPS].sort((a, b) => a.unlockLevel - b.unlockLevel || a.growSeconds - b.growSeconds);
+  const { visible: crops, hidden } = plantableCrops(CROPS, level);
 
   const plant = async (crop: CropDef, buyFirst: boolean) => {
     if (busy) return;
@@ -116,7 +108,7 @@ export function PlantPanel({ slotId }: { slotId: string }) {
           const eco = cropEconomy(crop);
           const seed = ITEMS_BY_ID.get(crop.seedItemId);
           const have = store.qty(crop.seedItemId);
-          const opt = plantOption(crop, { level, coins: store.wallet.coins, seedQty: have, merchantDiscount: discount });
+          const opt = plantOption(crop, { level, coins: store.wallet.coins, seedQty: have });
           const locked = opt.action === 'locked';
           return (
             <li key={crop.cropId} class={`vif-row ${locked ? 'vif-row--locked' : ''}`}>
@@ -163,6 +155,9 @@ export function PlantPanel({ slotId }: { slotId: string }) {
           );
         })}
       </ul>
+      {hidden.length > 0 && (
+        <p class="vif-muted vif-more">{STR.plant.moreLocked(hidden.length, hidden[0]!.unlockLevel)}</p>
+      )}
     </Panel>
   );
 }

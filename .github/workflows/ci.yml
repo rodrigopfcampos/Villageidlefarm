@@ -20,3 +20,25 @@ jobs:
       - run: pnpm lint
       - run: pnpm test
       - run: pnpm build
+
+  # Banco de verdade (Supabase CLI com Docker): migrations + seed, pgTAP e a suíte de contrato/servidor.
+  db:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:seed:check
+      - run: supabase db start # sobe o Postgres e aplica supabase/migrations + seed.sql
+      - run: supabase test db # pgTAP (supabase/tests)
+      - run: pnpm --filter @vif/game exec vitest run test/net
+        env:
+          VIF_DB_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+          VIF_REQUIRE_DB: '1'

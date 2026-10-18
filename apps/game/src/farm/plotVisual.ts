@@ -28,10 +28,24 @@ export interface PlotVisual {
 
 export function plotVisual(plot: PlotState | undefined, fc: FarmClockSeconds): PlotVisual {
   if (!plot || !plot.unlocked) {
-    return { kind: 'locked', soil: 'tile/soil_raw', stage: null, progress: 0, remaining: 0, cropId: null };
+    return {
+      kind: 'locked',
+      soil: 'tile/soil_raw',
+      stage: null,
+      progress: 0,
+      remaining: 0,
+      cropId: null,
+    };
   }
   if (plot.cropId === null || plot.readyFc === null) {
-    return { kind: 'empty', soil: 'tile/soil_tilled', stage: null, progress: 0, remaining: 0, cropId: null };
+    return {
+      kind: 'empty',
+      soil: 'tile/soil_tilled',
+      stage: null,
+      progress: 0,
+      remaining: 0,
+      cropId: null,
+    };
   }
   const progress = growthProgress(plot, fc);
   const stage = growthStage(progress);

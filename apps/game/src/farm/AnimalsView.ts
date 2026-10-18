@@ -2,7 +2,7 @@
 // Não há ciclo de caminhada na arte: trocamos entre as poses da raça e fazemos um pulinho ao andar.
 // Balão com o ícone do produto quando há algo para coletar (previsão; o servidor decide).
 
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 import {
   ANIMALS_BY_TYPE,
   ITEMS_BY_ID,
@@ -13,7 +13,15 @@ import {
 } from '@vif/shared';
 import { ANIMAL_FRAMES } from '@vif/shared/generated/assetKeys';
 import { FX_TEXTURES } from '../scenes/Preload';
-import { breedsFor, hashString, penFor, pickBreed, randomPointIn, readyProducts, speciesOf } from './animals';
+import {
+  breedsFor,
+  hashString,
+  penFor,
+  pickBreed,
+  randomPointIn,
+  readyProducts,
+  speciesOf,
+} from './animals';
 import { entityDepth } from './buildings';
 
 const ATLAS = 'atlas_animals';
@@ -124,7 +132,10 @@ export class AnimalsView {
     const d = entityDepth(g.y);
     g.sprite.setDepth(d);
     g.shadow.setDepth(d - 0.5);
-    if (g.bubble) g.bubble.setPosition(Math.round(g.x), Math.round(g.y - g.sprite.displayHeight - 4)).setDepth(d + 0.6);
+    if (g.bubble)
+      g.bubble
+        .setPosition(Math.round(g.x), Math.round(g.y - g.sprite.displayHeight - 4))
+        .setDepth(d + 0.6);
   }
 
   /** Atualiza os balões pelo relógio estimado (chamar ~1x/s). */
@@ -155,8 +166,11 @@ export class AnimalsView {
     const parts: Phaser.GameObjects.GameObject[] = [
       this.scene.add.image(0, 0, FX_TEXTURES.bubble).setOrigin(0.5, 1),
     ];
-    const tex = this.scene.textures.exists('atlas_icons') ? this.scene.textures.get('atlas_icons') : null;
-    if (icon && tex?.has(icon)) parts.push(this.scene.add.image(0, -24, 'atlas_icons', icon).setScale(0.75));
+    const tex = this.scene.textures.exists('atlas_icons')
+      ? this.scene.textures.get('atlas_icons')
+      : null;
+    if (icon && tex?.has(icon))
+      parts.push(this.scene.add.image(0, -24, 'atlas_icons', icon).setScale(0.75));
     const c = this.scene.add.container(g.x, g.y, parts);
     this.scene.tweens.add({
       targets: parts,
@@ -173,7 +187,8 @@ export class AnimalsView {
     let best: string | null = null;
     let bestY = -Infinity;
     for (const [id, g] of this.animals) {
-      const hit = g.sprite.getBounds().contains(x, y) || (g.bubble?.getBounds().contains(x, y) ?? false);
+      const hit =
+        g.sprite.getBounds().contains(x, y) || (g.bubble?.getBounds().contains(x, y) ?? false);
       if (hit && g.y > bestY) {
         best = id;
         bestY = g.y;
@@ -234,7 +249,8 @@ export class AnimalsView {
         g.y = g.target.y;
         g.target = null;
         g.waitUntil = time + 1200 + g.rnd() * 4000;
-        if (g.frames.length > 1) g.sprite.setFrame(g.frames[Math.floor(g.rnd() * g.frames.length)]!);
+        if (g.frames.length > 1)
+          g.sprite.setFrame(g.frames[Math.floor(g.rnd() * g.frames.length)]!);
         this.place(g);
         continue;
       }

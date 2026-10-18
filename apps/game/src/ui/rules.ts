@@ -36,10 +36,9 @@ export function clampQty(q: number, min: number, max: number): number {
   return Math.min(Math.max(Math.floor(q), min), Math.max(min, max));
 }
 
-/** Preço da semente com o desconto do Mercador (arredonda para cima, como o servidor). */
-export function seedPrice(item: ItemDef, qty: number, merchantDiscount: number): number {
-  const d = item.kind === 'seed' ? Math.min(0.9, Math.max(0, merchantDiscount)) : 0;
-  return Math.ceil(item.basePrice * qty * (1 - d));
+/** Preço de compra na loja NPC (inteiro). */
+export function shopPrice(item: ItemDef, qty: number): number {
+  return item.basePrice * qty;
 }
 
 // ---------- plantar ----------
@@ -64,6 +63,29 @@ export function cropEconomy(crop: CropDef): CropEconomy {
   return { seedPrice: seedP, sellValue, profit, profitPerHour };
 }
 
+/** Quantas culturas bloqueadas mostrar (as próximas); o resto vira "+N a partir do nível X". */
+export const LOCKED_PREVIEW = 3;
+
+/**
+ * Culturas do catálogo para o painel Plantar: todas as liberadas (as mais novas primeiro, que
+ * rendem mais) e só as próximas `LOCKED_PREVIEW` bloqueadas. O catálogo pode ter dezenas.
+ */
+export function plantableCrops(
+  crops: readonly CropDef[],
+  level: number,
+  lockedPreview = LOCKED_PREVIEW,
+): { visible: CropDef[]; hidden: CropDef[] } {
+  const sorted = [...crops].sort(
+    (a, b) => a.unlockLevel - b.unlockLevel || a.growSeconds - b.growSeconds,
+  );
+  const unlocked = sorted.filter((c) => c.unlockLevel <= level).reverse();
+  const locked = sorted.filter((c) => c.unlockLevel > level);
+  return {
+    visible: [...unlocked, ...locked.slice(0, lockedPreview)],
+    hidden: locked.slice(lockedPreview),
+  };
+}
+
 export type PlantAction = 'plant' | 'buy-and-plant' | 'locked' | 'no-money';
 
 export interface PlantOption extends Check {
@@ -78,7 +100,7 @@ export interface PlantOption extends Check {
  */
 export function plantOption(
   crop: CropDef,
-  ctx: { level: number; coins: number; seedQty: number; merchantDiscount?: number },
+  ctx: { level: number; coins: number; seedQty: number },
 ): PlantOption {
   if (ctx.level < crop.unlockLevel) {
     return { action: 'locked', cost: 0, ok: false, reason: 'LEVEL_TOO_LOW' };
@@ -88,7 +110,7 @@ export function plantOption(
   if (!seed || !seed.shopBuyable) {
     return { action: 'no-money', cost: 0, ok: false, reason: 'INSUFFICIENT_ITEMS' };
   }
-  const cost = seedPrice(seed, 1, ctx.merchantDiscount ?? 0);
+  const cost = shopPrice(seed, 1);
   if (ctx.coins < cost) return { action: 'no-money', cost, ok: false, reason: 'INSUFFICIENT_FUNDS' };
   return { action: 'buy-and-plant', cost, ok: true, reason: null };
 }
@@ -121,14 +143,14 @@ export function unlockCheck(
 export function buyCheck(
   item: ItemDef | undefined,
   qty: number,
-  ctx: { coins: number; level: number; unlockLevel?: number; merchantDiscount?: number },
+  ctx: { coins: number; level: number; unlockLevel?: number },
 ): Check & { total: number } {
   if (!item) return { ...no('NOT_FOUND'), total: 0 };
   if (!item.shopBuyable) return { ...no('NOT_FOR_SALE'), total: 0 };
   if (!Number.isInteger(qty) || qty <= 0 || qty > ECONOMY.SHOP_MAX_QTY) {
     return { ...no('INVALID_INPUT'), total: 0 };
   }
-  const total = seedPrice(item, qty, ctx.merchantDiscount ?? 0);
+  const total = shopPrice(item, qty);
   if (ctx.unlockLevel !== undefined && ctx.level < ctx.unlockLevel) {
     return { ...no('LEVEL_TOO_LOW'), total };
   }

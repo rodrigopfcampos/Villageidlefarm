@@ -56,6 +56,11 @@
       "key": "atlas_ui",
       "png": "atlas/atlas_ui.png",
       "json": "atlas/atlas_ui.json"
+    },
+    {
+      "key": "atlas_explore",
+      "png": "atlas/atlas_explore.png",
+      "json": "atlas/atlas_explore.json"
     }
   ]
 }

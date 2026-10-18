@@ -276,8 +276,7 @@ declare
   v_qty bigint;
   v_sell bigint;
   v_bonus_coins bigint;
-  v_farm_xp bigint;
-  v_acc_xp bigint;
+  v_xp bigint;
   v_inv bigint;
   v_key text;
   res jsonb;
@@ -303,8 +302,7 @@ begin
   v_qty := n + private.sround(n * private.bonus(v_uid, 'animals', v_start, v_end), private.unit(v_key || 'an'));
   select coalesce(i.sell_price, 0) into v_sell from public.items i where i.id = d.product_item_id;
   v_bonus_coins := private.sround(v_sell * v_qty * private.bonus(v_uid, 'gold', v_start, v_end), private.unit(v_key || 'g'));
-  v_farm_xp := private.sround(d.xp * (1 + private.bonus(v_uid, 'farm_xp', v_start, v_end)), private.unit(v_key || 'fx'));
-  v_acc_xp := private.sround(d.xp * (1 + private.bonus(v_uid, 'account_xp', v_start, v_end)), private.unit(v_key || 'ax'));
+  v_xp := private.sround(d.xp * (1 + private.xp_bonus(v_uid, v_start, v_end)), private.unit(v_key || 'fx'));
   update public.animals x
      set last_collect_fc = case when n >= d.max_stock then s.farm_clock else v_end end
    where x.id = a.id
@@ -318,7 +316,7 @@ begin
                                                     'lastCollectFc', a.last_collect_fc)),
     'inventoryChanges', jsonb_build_array(jsonb_build_object('itemId', d.product_item_id, 'qty', v_inv)),
     'gained', jsonb_build_array(jsonb_build_object('itemId', d.product_item_id, 'qty', v_qty)),
-    'xp', private.add_xp(v_uid, v_farm_xp, v_acc_xp));
+    'xp', private.add_xp(v_uid, v_xp));
   if v_bonus_coins > 0 then
     res := res || jsonb_build_object('wallet', private.wallet_json(v_uid), 'bonusCoins', v_bonus_coins);
   end if;
@@ -342,7 +340,6 @@ declare
   s private.synced;
   it public.items;
   v_qty bigint;
-  v_discount numeric := 0;
   v_inv bigint;
 begin
   perform private.claim_request(v_uid, request_id, 'shop_buy');
@@ -355,12 +352,8 @@ begin
     raise exception 'NOT_FOR_SALE';
   end if;
   v_qty := private.require_qty(qty, private.cfg_num('economy', 'SHOP_MAX_QTY'));
-  -- Mercador: desconto em sementes enquanto a carta está ativa (+ álbum), arredonda para cima
-  if it.kind = 'seed' then
-    v_discount := least(0.9, private.active_magnitude(v_uid, 'merchant', s.farm_clock)
-                             + private.album_bonus(v_uid, 'merchant'));
-  end if;
-  perform private.add_coins(v_uid, -ceil(it.base_price * v_qty * (1 - v_discount))::bigint, request_id);
+  -- (o buff Mercador foi removido — docs/ECONOMIA.md: preço de loja sem desconto)
+  perform private.add_coins(v_uid, -(it.base_price * v_qty), request_id);
   v_inv := private.add_item(v_uid, it.id, v_qty, request_id);
   perform private.touch_interaction(v_uid);
   return private.with_synced(private.base_json(s) || jsonb_build_object(

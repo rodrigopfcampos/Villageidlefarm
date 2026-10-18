@@ -7,6 +7,9 @@
 #            hoe_down_0/1 (enxada, 3/4 de frente), hoe_side_0/1 (enxada, de lado)
 #   linha 3: water_down_0/1 (regando de frente), water_up_0/1 (de costas), water_side_0/1 (agachado, de lado)
 # Não existe: idle/walk de perfil nesta folha (vêm de personagens_v2), plantar e colher do fazendeiro.
+# ATUALIZAÇÃO v4: farmer_m agora vem de farmer_v4.yaml. Daqui só ficam pickaxe_* e hoe_* (não existem na v4);
+# os outros quadros (old3_m) são descartados.
+drop_entities: [old3_m]
 sheet: farmer_v3
 source: v2/fazendeiro_animais_v3.jpg
 category: characters
@@ -39,19 +42,14 @@ regions:
   - {box: [0, 100, 690, 205], rows: [8]}
   - {box: [0, 205, 520, 305], rows: [6]}
 rows: []
-scale: {mode: ref_height, ref: farmer_m/idle_down_0, target: 64}   # mesma altura do farmer_m de personagens_v2
+scale: {mode: ref_height, ref: old3_m/idle_down_0, target: 64}   # mesma altura do farmer_m de personagens_v2
 quantize: 32
 frame: {size: [48, 72], anchor: feet}
-aliases:
-  farmer_m/walk_down_2: farmer_m/walk_down_0
-  farmer_m/walk_down_3: farmer_m/walk_down_1
-  farmer_m/walk_up_2: farmer_m/walk_up_0
-  farmer_m/walk_up_3: farmer_m/walk_up_1
 names:
-  - farmer_m/idle_down_0
-  - farmer_m/idle_down_1
-  - farmer_m/idle_up_0
-  - farmer_m/idle_up_1
+  - old3_m/idle_down_0
+  - old3_m/idle_down_1
+  - old3_m/idle_up_0
+  - old3_m/idle_up_1
   - farmer_m/pickaxe_down_0
   - farmer_m/pickaxe_down_1
   - farmer_m/pickaxe_up_0
@@ -59,17 +57,17 @@ names:
   - farmer_m/pickaxe_up_2
   - farmer_m/pickaxe_side_0
   - farmer_m/pickaxe_side_1
-  - farmer_m/walk_down_0
-  - farmer_m/walk_down_1
-  - farmer_m/walk_up_0
-  - farmer_m/walk_up_1
+  - old3_m/walk_down_0
+  - old3_m/walk_down_1
+  - old3_m/walk_up_0
+  - old3_m/walk_up_1
   - farmer_m/hoe_down_0
   - farmer_m/hoe_down_1
   - farmer_m/hoe_side_0
   - farmer_m/hoe_side_1
-  - farmer_m/water_down_0
-  - farmer_m/water_down_1
-  - farmer_m/water_up_0
-  - farmer_m/water_up_1
-  - farmer_m/water_side_0
-  - farmer_m/water_side_1
+  - old3_m/water_down_0
+  - old3_m/water_down_1
+  - old3_m/water_up_0
+  - old3_m/water_up_1
+  - old3_m/water_side_0
+  - old3_m/water_side_1

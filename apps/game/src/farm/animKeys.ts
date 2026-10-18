@@ -9,7 +9,10 @@ type ArtDir = 'down' | 'up' | 'side';
 const FRAME_RE = /^([a-z_]+)\/([a-z]+)_(down|up|side)_(\d+)$/;
 
 /** Agrupa quadros de um personagem em "<ação>_<dir>" -> quadros ordenados por número. */
-export function collectAnimFrames(frames: readonly string[], character: string): Map<string, string[]> {
+export function collectAnimFrames(
+  frames: readonly string[],
+  character: string,
+): Map<string, string[]> {
   const groups = new Map<string, { n: number; f: string }[]>();
   for (const f of frames) {
     const m = FRAME_RE.exec(f);
@@ -20,7 +23,11 @@ export function collectAnimFrames(frames: readonly string[], character: string):
     groups.set(key, list);
   }
   const out = new Map<string, string[]>();
-  for (const [k, list] of groups) out.set(k, list.sort((a, b) => a.n - b.n).map((x) => x.f));
+  for (const [k, list] of groups)
+    out.set(
+      k,
+      list.sort((a, b) => a.n - b.n).map((x) => x.f),
+    );
   return out;
 }
 

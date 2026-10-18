@@ -2,7 +2,7 @@
 // texturas geradas (brilho, gota de chuva, sombra, placa, balão) e animações dos personagens.
 // Tudo opcional: se faltar um atlas, a função só pula o que dependia dele.
 
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 import { CHARACTER_FRAMES } from '@vif/shared/generated/assetKeys';
 import { collectAnimFrames } from '../farm/animKeys';
 

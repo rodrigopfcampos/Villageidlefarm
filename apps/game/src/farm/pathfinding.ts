@@ -88,7 +88,12 @@ export function buildWalkGrid(c: Collider, cell: number, foot: FootBox): WalkGri
 }
 
 /** Ponto dos pés que representa a célula (o mesmo usado para testar a colisão). */
-export function cellCenter(g: WalkGrid, cx: number, cy: number, foot: FootBox = PLAYER_FOOT): Point {
+export function cellCenter(
+  g: WalkGrid,
+  cx: number,
+  cy: number,
+  foot: FootBox = PLAYER_FOOT,
+): Point {
   return { x: cx * g.cell + g.cell / 2, y: cy * g.cell + g.cell / 2 + foot.h / 2 };
 }
 
@@ -185,7 +190,12 @@ const DIRS: readonly [number, number, number][] = [
  * A* em 8 direções (sem cortar quinas). Devolve as células do caminho (sem a inicial),
  * ou null se não houver caminho. Se o destino estiver bloqueado, usa a célula livre mais próxima.
  */
-export function findPathCells(g: WalkGrid, start: Cell, goal: Cell, maxNodes = 60_000): Cell[] | null {
+export function findPathCells(
+  g: WalkGrid,
+  start: Cell,
+  goal: Cell,
+  maxNodes = 60_000,
+): Cell[] | null {
   const s = isFree(g, start.cx, start.cy) ? start : nearestFreeCell(g, start.cx, start.cy, 6);
   const t = nearestFreeCell(g, goal.cx, goal.cy);
   if (!s || !t) return null;
