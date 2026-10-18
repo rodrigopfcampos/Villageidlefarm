@@ -1,0 +1,40 @@
+# Estágios de crescimento (v2) -> atlas_crops
+# 3 linhas (cenoura, batata, morango) x 4 estágios: 0 broto | 1 crescendo | 2 florido | 3 pronto para colher.
+# Há um item roxo solto (cebola/figo) na linha da batata: entra como "ignore/onion" e é descartado.
+# Pixel art com grade limpa (~10,7 px por pixel de arte): reduz pela grade e amplia 3x (mesma densidade do mapa,
+# ~3,5 px por pixel de arte). O maior estágio tem ~108 px e cabe num canteiro (~140x125 px).
+# Âncora: base central (0.5, 1) = pé do montinho de terra. Desenhe no centro-baixo do canteiro.
+sheet: crops
+source: v2/estagios_plantas.jpg
+category: crops
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: false}
+halo_tolerance: 10
+hole_area: 0               # o montinho de terra escura tem quase a cor do fundo: não abrir buracos
+restore_enclosed: {close: 3, min_dE: 3, shadow_ab: 2}
+min_piece_area: 800
+merge_distance: 30          # flores e folhas soltas
+merge_big_area: 4000
+merge_distance_big: 0
+rows: [4, 5, 4]
+scale: {mode: grid, pitch: 10.72, upscale: 3}
+quantize: 32
+frame: {size: [120, 120], anchor: bottom}
+drop_entities: [ignore]
+names:
+  - crop/carrot_0
+  - crop/carrot_1
+  - crop/carrot_2
+  - crop/carrot_3
+  - crop/potato_0
+  - crop/potato_1
+  - crop/potato_2
+  - ignore/onion
+  - crop/potato_3
+  - crop/strawberry_0
+  - crop/strawberry_1
+  - crop/strawberry_2
+  - crop/strawberry_3

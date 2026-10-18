@@ -1,0 +1,139 @@
+# Animais v2 -> atlas_animals (substitui animals.yaml, que ficou desativado)
+# 10 linhas x 7 poses. As cores ainda variam entre as poses, então cada cor virou uma RAÇA:
+# nome = <espécie>_<raça>/pose_<n> (n conta só dentro da raça). Direção: dir = olhando para a direita.
+#
+# Raça            poses  coluna(s) da folha -> o que é cada pose
+# cow_holstein      6    1,2,3,4,5,7 -> 0 parada dir | 1 parada dir | 2 andando dir | 3 3/4 de costas | 4 pastando dir | 5 deitada
+# cow_brown         1    6           -> 0 pastando esq
+# chicken_brown     3    1,2,3       -> 0 parada dir | 1 parada dir | 2 andando dir
+# chicken_white     2    4,6         -> 0 bicando dir | 1 parada de frente
+# chicken_black     2    5,7         -> 0 bicando esq | 1 parada dir
+# pig_pink          7    1..7        -> 0 parado dir | 1 parado dir | 2 andando dir | 3 de costas | 4 comendo dir | 5 deitado | 6 de costas
+# sheep_white       7    1..7        -> 0 parada dir | 1 parada dir | 2 pastando dir | 3 parada dir | 4 parada esq | 5 pastando esq | 6 de costas
+# goat_gray         3    1,2,7       -> 0 parada dir | 1 parada dir | 2 de costas (3/4)
+# goat_brown        4    3,4,5,6     -> 0 parada dir | 1 andando dir | 2 pastando esq | 3 parada esq
+# duck_green        2    1,2         -> 0 parado dir | 1 parado dir (corpo todo verde)
+# duck_mallard      3    3,5,6       -> 0 parado dir | 1 nadando dir | 2 parado esq (marreco: cabeça verde, corpo pardo)
+# duck_white        2    4,7         -> 0 grasnando dir | 1 parado dir
+# goose_white       7    1..7        -> 0 parado dir | 1 parado esq | 2 andando dir | 3 asas abertas | 4 pescoço esticado | 5 parado esq | 6 parado dir
+# alpaca_cream      4    1,2,3,6     -> 0 parada dir | 1 parada dir | 2 parada dir | 3 deitada
+# alpaca_brown      3    4,5,7       -> 0 comendo dir | 1 parada esq | 2 de costas (3/4)
+# rabbit_white      7    1..7        -> 0 sentado | 1 sentado | 2 pulando dir | 3 sentado | 4 pulando dir | 5 agachado | 6 sentado de frente
+# turkey_bronze     7    1..7        -> 0..2 parado dir (cauda aberta) | 3 parado dir | 4 parado esq | 5 parado dir | 6 cauda aberta de lado
+#
+# Apelidos de compatibilidade com os nomes antigos (cow/idle_0 etc.) apontam para a raça principal.
+sheet: animals_v2
+source: v2/animais_v2.jpg
+category: animals
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: true, min_L: 0, max_ab: 5}
+halo_tolerance: 16
+halo_passes: 1
+restore_enclosed: {close: 2, min_dE: 4.5, shadow_ab: 5}
+min_piece_area: 150
+merge_distance: 10
+merge_big_area: 500
+merge_distance_big: 0
+rows: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+scale:
+  mode: fit
+  margin: 2
+  max_factor: 1          # a folha já é pequena: só reduz, nunca amplia
+quantize: 32
+frame: {size: [80, 64], anchor: bottom}
+groups:
+  large:
+    entities: [cow_holstein, cow_brown, pig_pink, sheep_white, goat_gray, goat_brown, alpaca_cream, alpaca_brown]
+    size: [80, 64]
+  medium:
+    entities: [goose_white, turkey_bronze]
+    size: [48, 48]
+  small:
+    entities: [chicken_brown, chicken_white, chicken_black, duck_green, duck_mallard, duck_white, rabbit_white]
+    size: [32, 32]
+aliases:
+  cow/idle_0: cow_holstein/pose_0
+  chicken/idle_0: chicken_brown/pose_0
+  pig/idle_0: pig_pink/pose_0
+  sheep/idle_0: sheep_white/pose_0
+  goat/idle_0: goat_gray/pose_0
+  duck/idle_0: duck_mallard/pose_0
+  duck/swim_0: duck_mallard/pose_1
+  goose/idle_0: goose_white/pose_0
+  alpaca/idle_0: alpaca_cream/pose_0
+  rabbit/idle_0: rabbit_white/pose_0
+  turkey/idle_0: turkey_bronze/pose_0
+names:
+  - cow_holstein/pose_0
+  - cow_holstein/pose_1
+  - cow_holstein/pose_2
+  - cow_holstein/pose_3
+  - cow_holstein/pose_4
+  - cow_brown/pose_0
+  - cow_holstein/pose_5
+  - chicken_brown/pose_0
+  - chicken_brown/pose_1
+  - chicken_brown/pose_2
+  - chicken_white/pose_0
+  - chicken_black/pose_0
+  - chicken_white/pose_1
+  - chicken_black/pose_1
+  - pig_pink/pose_0
+  - pig_pink/pose_1
+  - pig_pink/pose_2
+  - pig_pink/pose_3
+  - pig_pink/pose_4
+  - pig_pink/pose_5
+  - pig_pink/pose_6
+  - sheep_white/pose_0
+  - sheep_white/pose_1
+  - sheep_white/pose_2
+  - sheep_white/pose_3
+  - sheep_white/pose_4
+  - sheep_white/pose_5
+  - sheep_white/pose_6
+  - goat_gray/pose_0
+  - goat_gray/pose_1
+  - goat_brown/pose_0
+  - goat_brown/pose_1
+  - goat_brown/pose_2
+  - goat_brown/pose_3
+  - goat_gray/pose_2
+  - duck_green/pose_0
+  - duck_green/pose_1
+  - duck_mallard/pose_0
+  - duck_white/pose_0
+  - duck_mallard/pose_1
+  - duck_mallard/pose_2
+  - duck_white/pose_1
+  - goose_white/pose_0
+  - goose_white/pose_1
+  - goose_white/pose_2
+  - goose_white/pose_3
+  - goose_white/pose_4
+  - goose_white/pose_5
+  - goose_white/pose_6
+  - alpaca_cream/pose_0
+  - alpaca_cream/pose_1
+  - alpaca_cream/pose_2
+  - alpaca_brown/pose_0
+  - alpaca_brown/pose_1
+  - alpaca_cream/pose_3
+  - alpaca_brown/pose_2
+  - rabbit_white/pose_0
+  - rabbit_white/pose_1
+  - rabbit_white/pose_2
+  - rabbit_white/pose_3
+  - rabbit_white/pose_4
+  - rabbit_white/pose_5
+  - rabbit_white/pose_6
+  - turkey_bronze/pose_0
+  - turkey_bronze/pose_1
+  - turkey_bronze/pose_2
+  - turkey_bronze/pose_3
+  - turkey_bronze/pose_4
+  - turkey_bronze/pose_5
+  - turkey_bronze/pose_6

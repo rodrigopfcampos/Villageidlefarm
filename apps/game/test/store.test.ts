@@ -64,7 +64,8 @@ describe('ClientStore + MockApi', () => {
     store.apply(await api.harvest({ slotId: 'plot_01', requestId: 'b' }));
     expect(store.plot('plot_01')?.cropId).toBeNull();
     expect(store.qty('crop_carrot')).toBeGreaterThan(0);
-    expect(store.progress.xp).toBe(3);
+    expect(store.progress.xp).toBe(1);
+    expect(store.progress.accountXp).toBe(1);
     expect(events).toEqual([
       'farm:snapshot',
       'inventory:changed',

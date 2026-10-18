@@ -1,0 +1,30 @@
+# Terra do canteiro (v2) -> atlas_tiles
+#   tile/soil_raw (terra crua) | tile/soil_tilled (arada) | tile/soil_wet (arada e molhada)
+# Tamanho: 112x112 (56x56 pixels de arte x2). Um canteiro do mapa tem ~140x125 px: desenhe o tile esticado
+# para o retângulo do canteiro como NINE-SLICE com margem de 12 px em todos os lados (a borda arredondada
+# não deforma). Ver TILE_NINE_SLICE em assetKeys.ts.
+sheet: tiles
+source: v2/canteiro_terra.jpg
+category: tiles
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: false}
+halo_tolerance: 12
+min_piece_area: 2000
+merge_distance: 4
+merge_big_area: 3000
+merge_distance_big: 0
+rows: [3]
+scale:
+  mode: art
+  art_size: [56, 56]
+  upscale: 2
+quantize: 32
+frame: {size: [112, 112], anchor: center}
+nine_slice: {tile/soil_raw: [12, 12, 12, 12], tile/soil_tilled: [12, 12, 12, 12], tile/soil_wet: [12, 12, 12, 12]}
+names:
+  - tile/soil_raw
+  - tile/soil_tilled
+  - tile/soil_wet

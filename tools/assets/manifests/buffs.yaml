@@ -1,0 +1,54 @@
+# Cartas de buff (v2): 8 ilustrações verticais (miolo da carta) + 8 mini ícones circulares.
+# Os textos da folha (título, "ILUSTRAÇÕES VERTICAIS", números 1-8, legendas) são excluídos por região.
+#   art_1 sol | art_2 cesta de colheita | art_3 carneiro | art_4 coruja | art_5 ampulheta | art_6 chuva/raio
+#   art_7 ferradura | art_8 engrenagem. buff/icon_N é o mini ícone da mesma carta N.
+# card/art_N vai para atlas_cards (132x192 = 44x64 pixels de arte ampliados 3x; desenhe ATRÁS da moldura,
+#   centrado no ponto CARD_ART_OFFSET da moldura, ver assetKeys.ts). buff/icon_N vai para atlas_icons (24x24 = 12x12 x2).
+sheet: buffs
+source: v2/buffs_cartas.jpg
+category: cards
+entity_category: {buff: icons}
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: false}
+hole_area: 0
+halo_tolerance: 12
+exclude:
+  - [0, 0, 1024, 180]        # título, subtítulo e números 1-8
+  - [0, 352, 1024, 412]      # "MINI ÍCONES CIRCULARES (12x12px)"
+  - [0, 496, 1024, 572]      # legendas do rodapé
+  - [749, 180, 753, 352]     # vão estreito entre as cartas 6 e 7 (elas quase encostam)
+min_piece_area: 600
+merge_distance: 6
+merge_big_area: 2000
+merge_distance_big: 0
+rows: [8, 8]
+scale:
+  mode: art
+  groups:
+    card: {art_size: [44, 64], upscale: 3}   # arte ~110x160 na folha -> exatamente 44x64 -> x3 = 132x192
+    buff: {art_size: [12, 12], upscale: 2}   # ícone ~64 px -> exatamente 12x12 -> x2 = 24x24
+quantize: 48
+frame: {size: [132, 192], anchor: center}
+groups:
+  card: {size: [132, 192]}
+  buff: {size: [24, 24]}
+names:
+  - card/art_1
+  - card/art_2
+  - card/art_3
+  - card/art_4
+  - card/art_5
+  - card/art_6
+  - card/art_7
+  - card/art_8
+  - buff/icon_1
+  - buff/icon_2
+  - buff/icon_3
+  - buff/icon_4
+  - buff/icon_5
+  - buff/icon_6
+  - buff/icon_7
+  - buff/icon_8

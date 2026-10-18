@@ -1,0 +1,31 @@
+# Produtos de animais e sacos de sementes (v2) -> atlas_icons
+# Linha 1: ovo, ovo de pato (azul), leite (garrafa), lã (novelo). Linha 2: sementes de cenoura, batata, morango.
+sheet: products
+source: v2/produtos_sementes.jpg
+category: icons
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: true, min_L: 0, max_ab: 5}
+halo_tolerance: 16
+halo_passes: 2
+restore_enclosed: {close: 3, min_dE: 4.5, shadow_ab: 5}
+min_piece_area: 400
+merge_distance: 12
+merge_big_area: 1500
+merge_distance_big: 0
+rows: [4, 3]
+scale: {mode: fit, margin: 2}      # cabe em 32x32 (reduz ~3,5x)
+quantize: 32
+frame: {size: [32, 32], anchor: center}
+groups:
+  icon: {size: [32, 32]}
+names:
+  - icon/egg
+  - icon/duck_egg
+  - icon/milk
+  - icon/wool
+  - icon/seed_carrot
+  - icon/seed_potato
+  - icon/seed_strawberry

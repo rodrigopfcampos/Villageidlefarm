@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ApiError, ECONOMY, type ErrorCode } from '@vif/shared';
+import { ApiError, CARDS_CONFIG, ECONOMY, type ErrorCode } from '@vif/shared';
 import { FakeClock, MockApi } from '../src/net/mockApi';
 
 let n = 0;
@@ -50,7 +50,7 @@ describe('MockApi: núcleo', () => {
     expect(got?.itemId).toBe('crop_carrot');
     expect(got!.qty).toBeGreaterThanOrEqual(1);
     expect(got!.qty).toBeLessThanOrEqual(2);
-    expect(r.xp).toEqual({ level: 1, xp: 3 });
+    expect(r.xp).toEqual({ level: 1, xp: 1, accountLevel: 1, accountXp: 1 });
   });
 
   it('erros de canteiro: vazio, bloqueado, ocupado, inexistente, item que não é semente', async () => {
@@ -98,10 +98,11 @@ describe('MockApi: núcleo', () => {
   it('online (heartbeats) o crédito é contínuo e não perde frações de segundo', async () => {
     const { api, clock } = setup();
     for (let i = 0; i < 10; i++) {
-      clock.advanceMs(1500);
+      clock.advanceMs(10_500);
       await api.heartbeat();
     }
-    expect((await api.heartbeat()).farmClock).toBe(15);
+    clock.advanceMs(10_000);
+    expect((await api.heartbeat()).farmClock).toBe(115);
   });
 
   it('morango não fica pronto antes da hora mesmo com o aparelho adiantado (só o relógio do servidor conta)', async () => {
@@ -128,7 +129,7 @@ describe('MockApi: núcleo', () => {
       'DUPLICATE_REQUEST',
     );
     expect(api.inspect()).toEqual(before);
-    expect(before.coins).toBe(80);
+    expect(before.coins).toBe(92);
     expect(before.inventory.seed_carrot).toBe(7);
   });
 
@@ -149,7 +150,7 @@ describe('MockApi: núcleo', () => {
   it('saldo e inventário nunca ficam negativos', async () => {
     const { api } = setup();
     await expectCode(
-      api.shopBuy({ itemId: 'seed_carrot', qty: 11, requestId: rid() }),
+      api.shopBuy({ itemId: 'seed_carrot', qty: 26, requestId: rid() }),
       'INSUFFICIENT_FUNDS',
     );
     await expectCode(
@@ -200,7 +201,7 @@ describe('MockApi: núcleo', () => {
     const h = await api.harvest({ slotId: 'plot_01', requestId: rid() });
     const qty = h.gained![0]!.qty;
     const r = await api.shopSell({ itemId: 'crop_carrot', qty, requestId: rid() });
-    expect(r.wallet?.coins).toBe(100 + 15 * qty);
+    expect(r.wallet?.coins).toBe(100 + 6 * qty);
     expect(r.inventoryChanges).toEqual([{ itemId: 'crop_carrot', qty: 0 }]);
   });
 
@@ -220,7 +221,7 @@ describe('MockApi: núcleo', () => {
     clock.advanceSeconds(120);
     const r = await api.harvestAll({ requestId: rid() });
     expect(r.plots?.map((p) => p.slotId)).toEqual(['plot_01', 'plot_02']);
-    expect(r.xp?.xp).toBe(6);
+    expect(r.xp?.xp).toBe(2);
     const empty = await api.harvestAll({ requestId: rid() });
     expect(empty.plots).toBeUndefined();
   });
@@ -254,14 +255,13 @@ describe('MockApi: núcleo', () => {
             basePrice: 1,
             sellPrice: 1,
             shopBuyable: false,
-            tradable: true,
-            minPrice: 1,
-            maxPrice: 5,
             stackable: true,
+            steamExtractable: true,
             spriteKey: 'icon/egg',
           },
         ],
         crops: [],
+        cards: CARDS_CONFIG,
         animals: [
           {
             animalType: 'animal_chicken',
@@ -295,16 +295,31 @@ describe('MockApi: núcleo', () => {
     expect(c2.gained).toEqual([{ itemId: 'prod_egg', qty: 3 }]);
   });
 
-  it('grupos Mercado/Visitas lançam NOT_IMPLEMENTED; world state funciona', async () => {
+  it('Visitas lança NOT_IMPLEMENTED; world state mostra o evento noturno', async () => {
     const { api, clock } = setup({ timezone: 'UTC' });
-    await expectCode(api.marketSearch(), 'NOT_IMPLEMENTED');
     await expectCode(api.visitGetFarm(), 'NOT_IMPLEMENTED');
     clock.set(Date.UTC(2026, 0, 1, 19, 30, 0));
     const w = await api.getWorldState();
-    expect(w).toMatchObject({ localHour: 19, phase: 'night', nightEventActive: true });
-    expect(w.eventEndsAt).toBe(Date.UTC(2026, 0, 1, 21, 0, 0));
+    expect(w).toMatchObject({ localHour: 19, phase: 'night' });
+    expect(w.nightEvent).toEqual({
+      active: true,
+      speedMult: 1.5,
+      attendanceSeconds: 0,
+      requiredSeconds: 1800,
+      cardClaimed: false,
+      endsAt: Date.UTC(2026, 0, 1, 21, 0, 0),
+    });
     clock.set(Date.UTC(2026, 0, 1, 21, 0, 0));
-    expect((await api.getWorldState()).nightEventActive).toBe(false);
+    expect((await api.getWorldState()).nightEvent.active).toBe(false);
+  });
+
+  it('heartbeat com limite de frequência (anti-bot)', async () => {
+    const { api, clock } = setup();
+    await api.heartbeat();
+    clock.advanceSeconds(5);
+    await expectCode(api.heartbeat(), 'RATE_LIMITED');
+    clock.advanceSeconds(5);
+    await expect(api.heartbeat()).resolves.toBeTruthy();
   });
 
   it('o chamador não consegue alterar o estado interno pelo objeto retornado', async () => {

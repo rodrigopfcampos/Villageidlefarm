@@ -10,14 +10,14 @@
  "tiledversion": "1.10.2",
  "type": "map",
  "version": "1.10",
- "nextlayerid": 9,
- "nextobjectid": 199,
+ "nextlayerid": 10,
+ "nextobjectid": 128,
  "layers": [
   {
    "id": 1,
    "name": "ground",
    "type": "imagelayer",
-   "image": "../raw/mapa_do_jogo.jpg",
+   "image": "../raw/v2/mapa_limpo.jpg",
    "imagewidth": 2576,
    "imageheight": 1438,
    "x": 0,
@@ -37,72 +37,105 @@
    "objects": [
     {
      "id": 1,
-     "name": "border_top_left",
+     "name": "cliff_top_left",
      "type": "",
      "x": 0,
      "y": 0,
-     "width": 1240,
+     "width": 1190,
      "height": 150,
      "rotation": 0,
      "visible": true
     },
     {
      "id": 2,
-     "name": "fence_top_left",
+     "name": "cliff_left",
      "type": "",
      "x": 0,
-     "y": 130,
-     "width": 645,
-     "height": 38,
+     "y": 0,
+     "width": 60,
+     "height": 530,
      "rotation": 0,
      "visible": true
     },
     {
      "id": 3,
-     "name": "fence_top_mid",
+     "name": "border_left",
      "type": "",
-     "x": 1012,
-     "y": 130,
-     "width": 228,
-     "height": 38,
+     "x": 0,
+     "y": 520,
+     "width": 150,
+     "height": 918,
      "rotation": 0,
      "visible": true
     },
     {
      "id": 4,
-     "name": "border_left_top",
+     "name": "cliff_top_mid",
      "type": "",
-     "x": 0,
-     "y": 150,
-     "width": 100,
-     "height": 490,
+     "x": 1300,
+     "y": 0,
+     "width": 510,
+     "height": 195,
      "rotation": 0,
      "visible": true
     },
     {
      "id": 5,
-     "name": "bush_left",
+     "name": "cliff_top_right_a",
      "type": "",
-     "x": 100,
-     "y": 170,
-     "width": 65,
-     "height": 98,
+     "x": 1800,
+     "y": 0,
+     "width": 210,
+     "height": 250,
      "rotation": 0,
      "visible": true
     },
     {
      "id": 6,
-     "name": "border_left_field",
+     "name": "cliff_top_right_b",
      "type": "",
-     "x": 0,
-     "y": 620,
-     "width": 190,
-     "height": 818,
+     "x": 2000,
+     "y": 0,
+     "width": 240,
+     "height": 330,
      "rotation": 0,
      "visible": true
     },
     {
      "id": 7,
+     "name": "plateau_right",
+     "type": "",
+     "x": 2230,
+     "y": 0,
+     "width": 346,
+     "height": 700,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 8,
+     "name": "border_right_exit",
+     "type": "",
+     "x": 2560,
+     "y": 700,
+     "width": 16,
+     "height": 160,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 9,
+     "name": "cliff_right_bottom",
+     "type": "",
+     "x": 2225,
+     "y": 850,
+     "width": 351,
+     "height": 588,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 10,
      "name": "border_bottom",
      "type": "",
      "x": 0,
@@ -113,987 +146,283 @@
      "visible": true
     },
     {
-     "id": 8,
-     "name": "border_top_right",
-     "type": "",
-     "x": 1240,
-     "y": 0,
-     "width": 1060,
-     "height": 140,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 9,
-     "name": "cliff_pigpen",
-     "type": "",
-     "x": 1700,
-     "y": 140,
-     "width": 260,
-     "height": 88,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 10,
-     "name": "cliff_right_coop",
-     "type": "",
-     "x": 2232,
-     "y": 140,
-     "width": 68,
-     "height": 190,
-     "rotation": 0,
-     "visible": true
-    },
-    {
      "id": 11,
-     "name": "border_right_top",
+     "name": "water_00",
      "type": "",
-     "x": 2300,
+     "x": 1312,
      "y": 0,
-     "width": 276,
-     "height": 745,
+     "width": 64,
+     "height": 208,
      "rotation": 0,
      "visible": true
     },
     {
      "id": 12,
-     "name": "border_right_bottom",
+     "name": "water_01",
      "type": "",
-     "x": 2300,
-     "y": 880,
-     "width": 276,
-     "height": 558,
+     "x": 1280,
+     "y": 208,
+     "width": 80,
+     "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
      "id": 13,
-     "name": "east_gate",
+     "name": "water_02",
      "type": "",
-     "x": 2430,
-     "y": 745,
-     "width": 146,
-     "height": 135,
+     "x": 1264,
+     "y": 224,
+     "width": 80,
+     "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
      "id": 14,
-     "name": "house",
+     "name": "water_03",
      "type": "",
-     "x": 125,
-     "y": 150,
-     "width": 455,
-     "height": 340,
+     "x": 1248,
+     "y": 240,
+     "width": 80,
+     "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
      "id": 15,
-     "name": "doghouse",
+     "name": "water_04",
      "type": "",
-     "x": 100,
-     "y": 410,
-     "width": 95,
-     "height": 115,
+     "x": 1232,
+     "y": 256,
+     "width": 80,
+     "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
      "id": 16,
-     "name": "house_table",
-     "type": "",
-     "x": 220,
-     "y": 480,
-     "width": 45,
-     "height": 35,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 17,
-     "name": "shed",
-     "type": "",
-     "x": 645,
-     "y": 97,
-     "width": 367,
-     "height": 195,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 18,
-     "name": "truck",
-     "type": "",
-     "x": 1018,
-     "y": 178,
-     "width": 92,
-     "height": 214,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 19,
-     "name": "greenhouse",
-     "type": "",
-     "x": 1035,
-     "y": 620,
-     "width": 190,
-     "height": 295,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 20,
-     "name": "greenhouse_tree",
-     "type": "",
-     "x": 1255,
-     "y": 815,
-     "width": 40,
-     "height": 47,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 21,
-     "name": "well",
-     "type": "",
-     "x": 565,
-     "y": 930,
-     "width": 95,
-     "height": 155,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 22,
-     "name": "chests",
-     "type": "",
-     "x": 555,
-     "y": 872,
-     "width": 77,
-     "height": 44,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 23,
-     "name": "barn",
-     "type": "",
-     "x": 1400,
-     "y": 120,
-     "width": 300,
-     "height": 142,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 24,
-     "name": "coop",
-     "type": "",
-     "x": 1960,
-     "y": 200,
-     "width": 272,
-     "height": 182,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 25,
-     "name": "coop_barrels",
-     "type": "",
-     "x": 2232,
-     "y": 330,
-     "width": 30,
-     "height": 70,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 26,
-     "name": "market_box",
-     "type": "",
-     "x": 2205,
-     "y": 628,
-     "width": 113,
-     "height": 72,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 27,
-     "name": "market_sign",
-     "type": "",
-     "x": 2335,
-     "y": 660,
-     "width": 55,
-     "height": 60,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 28,
-     "name": "vine_1",
-     "type": "",
-     "x": 1398,
-     "y": 948,
-     "width": 104,
-     "height": 74,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 29,
-     "name": "vine_2",
-     "type": "",
-     "x": 1360,
-     "y": 1032,
-     "width": 110,
-     "height": 80,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 30,
-     "name": "vine_3",
-     "type": "",
-     "x": 1365,
-     "y": 1120,
-     "width": 135,
-     "height": 108,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 31,
-     "name": "fence_field_top_a",
-     "type": "",
-     "x": 165,
-     "y": 665,
-     "width": 403,
-     "height": 40,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 32,
-     "name": "fence_field_top_b",
-     "type": "",
-     "x": 650,
-     "y": 665,
-     "width": 385,
-     "height": 40,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 33,
-     "name": "fence_field_right",
-     "type": "",
-     "x": 1193,
-     "y": 1025,
-     "width": 22,
-     "height": 370,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 34,
-     "name": "fence_pasture_left",
-     "type": "",
-     "x": 1305,
-     "y": 240,
-     "width": 25,
-     "height": 230,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 35,
-     "name": "fence_pasture_bottom",
-     "type": "",
-     "x": 1305,
-     "y": 440,
-     "width": 115,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 36,
-     "name": "fence_pond_north",
-     "type": "",
-     "x": 1450,
-     "y": 510,
-     "width": 150,
-     "height": 50,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 37,
-     "name": "fence_pasture_right",
-     "type": "",
-     "x": 1600,
-     "y": 420,
-     "width": 160,
-     "height": 40,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 38,
-     "name": "fence_pigpen_top",
-     "type": "",
-     "x": 1700,
-     "y": 225,
-     "width": 260,
-     "height": 37,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 39,
-     "name": "fence_pigpen_bottom",
-     "type": "",
-     "x": 1700,
-     "y": 415,
-     "width": 170,
-     "height": 45,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 40,
-     "name": "fence_coop_left",
-     "type": "",
-     "x": 1885,
-     "y": 330,
-     "width": 30,
-     "height": 140,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 41,
-     "name": "fence_coop_bottom_a",
-     "type": "",
-     "x": 1975,
-     "y": 515,
-     "width": 130,
-     "height": 45,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 42,
-     "name": "fence_coop_bottom_b",
-     "type": "",
-     "x": 2175,
-     "y": 515,
-     "width": 107,
-     "height": 45,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 43,
-     "name": "fence_coop_right",
-     "type": "",
-     "x": 2262,
-     "y": 330,
-     "width": 20,
-     "height": 230,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 44,
-     "name": "fence_orchard_top_a",
-     "type": "",
-     "x": 1495,
-     "y": 820,
-     "width": 320,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 45,
-     "name": "fence_orchard_top_b",
-     "type": "",
-     "x": 1855,
-     "y": 820,
-     "width": 390,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 46,
-     "name": "fence_orchard_right",
-     "type": "",
-     "x": 2153,
-     "y": 815,
-     "width": 19,
-     "height": 515,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 47,
-     "name": "orchard_trunk_00",
-     "type": "",
-     "x": 1538,
-     "y": 891,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 48,
-     "name": "orchard_trunk_01",
-     "type": "",
-     "x": 1648,
-     "y": 891,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 49,
-     "name": "orchard_trunk_02",
-     "type": "",
-     "x": 1751,
-     "y": 891,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 50,
-     "name": "orchard_trunk_03",
-     "type": "",
-     "x": 1871,
-     "y": 891,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 51,
-     "name": "orchard_trunk_04",
-     "type": "",
-     "x": 1981,
-     "y": 891,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 52,
-     "name": "orchard_trunk_05",
-     "type": "",
-     "x": 2086,
-     "y": 891,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 53,
-     "name": "orchard_trunk_10",
-     "type": "",
-     "x": 1538,
-     "y": 1026,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 54,
-     "name": "orchard_trunk_11",
-     "type": "",
-     "x": 1648,
-     "y": 1026,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 55,
-     "name": "orchard_trunk_12",
-     "type": "",
-     "x": 1751,
-     "y": 1026,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 56,
-     "name": "orchard_trunk_13",
-     "type": "",
-     "x": 1871,
-     "y": 1026,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 57,
-     "name": "orchard_trunk_14",
-     "type": "",
-     "x": 1981,
-     "y": 1026,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 58,
-     "name": "orchard_trunk_15",
-     "type": "",
-     "x": 2086,
-     "y": 1026,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 59,
-     "name": "orchard_trunk_20",
-     "type": "",
-     "x": 1538,
-     "y": 1171,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 60,
-     "name": "orchard_trunk_21",
-     "type": "",
-     "x": 1648,
-     "y": 1171,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 61,
-     "name": "orchard_trunk_22",
-     "type": "",
-     "x": 1751,
-     "y": 1171,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 62,
-     "name": "orchard_trunk_23",
-     "type": "",
-     "x": 1871,
-     "y": 1171,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 63,
-     "name": "orchard_trunk_24",
-     "type": "",
-     "x": 1981,
-     "y": 1171,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 64,
-     "name": "orchard_trunk_25",
-     "type": "",
-     "x": 2086,
-     "y": 1171,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 65,
-     "name": "orchard_trunk_30",
-     "type": "",
-     "x": 1538,
-     "y": 1321,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 66,
-     "name": "orchard_trunk_31",
-     "type": "",
-     "x": 1648,
-     "y": 1321,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 67,
-     "name": "orchard_trunk_32",
-     "type": "",
-     "x": 1751,
-     "y": 1321,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 68,
-     "name": "orchard_trunk_33",
-     "type": "",
-     "x": 1871,
-     "y": 1321,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 69,
-     "name": "orchard_trunk_34",
-     "type": "",
-     "x": 1981,
-     "y": 1321,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 70,
-     "name": "orchard_trunk_35",
-     "type": "",
-     "x": 2086,
-     "y": 1321,
-     "width": 28,
-     "height": 30,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 71,
-     "name": "water_00",
-     "type": "",
-     "x": 1328,
-     "y": 0,
-     "width": 48,
-     "height": 192,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 72,
-     "name": "water_01",
-     "type": "",
-     "x": 1312,
-     "y": 192,
-     "width": 64,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 73,
-     "name": "water_02",
-     "type": "",
-     "x": 1296,
-     "y": 208,
-     "width": 64,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 74,
-     "name": "water_03",
-     "type": "",
-     "x": 1280,
-     "y": 224,
-     "width": 64,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 75,
-     "name": "water_04",
-     "type": "",
-     "x": 1264,
-     "y": 240,
-     "width": 48,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 76,
      "name": "water_05",
      "type": "",
-     "x": 1040,
-     "y": 304,
-     "width": 48,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 77,
-     "name": "water_06",
-     "type": "",
-     "x": 1040,
-     "y": 320,
-     "width": 16,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 78,
-     "name": "water_07",
-     "type": "",
-     "x": 1232,
-     "y": 256,
-     "width": 64,
-     "height": 112,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 79,
-     "name": "water_08",
-     "type": "",
-     "x": 1232,
-     "y": 368,
-     "width": 48,
-     "height": 64,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 80,
-     "name": "water_09",
-     "type": "",
-     "x": 1168,
-     "y": 448,
-     "width": 32,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 81,
-     "name": "water_10",
-     "type": "",
      "x": 1216,
-     "y": 432,
-     "width": 64,
-     "height": 32,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 82,
-     "name": "water_11",
-     "type": "",
-     "x": 1168,
-     "y": 464,
-     "width": 112,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 83,
-     "name": "water_12",
-     "type": "",
-     "x": 1216,
-     "y": 480,
-     "width": 64,
+     "y": 272,
+     "width": 80,
      "height": 48,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 84,
-     "name": "water_13",
+     "id": 17,
+     "name": "water_06",
      "type": "",
-     "x": 1680,
-     "y": 512,
-     "width": 80,
-     "height": 16,
+     "x": 1200,
+     "y": 320,
+     "width": 96,
+     "height": 64,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 85,
-     "name": "water_14",
+     "id": 18,
+     "name": "water_07",
      "type": "",
-     "x": 1776,
-     "y": 512,
-     "width": 48,
-     "height": 16,
+     "x": 1184,
+     "y": 384,
+     "width": 112,
+     "height": 48,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 86,
-     "name": "water_15",
+     "id": 19,
+     "name": "water_08",
      "type": "",
-     "x": 1248,
-     "y": 528,
-     "width": 32,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 87,
-     "name": "water_16",
-     "type": "",
-     "x": 1664,
-     "y": 528,
-     "width": 192,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 88,
-     "name": "water_17",
-     "type": "",
-     "x": 1632,
-     "y": 544,
-     "width": 256,
+     "x": 1168,
+     "y": 432,
+     "width": 128,
      "height": 32,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 89,
-     "name": "water_18",
+     "id": 20,
+     "name": "water_09",
      "type": "",
-     "x": 1632,
-     "y": 576,
-     "width": 288,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 90,
-     "name": "water_19",
-     "type": "",
-     "x": 1376,
-     "y": 592,
-     "width": 64,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 91,
-     "name": "water_20",
-     "type": "",
-     "x": 1616,
-     "y": 592,
-     "width": 80,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 92,
-     "name": "water_21",
-     "type": "",
-     "x": 1712,
-     "y": 592,
-     "width": 208,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 93,
-     "name": "water_22",
-     "type": "",
-     "x": 1392,
-     "y": 608,
-     "width": 48,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 94,
-     "name": "water_23",
-     "type": "",
-     "x": 1584,
-     "y": 608,
-     "width": 224,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 95,
-     "name": "water_24",
-     "type": "",
-     "x": 1824,
-     "y": 608,
+     "x": 1168,
+     "y": 464,
      "width": 96,
      "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 96,
-     "name": "water_25",
+     "id": 21,
+     "name": "water_10",
      "type": "",
-     "x": 1408,
-     "y": 624,
-     "width": 528,
+     "x": 1184,
+     "y": 480,
+     "width": 80,
      "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 97,
-     "name": "water_26",
+     "id": 22,
+     "name": "water_11",
+     "type": "",
+     "x": 1200,
+     "y": 496,
+     "width": 64,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 23,
+     "name": "water_12",
+     "type": "",
+     "x": 1216,
+     "y": 512,
+     "width": 48,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 24,
+     "name": "water_13",
+     "type": "",
+     "x": 1664,
+     "y": 512,
+     "width": 192,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 25,
+     "name": "water_14",
+     "type": "",
+     "x": 1232,
+     "y": 528,
+     "width": 32,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 26,
+     "name": "water_15",
+     "type": "",
+     "x": 1648,
+     "y": 528,
+     "width": 224,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 27,
+     "name": "water_16",
+     "type": "",
+     "x": 1616,
+     "y": 544,
+     "width": 272,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 28,
+     "name": "water_17",
+     "type": "",
+     "x": 1616,
+     "y": 560,
+     "width": 288,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 29,
+     "name": "water_18",
+     "type": "",
+     "x": 1408,
+     "y": 576,
+     "width": 16,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 30,
+     "name": "water_19",
+     "type": "",
+     "x": 1616,
+     "y": 576,
+     "width": 304,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 31,
+     "name": "water_20",
+     "type": "",
+     "x": 1408,
+     "y": 592,
+     "width": 32,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 32,
+     "name": "water_21",
+     "type": "",
+     "x": 1600,
+     "y": 592,
+     "width": 320,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 33,
+     "name": "water_22",
+     "type": "",
+     "x": 1376,
+     "y": 608,
+     "width": 80,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 34,
+     "name": "water_23",
+     "type": "",
+     "x": 1584,
+     "y": 608,
+     "width": 352,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 35,
+     "name": "water_24",
+     "type": "",
+     "x": 1392,
+     "y": 624,
+     "width": 544,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 36,
+     "name": "water_25",
      "type": "",
      "x": 1424,
      "y": 640,
@@ -1103,184 +432,74 @@
      "visible": true
     },
     {
-     "id": 98,
-     "name": "water_27",
+     "id": 37,
+     "name": "water_26",
      "type": "",
-     "x": 1456,
+     "x": 1440,
      "y": 656,
-     "width": 480,
+     "width": 496,
      "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 99,
-     "name": "water_28",
+     "id": 38,
+     "name": "water_27",
      "type": "",
      "x": 1472,
      "y": 672,
+     "width": 448,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 39,
+     "name": "water_28",
+     "type": "",
+     "x": 1472,
+     "y": 688,
      "width": 96,
      "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 100,
+     "id": 40,
      "name": "water_29",
-     "type": "",
-     "x": 1584,
-     "y": 672,
-     "width": 128,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 101,
-     "name": "water_30",
-     "type": "",
-     "x": 1728,
-     "y": 672,
-     "width": 80,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 102,
-     "name": "water_31",
-     "type": "",
-     "x": 1824,
-     "y": 672,
-     "width": 80,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 103,
-     "name": "water_32",
      "type": "",
      "x": 1616,
      "y": 688,
-     "width": 32,
+     "width": 288,
      "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 104,
-     "name": "water_33",
+     "id": 41,
+     "name": "water_30",
      "type": "",
-     "x": 1664,
-     "y": 688,
-     "width": 16,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 105,
-     "name": "water_34",
-     "type": "",
-     "x": 1728,
-     "y": 688,
-     "width": 112,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 106,
-     "name": "water_35",
-     "type": "",
-     "x": 1856,
-     "y": 688,
-     "width": 32,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 107,
-     "name": "water_36",
-     "type": "",
-     "x": 1488,
-     "y": 688,
-     "width": 64,
-     "height": 32,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 108,
-     "name": "water_37",
-     "type": "",
-     "x": 1648,
+     "x": 1632,
      "y": 704,
-     "width": 224,
+     "width": 256,
      "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 109,
-     "name": "water_38",
-     "type": "",
-     "x": 1488,
-     "y": 720,
-     "width": 48,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 110,
-     "name": "water_39",
+     "id": 42,
+     "name": "water_31",
      "type": "",
      "x": 1664,
      "y": 720,
-     "width": 16,
+     "width": 208,
      "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 111,
-     "name": "water_40",
-     "type": "",
-     "x": 1792,
-     "y": 720,
-     "width": 16,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 112,
-     "name": "water_41",
-     "type": "",
-     "x": 1824,
-     "y": 720,
-     "width": 16,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 113,
-     "name": "water_42",
-     "type": "",
-     "x": 1424,
-     "y": 816,
-     "width": 64,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 114,
-     "name": "water_43",
+     "id": 43,
+     "name": "water_32",
      "type": "",
      "x": 1408,
      "y": 832,
@@ -1290,8 +509,8 @@
      "visible": true
     },
     {
-     "id": 115,
-     "name": "water_44",
+     "id": 44,
+     "name": "water_33",
      "type": "",
      "x": 1408,
      "y": 848,
@@ -1301,8 +520,8 @@
      "visible": true
     },
     {
-     "id": 116,
-     "name": "water_45",
+     "id": 45,
+     "name": "water_34",
      "type": "",
      "x": 1392,
      "y": 864,
@@ -1312,63 +531,85 @@
      "visible": true
     },
     {
-     "id": 117,
-     "name": "water_46",
+     "id": 46,
+     "name": "water_35",
      "type": "",
-     "x": 1392,
+     "x": 1376,
      "y": 880,
-     "width": 48,
+     "width": 64,
      "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 118,
-     "name": "water_47",
+     "id": 47,
+     "name": "water_36",
      "type": "",
      "x": 1360,
      "y": 896,
+     "width": 80,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 48,
+     "name": "water_37",
+     "type": "",
+     "x": 1360,
+     "y": 912,
      "width": 64,
+     "height": 32,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 49,
+     "name": "water_38",
+     "type": "",
+     "x": 1328,
+     "y": 944,
+     "width": 80,
+     "height": 16,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 50,
+     "name": "water_39",
+     "type": "",
+     "x": 1312,
+     "y": 960,
+     "width": 80,
      "height": 48,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 119,
-     "name": "water_48",
+     "id": 51,
+     "name": "water_40",
      "type": "",
-     "x": 1360,
-     "y": 944,
-     "width": 32,
+     "x": 1296,
+     "y": 1008,
+     "width": 96,
      "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 120,
-     "name": "water_49",
+     "id": 52,
+     "name": "water_41",
      "type": "",
-     "x": 1312,
-     "y": 960,
-     "width": 80,
-     "height": 64,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 121,
-     "name": "water_50",
-     "type": "",
-     "x": 1312,
+     "x": 1296,
      "y": 1024,
-     "width": 64,
+     "width": 80,
      "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 122,
-     "name": "water_51",
+     "id": 53,
+     "name": "water_42",
      "type": "",
      "x": 1280,
      "y": 1040,
@@ -1378,30 +619,30 @@
      "visible": true
     },
     {
-     "id": 123,
-     "name": "water_52",
-     "type": "",
-     "x": 1280,
-     "y": 1056,
-     "width": 64,
-     "height": 48,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 124,
-     "name": "water_53",
+     "id": 54,
+     "name": "water_43",
      "type": "",
      "x": 1264,
-     "y": 1104,
-     "width": 80,
+     "y": 1056,
+     "width": 96,
      "height": 16,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 125,
-     "name": "water_54",
+     "id": 55,
+     "name": "water_44",
+     "type": "",
+     "x": 1264,
+     "y": 1072,
+     "width": 80,
+     "height": 48,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 56,
+     "name": "water_45",
      "type": "",
      "x": 1248,
      "y": 1120,
@@ -1411,79 +652,244 @@
      "visible": true
     },
     {
-     "id": 126,
-     "name": "water_55",
-     "type": "",
-     "x": 1248,
-     "y": 1136,
-     "width": 48,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 127,
-     "name": "water_56",
-     "type": "",
-     "x": 1312,
-     "y": 1136,
-     "width": 32,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 128,
-     "name": "water_57",
+     "id": 57,
+     "name": "water_46",
      "type": "",
      "x": 1264,
      "y": 1216,
      "width": 80,
+     "height": 48,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 58,
+     "name": "water_47",
+     "type": "",
+     "x": 1280,
+     "y": 1264,
+     "width": 64,
      "height": 32,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 129,
-     "name": "water_58",
+     "id": 59,
+     "name": "water_48",
      "type": "",
      "x": 1280,
-     "y": 1248,
-     "width": 64,
-     "height": 80,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 130,
-     "name": "water_59",
-     "type": "",
-     "x": 1280,
-     "y": 1328,
+     "y": 1296,
      "width": 80,
-     "height": 16,
+     "height": 48,
      "rotation": 0,
      "visible": true
     },
     {
-     "id": 131,
-     "name": "water_60",
-     "type": "",
-     "x": 1296,
-     "y": 1344,
-     "width": 64,
-     "height": 16,
-     "rotation": 0,
-     "visible": true
-    },
-    {
-     "id": 132,
-     "name": "water_61",
+     "id": 60,
+     "name": "water_49",
      "type": "",
      "x": 1264,
-     "y": 1408,
+     "y": 1424,
      "width": 80,
-     "height": 30,
+     "height": 14,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 62,
+     "name": "house_base",
+     "type": "",
+     "x": 210,
+     "y": 395,
+     "width": 380,
+     "height": 150,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 64,
+     "name": "garage_base",
+     "type": "",
+     "x": 685,
+     "y": 365,
+     "width": 440,
+     "height": 90,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 66,
+     "name": "greenhouse_base",
+     "type": "",
+     "x": 1030,
+     "y": 895,
+     "width": 150,
+     "height": 110,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 68,
+     "name": "barn_base",
+     "type": "",
+     "x": 1515,
+     "y": 1008,
+     "width": 350,
+     "height": 120,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 70,
+     "name": "coop_base",
+     "type": "",
+     "x": 1925,
+     "y": 1010,
+     "width": 270,
+     "height": 110,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 73,
+     "name": "pine_1_base",
+     "type": "",
+     "x": 52,
+     "y": 776,
+     "width": 36,
+     "height": 24,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 75,
+     "name": "pine_2_base",
+     "type": "",
+     "x": 52,
+     "y": 1026,
+     "width": 36,
+     "height": 24,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 77,
+     "name": "pine_3_base",
+     "type": "",
+     "x": 54,
+     "y": 1276,
+     "width": 36,
+     "height": 24,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 79,
+     "name": "apple_1_base",
+     "type": "",
+     "x": 1525,
+     "y": 416,
+     "width": 40,
+     "height": 24,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 81,
+     "name": "apple_2_base",
+     "type": "",
+     "x": 1705,
+     "y": 416,
+     "width": 40,
+     "height": 24,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 83,
+     "name": "palm_1_base",
+     "type": "",
+     "x": 2060,
+     "y": 678,
+     "width": 30,
+     "height": 22,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 85,
+     "name": "bush_round_1_base",
+     "type": "",
+     "x": 676,
+     "y": 664,
+     "width": 48,
+     "height": 26,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 87,
+     "name": "oak_1_base",
+     "type": "",
+     "x": 1378,
+     "y": 419,
+     "width": 44,
+     "height": 26,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 89,
+     "name": "pine_4_base",
+     "type": "",
+     "x": 2312,
+     "y": 286,
+     "width": 36,
+     "height": 24,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 91,
+     "name": "oak_2_base",
+     "type": "",
+     "x": 2448,
+     "y": 444,
+     "width": 44,
+     "height": 26,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 93,
+     "name": "pine_5_base",
+     "type": "",
+     "x": 2402,
+     "y": 636,
+     "width": 36,
+     "height": 24,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 95,
+     "name": "oak_3_base",
+     "type": "",
+     "x": 2308,
+     "y": 1074,
+     "width": 44,
+     "height": 26,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 97,
+     "name": "pine_6_base",
+     "type": "",
+     "x": 2452,
+     "y": 1276,
+     "width": 36,
+     "height": 24,
      "rotation": 0,
      "visible": true
     }
@@ -1500,13 +906,13 @@
    "draworder": "topdown",
    "objects": [
     {
-     "id": 133,
+     "id": 98,
      "name": "plot_01",
      "type": "",
-     "x": 198,
-     "y": 729,
-     "width": 142,
-     "height": 131,
+     "x": 201,
+     "y": 733,
+     "width": 136,
+     "height": 124,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1533,13 +939,13 @@
      ]
     },
     {
-     "id": 134,
+     "id": 99,
      "name": "plot_02",
      "type": "",
-     "x": 377,
-     "y": 729,
-     "width": 139,
-     "height": 132,
+     "x": 380,
+     "y": 733,
+     "width": 134,
+     "height": 126,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1566,13 +972,13 @@
      ]
     },
     {
-     "id": 135,
+     "id": 100,
      "name": "plot_03",
      "type": "",
-     "x": 555,
-     "y": 729,
-     "width": 113,
-     "height": 132,
+     "x": 558,
+     "y": 733,
+     "width": 108,
+     "height": 125,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1599,13 +1005,13 @@
      ]
     },
     {
-     "id": 136,
+     "id": 101,
      "name": "plot_04",
      "type": "",
-     "x": 706,
-     "y": 727,
-     "width": 116,
-     "height": 134,
+     "x": 709,
+     "y": 733,
+     "width": 110,
+     "height": 126,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1632,13 +1038,13 @@
      ]
     },
     {
-     "id": 137,
+     "id": 102,
      "name": "plot_05",
      "type": "",
-     "x": 859,
-     "y": 729,
-     "width": 143,
-     "height": 131,
+     "x": 862,
+     "y": 733,
+     "width": 136,
+     "height": 124,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1665,13 +1071,13 @@
      ]
     },
     {
-     "id": 138,
+     "id": 103,
      "name": "plot_06",
      "type": "",
-     "x": 196,
-     "y": 882,
-     "width": 144,
-     "height": 145,
+     "x": 201,
+     "y": 898,
+     "width": 136,
+     "height": 126,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1698,13 +1104,13 @@
      ]
     },
     {
-     "id": 139,
+     "id": 104,
      "name": "plot_07",
      "type": "",
-     "x": 377,
-     "y": 882,
-     "width": 140,
-     "height": 145,
+     "x": 380,
+     "y": 898,
+     "width": 135,
+     "height": 125,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1731,13 +1137,13 @@
      ]
     },
     {
-     "id": 140,
+     "id": 105,
      "name": "plot_08",
      "type": "",
-     "x": 699,
-     "y": 884,
-     "width": 124,
-     "height": 143,
+     "x": 558,
+     "y": 903,
+     "width": 261,
+     "height": 81,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1764,13 +1170,13 @@
      ]
     },
     {
-     "id": 141,
+     "id": 106,
      "name": "plot_09",
      "type": "",
-     "x": 860,
-     "y": 890,
-     "width": 141,
-     "height": 137,
+     "x": 863,
+     "y": 898,
+     "width": 136,
+     "height": 126,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1797,13 +1203,13 @@
      ]
     },
     {
-     "id": 142,
+     "id": 107,
      "name": "plot_10",
      "type": "",
-     "x": 197,
-     "y": 1050,
-     "width": 143,
-     "height": 144,
+     "x": 201,
+     "y": 1066,
+     "width": 136,
+     "height": 126,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1830,13 +1236,13 @@
      ]
     },
     {
-     "id": 143,
+     "id": 108,
      "name": "plot_11",
      "type": "",
-     "x": 377,
-     "y": 1050,
-     "width": 139,
-     "height": 144,
+     "x": 380,
+     "y": 1066,
+     "width": 134,
+     "height": 125,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1863,13 +1269,13 @@
      ]
     },
     {
-     "id": 144,
+     "id": 109,
      "name": "plot_12",
      "type": "",
-     "x": 556,
-     "y": 1092,
-     "width": 145,
-     "height": 101,
+     "x": 558,
+     "y": 1104,
+     "width": 260,
+     "height": 83,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1896,13 +1302,13 @@
      ]
     },
     {
-     "id": 145,
+     "id": 110,
      "name": "plot_13",
      "type": "",
-     "x": 705,
-     "y": 1055,
-     "width": 116,
-     "height": 138,
+     "x": 863,
+     "y": 1066,
+     "width": 135,
+     "height": 126,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1929,13 +1335,13 @@
      ]
     },
     {
-     "id": 146,
+     "id": 111,
      "name": "plot_14",
      "type": "",
-     "x": 859,
-     "y": 1047,
-     "width": 143,
-     "height": 147,
+     "x": 1043,
+     "y": 1065,
+     "width": 134,
+     "height": 126,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1962,13 +1368,13 @@
      ]
     },
     {
-     "id": 147,
+     "id": 112,
      "name": "plot_15",
      "type": "",
-     "x": 1040,
-     "y": 1044,
-     "width": 140,
-     "height": 150,
+     "x": 201,
+     "y": 1234,
+     "width": 136,
+     "height": 129,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1980,12 +1386,12 @@
       {
        "name": "unlockCost",
        "type": "int",
-       "value": 500
+       "value": 1000
       },
       {
        "name": "unlockLevel",
        "type": "int",
-       "value": 3
+       "value": 5
       },
       {
        "name": "startsUnlocked",
@@ -1995,13 +1401,13 @@
      ]
     },
     {
-     "id": 148,
+     "id": 113,
      "name": "plot_16",
      "type": "",
-     "x": 197,
-     "y": 1219,
-     "width": 143,
-     "height": 146,
+     "x": 380,
+     "y": 1234,
+     "width": 135,
+     "height": 129,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2028,13 +1434,13 @@
      ]
     },
     {
-     "id": 149,
+     "id": 114,
      "name": "plot_17",
      "type": "",
-     "x": 377,
-     "y": 1215,
-     "width": 140,
-     "height": 150,
+     "x": 559,
+     "y": 1234,
+     "width": 121,
+     "height": 129,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2061,13 +1467,13 @@
      ]
     },
     {
-     "id": 150,
+     "id": 115,
      "name": "plot_18",
      "type": "",
-     "x": 556,
-     "y": 1215,
-     "width": 143,
-     "height": 149,
+     "x": 698,
+     "y": 1234,
+     "width": 122,
+     "height": 129,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2094,13 +1500,13 @@
      ]
     },
     {
-     "id": 151,
+     "id": 116,
      "name": "plot_19",
      "type": "",
-     "x": 703,
-     "y": 1215,
-     "width": 119,
-     "height": 150,
+     "x": 864,
+     "y": 1234,
+     "width": 136,
+     "height": 129,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2127,13 +1533,13 @@
      ]
     },
     {
-     "id": 152,
+     "id": 117,
      "name": "plot_20",
      "type": "",
-     "x": 860,
-     "y": 1224,
-     "width": 142,
-     "height": 141,
+     "x": 1044,
+     "y": 1234,
+     "width": 134,
+     "height": 129,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2158,171 +1564,6 @@
        "value": false
       }
      ]
-    },
-    {
-     "id": 153,
-     "name": "plot_21",
-     "type": "",
-     "x": 1040,
-     "y": 1227,
-     "width": 140,
-     "height": 137,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "slotId",
-       "type": "string",
-       "value": "plot_21"
-      },
-      {
-       "name": "unlockCost",
-       "type": "int",
-       "value": 1000
-      },
-      {
-       "name": "unlockLevel",
-       "type": "int",
-       "value": 5
-      },
-      {
-       "name": "startsUnlocked",
-       "type": "bool",
-       "value": false
-      }
-     ]
-    },
-    {
-     "id": 154,
-     "name": "plot_22",
-     "type": "",
-     "x": 2178,
-     "y": 895,
-     "width": 102,
-     "height": 125,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "slotId",
-       "type": "string",
-       "value": "plot_22"
-      },
-      {
-       "name": "unlockCost",
-       "type": "int",
-       "value": 2000
-      },
-      {
-       "name": "unlockLevel",
-       "type": "int",
-       "value": 8
-      },
-      {
-       "name": "startsUnlocked",
-       "type": "bool",
-       "value": false
-      }
-     ]
-    },
-    {
-     "id": 155,
-     "name": "plot_23",
-     "type": "",
-     "x": 2178,
-     "y": 1030,
-     "width": 102,
-     "height": 90,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "slotId",
-       "type": "string",
-       "value": "plot_23"
-      },
-      {
-       "name": "unlockCost",
-       "type": "int",
-       "value": 2000
-      },
-      {
-       "name": "unlockLevel",
-       "type": "int",
-       "value": 8
-      },
-      {
-       "name": "startsUnlocked",
-       "type": "bool",
-       "value": false
-      }
-     ]
-    },
-    {
-     "id": 156,
-     "name": "plot_24",
-     "type": "",
-     "x": 2178,
-     "y": 1130,
-     "width": 102,
-     "height": 95,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "slotId",
-       "type": "string",
-       "value": "plot_24"
-      },
-      {
-       "name": "unlockCost",
-       "type": "int",
-       "value": 2000
-      },
-      {
-       "name": "unlockLevel",
-       "type": "int",
-       "value": 8
-      },
-      {
-       "name": "startsUnlocked",
-       "type": "bool",
-       "value": false
-      }
-     ]
-    },
-    {
-     "id": 157,
-     "name": "plot_25",
-     "type": "",
-     "x": 1365,
-     "y": 1245,
-     "width": 135,
-     "height": 127,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "slotId",
-       "type": "string",
-       "value": "plot_25"
-      },
-      {
-       "name": "unlockCost",
-       "type": "int",
-       "value": 2000
-      },
-      {
-       "name": "unlockLevel",
-       "type": "int",
-       "value": 8
-      },
-      {
-       "name": "startsUnlocked",
-       "type": "bool",
-       "value": false
-      }
-     ]
     }
    ],
    "opacity": 1,
@@ -2337,13 +1578,13 @@
    "draworder": "topdown",
    "objects": [
     {
-     "id": 158,
+     "id": 118,
      "name": "barn_pasture",
      "type": "",
-     "x": 1335,
-     "y": 272,
-     "width": 365,
-     "height": 168,
+     "x": 1480,
+     "y": 1150,
+     "width": 420,
+     "height": 220,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2355,31 +1596,13 @@
      ]
     },
     {
-     "id": 159,
-     "name": "pig_pen",
-     "type": "",
-     "x": 1705,
-     "y": 265,
-     "width": 245,
-     "height": 145,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "habitat",
-       "type": "string",
-       "value": "barn"
-      }
-     ]
-    },
-    {
-     "id": 160,
+     "id": 119,
      "name": "coop_yard",
      "type": "",
      "x": 1920,
-     "y": 390,
-     "width": 340,
-     "height": 125,
+     "y": 1140,
+     "width": 290,
+     "height": 230,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2391,13 +1614,13 @@
      ]
     },
     {
-     "id": 161,
+     "id": 120,
      "name": "pond",
      "type": "",
-     "x": 1650,
-     "y": 530,
-     "width": 260,
-     "height": 170,
+     "x": 1610,
+     "y": 500,
+     "width": 370,
+     "height": 212,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2421,20 +1644,20 @@
    "draworder": "topdown",
    "objects": [
     {
-     "id": 162,
-     "name": "lot_east_garden",
+     "id": 121,
+     "name": "lot_field_east",
      "type": "",
-     "x": 2165,
-     "y": 880,
-     "width": 130,
-     "height": 355,
+     "x": 1030,
+     "y": 1050,
+     "width": 162,
+     "height": 156,
      "rotation": 0,
      "visible": true,
      "properties": [
       {
        "name": "lotId",
        "type": "string",
-       "value": "lot_east_garden"
+       "value": "lot_field_east"
       },
       {
        "name": "cost",
@@ -2444,20 +1667,20 @@
      ]
     },
     {
-     "id": 163,
-     "name": "lot_vineyard",
+     "id": 122,
+     "name": "lot_field_south",
      "type": "",
-     "x": 1350,
-     "y": 930,
-     "width": 165,
-     "height": 455,
+     "x": 188,
+     "y": 1222,
+     "width": 1004,
+     "height": 154,
      "rotation": 0,
      "visible": true,
      "properties": [
       {
        "name": "lotId",
        "type": "string",
-       "value": "lot_vineyard"
+       "value": "lot_field_south"
       },
       {
        "name": "cost",
@@ -2467,20 +1690,20 @@
      ]
     },
     {
-     "id": 164,
-     "name": "lot_orchard",
+     "id": 123,
+     "name": "lot_meadow",
      "type": "",
-     "x": 1520,
-     "y": 790,
-     "width": 640,
-     "height": 595,
+     "x": 1470,
+     "y": 1138,
+     "width": 745,
+     "height": 238,
      "rotation": 0,
      "visible": true,
      "properties": [
       {
        "name": "lotId",
        "type": "string",
-       "value": "lot_orchard"
+       "value": "lot_meadow"
       },
       {
        "name": "cost",
@@ -2502,11 +1725,11 @@
    "draworder": "topdown",
    "objects": [
     {
-     "id": 165,
+     "id": 124,
      "name": "player",
      "type": "",
-     "x": 505,
-     "y": 575,
+     "x": 450,
+     "y": 625,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -2526,11 +1749,11 @@
    "draworder": "topdown",
    "objects": [
     {
-     "id": 166,
+     "id": 125,
      "name": "shopkeeper",
      "type": "",
-     "x": 2172,
-     "y": 712,
+     "x": 2150,
+     "y": 795,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -2545,11 +1768,11 @@
      ]
     },
     {
-     "id": 167,
+     "id": 126,
      "name": "blacksmith",
      "type": "",
-     "x": 760,
-     "y": 330,
+     "x": 905,
+     "y": 492,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -2564,11 +1787,11 @@
      ]
     },
     {
-     "id": 168,
+     "id": 127,
      "name": "scientist",
      "type": "",
-     "x": 1135,
-     "y": 1000,
+     "x": 1105,
+     "y": 1040,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -2590,717 +1813,459 @@
   },
   {
    "id": 8,
-   "name": "overhead",
+   "name": "buildings",
    "type": "objectgroup",
    "draworder": "topdown",
    "objects": [
     {
-     "id": 169,
-     "name": "house_roof",
+     "id": 61,
+     "name": "house",
      "type": "",
-     "x": 126,
-     "y": 292,
-     "width": 0,
-     "height": 0,
+     "x": 200,
+     "y": 159,
+     "width": 400,
+     "height": 386,
      "rotation": 0,
      "visible": true,
-     "polygon": [
-      {
-       "x": 0,
-       "y": 0
-      },
-      {
-       "x": 54,
-       "y": -72
-      },
-      {
-       "x": 54,
-       "y": -116
-      },
-      {
-       "x": 112,
-       "y": -116
-      },
-      {
-       "x": 118,
-       "y": -110
-      },
-      {
-       "x": 152,
-       "y": -206
-      },
-      {
-       "x": 216,
-       "y": -166
-      },
-      {
-       "x": 326,
-       "y": -232
-      },
-      {
-       "x": 409,
-       "y": -84
-      },
-      {
-       "x": 454,
-       "y": 0
-      },
-      {
-       "x": 344,
-       "y": 56
-      },
-      {
-       "x": 216,
-       "y": 132
-      },
-      {
-       "x": 174,
-       "y": 88
-      },
-      {
-       "x": 124,
-       "y": 78
-      },
-      {
-       "x": 114,
-       "y": 38
-      }
-     ],
      "properties": [
       {
-       "name": "drop",
+       "name": "sprite",
        "type": "string",
-       "value": "path_grass"
+       "value": "building/house"
+      },
+      {
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 236
       }
      ]
     },
     {
-     "id": 170,
-     "name": "shed_roof",
+     "id": 63,
+     "name": "garage",
      "type": "",
-     "x": 645,
-     "y": 97,
-     "width": 0,
-     "height": 0,
+     "x": 679,
+     "y": 211,
+     "width": 452,
+     "height": 244,
      "rotation": 0,
      "visible": true,
-     "polygon": [
+     "properties": [
       {
-       "x": 0,
-       "y": 0
+       "name": "sprite",
+       "type": "string",
+       "value": "building/garage"
       },
       {
-       "x": 367,
-       "y": 0
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 154
+      }
+     ]
+    },
+    {
+     "id": 65,
+     "name": "greenhouse",
+     "type": "",
+     "x": 1026,
+     "y": 701,
+     "width": 158,
+     "height": 304,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "building/greenhouse"
       },
       {
-       "x": 367,
-       "y": 55
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 194
+      }
+     ]
+    },
+    {
+     "id": 67,
+     "name": "barn",
+     "type": "",
+     "x": 1510,
+     "y": 826,
+     "width": 360,
+     "height": 302,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "building/barn"
       },
       {
-       "x": 0,
-       "y": 55
-      }
-     ],
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path_grass"
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 182
       }
      ]
     },
     {
-     "id": 171,
-     "name": "barn_roof",
+     "id": 69,
+     "name": "coop",
      "type": "",
-     "x": 1440,
-     "y": 100,
-     "width": 0,
-     "height": 0,
+     "x": 1919,
+     "y": 844,
+     "width": 282,
+     "height": 276,
      "rotation": 0,
      "visible": true,
-     "polygon": [
+     "properties": [
       {
-       "x": 0,
-       "y": 0
+       "name": "sprite",
+       "type": "string",
+       "value": "building/coop"
       },
       {
-       "x": 82,
-       "y": -50
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 166
+      }
+     ]
+    },
+    {
+     "id": 71,
+     "name": "pier",
+     "type": "",
+     "x": 1700,
+     "y": 486,
+     "width": 240,
+     "height": 282,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "building/pier"
       },
       {
-       "x": 142,
-       "y": -50
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "id": 72,
+     "name": "pine_1",
+     "type": "",
+     "x": 1,
+     "y": 540,
+     "width": 138,
+     "height": 260,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "tree/pine"
       },
       {
-       "x": 215,
-       "y": -3
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 236
+      }
+     ]
+    },
+    {
+     "id": 74,
+     "name": "pine_2",
+     "type": "",
+     "x": 1,
+     "y": 790,
+     "width": 138,
+     "height": 260,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "tree/pine"
       },
       {
-       "x": 217,
-       "y": 90
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 236
+      }
+     ]
+    },
+    {
+     "id": 76,
+     "name": "pine_3",
+     "type": "",
+     "x": 3,
+     "y": 1040,
+     "width": 138,
+     "height": 260,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "tree/pine"
       },
       {
-       "x": 0,
-       "y": 90
-      }
-     ],
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path_grass"
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 236
       }
      ]
     },
     {
-     "id": 172,
-     "name": "coop_roof",
+     "id": 78,
+     "name": "apple_1",
      "type": "",
-     "x": 1962,
-     "y": 240,
-     "width": 0,
-     "height": 0,
+     "x": 1454,
+     "y": 158,
+     "width": 182,
+     "height": 282,
      "rotation": 0,
      "visible": true,
-     "polygon": [
+     "properties": [
       {
-       "x": 0,
-       "y": 0
+       "name": "sprite",
+       "type": "string",
+       "value": "tree/apple"
       },
       {
-       "x": 83,
-       "y": -98
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 258
+      }
+     ]
+    },
+    {
+     "id": 80,
+     "name": "apple_2",
+     "type": "",
+     "x": 1634,
+     "y": 158,
+     "width": 182,
+     "height": 282,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "tree/apple"
       },
       {
-       "x": 93,
-       "y": -98
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 258
+      }
+     ]
+    },
+    {
+     "id": 82,
+     "name": "palm_1",
+     "type": "",
+     "x": 1992,
+     "y": 416,
+     "width": 166,
+     "height": 284,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "tree/palm"
       },
       {
-       "x": 173,
-       "y": -13
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 262
+      }
+     ]
+    },
+    {
+     "id": 84,
+     "name": "bush_round_1",
+     "type": "",
+     "x": 592,
+     "y": 442,
+     "width": 216,
+     "height": 248,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "tree/bush_round"
       },
       {
-       "x": 266,
-       "y": -13
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 222
+      }
+     ]
+    },
+    {
+     "id": 86,
+     "name": "oak_1",
+     "type": "",
+     "x": 1298,
+     "y": 177,
+     "width": 204,
+     "height": 268,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "tree/oak"
       },
       {
-       "x": 266,
-       "y": 45
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 242
+      }
+     ]
+    },
+    {
+     "id": 88,
+     "name": "pine_4",
+     "type": "",
+     "x": 2261,
+     "y": 50,
+     "width": 138,
+     "height": 260,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "tree/pine"
       },
       {
-       "x": 175,
-       "y": 60
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 236
+      }
+     ]
+    },
+    {
+     "id": 90,
+     "name": "oak_2",
+     "type": "",
+     "x": 2368,
+     "y": 202,
+     "width": 204,
+     "height": 268,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "tree/oak"
       },
       {
-       "x": 0,
-       "y": 60
-      }
-     ],
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path_grass"
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 242
       }
      ]
     },
     {
-     "id": 173,
-     "name": "greenhouse_roof",
+     "id": 92,
+     "name": "pine_5",
      "type": "",
-     "x": 1035,
-     "y": 675,
-     "width": 0,
-     "height": 0,
+     "x": 2351,
+     "y": 400,
+     "width": 138,
+     "height": 260,
      "rotation": 0,
      "visible": true,
-     "polygon": [
+     "properties": [
       {
-       "x": 0,
-       "y": 0
+       "name": "sprite",
+       "type": "string",
+       "value": "tree/pine"
       },
       {
-       "x": 52,
-       "y": -55
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 236
+      }
+     ]
+    },
+    {
+     "id": 94,
+     "name": "oak_3",
+     "type": "",
+     "x": 2228,
+     "y": 832,
+     "width": 204,
+     "height": 268,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "tree/oak"
       },
       {
-       "x": 135,
-       "y": -55
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 242
+      }
+     ]
+    },
+    {
+     "id": 96,
+     "name": "pine_6",
+     "type": "",
+     "x": 2401,
+     "y": 1040,
+     "width": 138,
+     "height": 260,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "tree/pine"
       },
       {
-       "x": 190,
-       "y": 0
-      },
-      {
-       "x": 190,
-       "y": 155
-      },
-      {
-       "x": 0,
-       "y": 155
-      }
-     ],
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path_grass"
-      }
-     ]
-    },
-    {
-     "id": 174,
-     "name": "greenhouse_tree",
-     "type": "",
-     "x": 1226,
-     "y": 676,
-     "width": 110,
-     "height": 124,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path_grass"
-      }
-     ]
-    },
-    {
-     "id": 175,
-     "name": "orchard_tree_00",
-     "type": "",
-     "x": 1498,
-     "y": 780,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 176,
-     "name": "orchard_tree_01",
-     "type": "",
-     "x": 1608,
-     "y": 780,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 177,
-     "name": "orchard_tree_02",
-     "type": "",
-     "x": 1711,
-     "y": 780,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 178,
-     "name": "orchard_tree_03",
-     "type": "",
-     "x": 1831,
-     "y": 780,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 179,
-     "name": "orchard_tree_04",
-     "type": "",
-     "x": 1941,
-     "y": 780,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 180,
-     "name": "orchard_tree_05",
-     "type": "",
-     "x": 2046,
-     "y": 780,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 181,
-     "name": "orchard_tree_10",
-     "type": "",
-     "x": 1498,
-     "y": 915,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 182,
-     "name": "orchard_tree_11",
-     "type": "",
-     "x": 1608,
-     "y": 915,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 183,
-     "name": "orchard_tree_12",
-     "type": "",
-     "x": 1711,
-     "y": 915,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 184,
-     "name": "orchard_tree_13",
-     "type": "",
-     "x": 1831,
-     "y": 915,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 185,
-     "name": "orchard_tree_14",
-     "type": "",
-     "x": 1941,
-     "y": 915,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 186,
-     "name": "orchard_tree_15",
-     "type": "",
-     "x": 2046,
-     "y": 915,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 187,
-     "name": "orchard_tree_20",
-     "type": "",
-     "x": 1498,
-     "y": 1060,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 188,
-     "name": "orchard_tree_21",
-     "type": "",
-     "x": 1608,
-     "y": 1060,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 189,
-     "name": "orchard_tree_22",
-     "type": "",
-     "x": 1711,
-     "y": 1060,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 190,
-     "name": "orchard_tree_23",
-     "type": "",
-     "x": 1831,
-     "y": 1060,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 191,
-     "name": "orchard_tree_24",
-     "type": "",
-     "x": 1941,
-     "y": 1060,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 192,
-     "name": "orchard_tree_25",
-     "type": "",
-     "x": 2046,
-     "y": 1060,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 193,
-     "name": "orchard_tree_30",
-     "type": "",
-     "x": 1498,
-     "y": 1210,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 194,
-     "name": "orchard_tree_31",
-     "type": "",
-     "x": 1608,
-     "y": 1210,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 195,
-     "name": "orchard_tree_32",
-     "type": "",
-     "x": 1711,
-     "y": 1210,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 196,
-     "name": "orchard_tree_33",
-     "type": "",
-     "x": 1831,
-     "y": 1210,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 197,
-     "name": "orchard_tree_34",
-     "type": "",
-     "x": 1941,
-     "y": 1210,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
-      }
-     ]
-    },
-    {
-     "id": 198,
-     "name": "orchard_tree_35",
-     "type": "",
-     "x": 2046,
-     "y": 1210,
-     "width": 108,
-     "height": 83,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "drop",
-       "type": "string",
-       "value": "path"
+       "name": "overheadSplitY",
+       "type": "int",
+       "value": 236
       }
      ]
     }
    ],
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0
+  },
+  {
+   "id": 9,
+   "name": "overhead",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "objects": [],
    "opacity": 1,
    "visible": true,
    "x": 0,

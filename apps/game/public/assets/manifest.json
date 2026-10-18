@@ -36,6 +36,26 @@
       "key": "atlas_vehicles",
       "png": "atlas/atlas_vehicles.png",
       "json": "atlas/atlas_vehicles.json"
+    },
+    {
+      "key": "atlas_buildings",
+      "png": "atlas/atlas_buildings.png",
+      "json": "atlas/atlas_buildings.json"
+    },
+    {
+      "key": "atlas_crops",
+      "png": "atlas/atlas_crops.png",
+      "json": "atlas/atlas_crops.json"
+    },
+    {
+      "key": "atlas_tiles",
+      "png": "atlas/atlas_tiles.png",
+      "json": "atlas/atlas_tiles.json"
+    },
+    {
+      "key": "atlas_ui",
+      "png": "atlas/atlas_ui.png",
+      "json": "atlas/atlas_ui.json"
     }
   ]
 }

@@ -13,15 +13,18 @@ from build import (CLEAN, DEBUG, OUT, RAW, TILED, BuildError, font)
 
 MAP_W, MAP_H, TILE = 2576, 1438, 32
 SRC_TMJ = TILED / "farm_layout.tmj"
-REQUIRED_LAYERS = ["collision", "plots", "pens", "spawn", "locked_lots", "npc_points"]
+REQUIRED_LAYERS = ["collision", "plots", "pens", "spawn", "locked_lots", "npc_points", "buildings"]
+
+
+MAP_NAME = "v2/mapa_limpo"   # mapa base atual (só terreno). Troque aqui se o dono mandar outro.
 
 
 def map_source() -> Path:
     for ext in ("png", "webp", "jpg"):
-        p = CLEAN / f"mapa_do_jogo.{ext}"
+        p = CLEAN / f"{MAP_NAME}.{ext}"
         if p.exists():
             return p
-    return RAW / "mapa_do_jogo.jpg"
+    return RAW / f"{MAP_NAME}.jpg"
 
 
 def load_map() -> Image.Image:
@@ -86,6 +89,43 @@ def overhead_mask(tmj: dict, rgb: np.ndarray) -> np.ndarray:
     return total
 
 
+def atlas_cache():
+    cache = {}
+
+    def get(name: str):
+        for cat in ("buildings", "crops", "characters", "animals", "pets", "icons", "tiles"):
+            if cat not in cache:
+                p = OUT / "atlas" / f"atlas_{cat}.json"
+                cache[cat] = (json.load(open(p)), Image.open(OUT / "atlas" / f"atlas_{cat}.png").convert("RGBA")) \
+                    if p.exists() else ({"frames": {}}, None)
+            js, im = cache[cat]
+            if name in js["frames"]:
+                f = js["frames"][name]["frame"]
+                return im.crop((f["x"], f["y"], f["x"] + f["w"], f["y"] + f["h"])), js["frames"][name]["pivot"]
+        raise BuildError(f"quadro não encontrado em nenhum atlas: {name}")
+    return get
+
+
+def building_layer(tmj: dict, upper_only: bool) -> Image.Image:
+    """Desenha os objetos da camada buildings (ordenados pela base). upper_only: só a parte acima de
+    overheadSplitY (o que fica por cima do jogador) -> overhead.png."""
+    get = atlas_cache()
+    out = Image.new("RGBA", (MAP_W, MAP_H), (0, 0, 0, 0))
+    objs = sorted(layer_objects(tmj, "buildings"), key=lambda o: o["y"] + o["height"])
+    for o in objs:
+        p = props(o)
+        fr, _ = get(p["sprite"])
+        bx, by = o["x"] + o["width"] / 2, o["y"] + o["height"]
+        x0, y0 = int(round(bx - fr.width / 2)), int(round(by - fr.height))
+        if upper_only:
+            split = int(p.get("overheadSplitY", fr.height))
+            if split <= 0:
+                continue
+            fr = fr.crop((0, 0, fr.width, min(split, fr.height)))
+        out.alpha_composite(fr, (x0, y0)) if 0 <= x0 and 0 <= y0 else out.paste(fr, (x0, y0), fr)
+    return out
+
+
 def validate_layout(tmj: dict):
     if tmj.get("orientation") != "orthogonal" or tmj.get("tilewidth") != TILE or tmj.get("tileheight") != TILE:
         raise BuildError("layout: precisa ser ortogonal com tiles de 32x32")
@@ -121,6 +161,14 @@ def validate_layout(tmj: dict):
     for o in layer_objects(tmj, "npc_points"):
         if props(o).get("npc") not in ("shopkeeper", "blacksmith", "scientist"):
             raise BuildError(f"layout: npc_point {o.get('name')} com npc inválido")
+    bj = OUT / "atlas" / "atlas_buildings.json"
+    known = set(json.load(open(bj))["frames"]) if bj.exists() else set()
+    for o in layer_objects(tmj, "buildings"):
+        p = props(o)
+        if not isinstance(p.get("sprite"), str) or not isinstance(p.get("overheadSplitY"), int):
+            raise BuildError(f"layout: prédio {o.get('name')} sem sprite/overheadSplitY")
+        if known and p["sprite"] not in known:
+            raise BuildError(f"layout: prédio {o.get('name')} usa sprite inexistente {p['sprite']}")
     for l in tmj["layers"]:
         for o in l.get("objects", []):
             if not (0 <= o["x"] <= MAP_W and 0 <= o["y"] <= MAP_H):
@@ -140,11 +188,16 @@ def build_map():
     mask = overhead_mask(tmj, rgb)
     rgba = np.dstack([rgb, np.where(mask, 255, 0).astype(np.uint8)])
     rgba[~mask, :3] = 0
-    Image.fromarray(rgba, "RGBA").save(OUT / "map" / "overhead.png", optimize=True)
+    over = Image.fromarray(rgba, "RGBA")
+    # telhados e copas dos prédios/árvores da camada "buildings" (parte acima de overheadSplitY)
+    over.alpha_composite(building_layer(tmj, upper_only=True))
+    over.save(OUT / "map" / "overhead.png", optimize=True)
+    mask = np.asarray(over)[..., 3] > 0
     out = copy.deepcopy(tmj)
     for l in out["layers"]:
         if l["type"] == "imagelayer" and l["name"] == "ground":
             l["image"] = "farm.webp"
+            l["imagewidth"], l["imageheight"] = MAP_W, MAP_H
     with open(OUT / "map" / "farm_layout.tmj", "w") as fp:
         json.dump(out, fp, indent=1)
         fp.write("\n")
@@ -155,57 +208,61 @@ def build_map():
 # ---------------------------------------------------------------------------
 # Prévias
 # ---------------------------------------------------------------------------
-def atlas_frame(cat: str, name: str) -> Image.Image:
-    js = json.load(open(OUT / "atlas" / f"atlas_{cat}.json"))
-    im = Image.open(OUT / "atlas" / f"atlas_{cat}.png")
-    f = js["frames"][name]["frame"]
-    return im.crop((f["x"], f["y"], f["x"] + f["w"], f["y"] + f["h"])), js["frames"][name]["pivot"]
-
-
-def paste_at(base: Image.Image, cat: str, name: str, x: int, y: int, shadow: bool = True):
-    fr, piv = atlas_frame(cat, name)
+def paste_at(base: Image.Image, name: str, x: float, y: float, shadow: bool = True, get=None, flip=False):
+    get = get or atlas_cache()
+    fr, piv = get(name)
+    if flip:
+        fr = fr.transpose(Image.FLIP_LEFT_RIGHT)
     px, py = int(round(x - piv["x"] * fr.width)), int(round(y - piv["y"] * fr.height))
     if shadow:
         sh = Image.new("RGBA", base.size, (0, 0, 0, 0))
-        d = ImageDraw.Draw(sh)
         w = max(8, int(fr.width * 0.45))
-        d.ellipse([x - w // 2, y - 5, x + w // 2, y + 3], fill=(0, 0, 0, 70))
+        ImageDraw.Draw(sh).ellipse([x - w // 2, y - 5, x + w // 2, y + 3], fill=(0, 0, 0, 70))
         base.alpha_composite(sh)
-    base.alpha_composite(fr, (px, py))
+    base.alpha_composite(fr, (max(px, 0), max(py, 0))) if px >= 0 and py >= 0 else base.paste(fr, (px, py), fr)
 
 
 def previews():
-    im = load_map().convert("RGBA")
     tmj = json.load(open(SRC_TMJ))
     sp = next(o for o in layer_objects(tmj, "spawn") if o["name"] == "player")
-    # preview_on_map: escala final (1:1) num recorte em volta da casa/campo
-    base = im.copy()
-    over = Image.open(OUT / "map" / "overhead.png")
-    paste_at(base, "characters", "farmer_m/idle_down_0", sp["x"], sp["y"])
-    paste_at(base, "characters", "farmer_f/idle_down_0", sp["x"] + 60, sp["y"] + 10)
-    paste_at(base, "characters", "farmer_m/idle_up_0", 1262, 808)  # atrás da árvore da estufa (copa por cima)
-    paste_at(base, "characters", "shopkeeper/idle_down_0", 2172, 712)
-    paste_at(base, "animals", "cow/idle_0", 1420, 360)
-    paste_at(base, "animals", "sheep/idle_0", 1520, 420)
-    paste_at(base, "animals", "chicken/idle_0", 2010, 470)
-    paste_at(base, "animals", "duck/swim_0", 1760, 640, shadow=False)
-    paste_at(base, "pets", "dog/sit_0", sp["x"] - 70, sp["y"] + 15)
     plots = layer_objects(tmj, "plots")
-    for o, ic in zip(plots[:3], ["icon/carrot", "icon/potato", "icon/strawberry"]):
-        paste_at(base, "icons", ic, int(o["x"] + o["width"] / 2), int(o["y"] + o["height"] / 2), shadow=False)
-    base.alpha_composite(over)
-    full = base.convert("RGB")
-    crop = full.crop((80, 40, 1280, 900))
-    big = crop.resize((crop.width * 2, crop.height * 2), Image.NEAREST)
-    d = ImageDraw.Draw(big)
-    d.text((10, 10), "preview_on_map: escala final 1:1 (ampliado 2x). Fazendeiro de costas atrás da árvore da estufa = copa no overhead.",
-           fill=(255, 255, 255), font=font(22), stroke_width=3, stroke_fill=(0, 0, 0))
-    big.save(DEBUG / "preview_on_map.png")
-    right = full.crop((1300, 180, 2340, 820))
-    right.resize((right.width * 2, right.height * 2), Image.NEAREST).save(DEBUG / "preview_on_map_animals.png")
-    full.save(DEBUG / "preview_on_map_full.png")
+    stages = ["carrot", "potato", "strawberry"]
+    extra = []
+    tiles = ["tile/soil_tilled", "tile/soil_wet", "tile/soil_raw"]
+    base_tiles = []
+    for i, o in enumerate(plots):
+        cx, cy = o["x"] + o["width"] / 2, o["y"] + o["height"] / 2
+        base_tiles.append((tiles[i % 3] if i < 9 else None, o))
+        if i < 12:
+            crop = stages[(i // 4) % 3]
+            extra.append((f"crop/{crop}_{i % 4}", cx, o["y"] + o["height"] - 12, False, False))
+    extra += [("farmer_m/idle_down_0", sp["x"], sp["y"], True, False),
+              ("farmer_f/idle_down_0", sp["x"] + 60, sp["y"] + 8, True, False),
+              ("farmer_m/idle_up_0", 330, 300, True, False),          # atrás da casa (telhado por cima)
+              ("farmer_f/water_side_0", plots[1]["x"] - 20, plots[1]["y"] + 90, True, False),
+              ("dog/sit_0", sp["x"] - 60, sp["y"] + 12, True, False),
+              ("cow_holstein/pose_0", 1560, 1230, True, False), ("cow_brown/pose_0", 1700, 1300, True, False),
+              ("sheep_white/pose_0", 1820, 1220, True, False), ("pig_pink/pose_0", 1640, 1340, True, True),
+              ("chicken_brown/pose_0", 1980, 1200, True, False), ("chicken_white/pose_1", 2060, 1250, True, False),
+              ("chicken_black/pose_1", 2130, 1200, True, True), ("turkey_bronze/pose_0", 2150, 1320, True, False),
+              ("duck_mallard/pose_1", 1700, 610, False, False), ("duck_white/pose_1", 1880, 560, False, True),
+              ("shopkeeper/idle_down_0", 2150, 795, True, False), ("blacksmith/idle_down_0", 905, 492, True, False),
+              ("scientist/idle_down_0", 1105, 1040, True, False)]
+    get = atlas_cache()
+    ground = load_map().convert("RGBA")
+    for t, o in base_tiles:  # terra arada por cima dos canteiros (nine-slice simples)
+        if t:
+            ground.alpha_composite(nine_slice(get(t)[0], int(o["width"]), int(o["height"]), 12), (int(o["x"]), int(o["y"])))
+    full = composed_on(ground, tmj, extra, get)
+    full.convert("RGB").save(DEBUG / "preview_composto.png")
+    crop = full.crop((120, 120, 1320, 820)).convert("RGB")
+    crop.resize((crop.width * 2, crop.height * 2), Image.NEAREST).save(DEBUG / "preview_on_map.png")
+    right = full.crop((1380, 380, 2280, 1400)).convert("RGB")
+    right.save(DEBUG / "preview_on_map_animals.png")
 
     # layout_overlay
+    im = load_map().convert("RGBA")
+    im.alpha_composite(building_layer(tmj, upper_only=False))
     ov = Image.new("RGBA", im.size, (0, 0, 0, 0))
     d = ImageDraw.Draw(ov)
     f = font(16)
@@ -213,14 +270,13 @@ def previews():
     def rect(o):
         return [o["x"], o["y"], o["x"] + o["width"], o["y"] + o["height"]]
 
-    for o in layer_objects(tmj, "overhead"):
-        if o.get("polygon"):
-            pts = [(o["x"] + p["x"], o["y"] + p["y"]) for p in o["polygon"]]
-            d.polygon(pts, outline=(255, 0, 255, 255), width=2)
-        elif o.get("ellipse"):
-            d.ellipse(rect(o), outline=(255, 0, 255, 255), width=2)
-        else:
-            d.rectangle(rect(o), outline=(255, 0, 255, 255), width=2)
+    for o in layer_objects(tmj, "buildings"):
+        p = props(o)
+        d.rectangle(rect(o), outline=(255, 0, 255, 255), width=2)
+        sy = o["y"] + p["overheadSplitY"]
+        d.line([o["x"], sy, o["x"] + o["width"], sy], fill=(255, 0, 255, 255), width=2)
+        d.text((o["x"] + 4, o["y"] + 2), p["sprite"], fill=(255, 200, 255, 255), font=f, stroke_width=2,
+               stroke_fill=(0, 0, 0, 255))
     for o in layer_objects(tmj, "collision"):
         d.rectangle(rect(o), fill=(255, 0, 0, 70), outline=(255, 0, 0, 220), width=2)
     for o in layer_objects(tmj, "pens"):
@@ -232,7 +288,7 @@ def previews():
         p = props(o)
         d.text((o["x"] + 4, o["y"] + o["height"] - 22), f"{p['lotId']} ${p['cost']}", fill=(255, 240, 0, 255),
                font=f, stroke_width=2, stroke_fill=(0, 0, 0, 255))
-    for o in layer_objects(tmj, "plots"):
+    for o in plots:
         p = props(o)
         col = (0, 255, 80, 255) if p["startsUnlocked"] else (150, 255, 150, 255)
         d.rectangle(rect(o), fill=(0, 255, 0, 50), outline=col, width=3)
@@ -246,7 +302,36 @@ def previews():
         d.ellipse([x - 9, y - 9, x + 9, y + 9], fill=(255, 255, 255, 255), outline=(0, 0, 0, 255), width=3)
         d.text((x + 12, y - 10), o["name"], fill=(255, 255, 255, 255), font=font(18), stroke_width=3,
                stroke_fill=(0, 0, 0, 255))
-    out = im.copy()
-    out.alpha_composite(ov)
-    out.convert("RGB").save(DEBUG / "layout_overlay.png")
-    print("  prévias: preview_on_map.png, preview_on_map_animals.png, layout_overlay.png")
+    im.alpha_composite(ov)
+    im.convert("RGB").save(DEBUG / "layout_overlay.png")
+    import extras
+    extras.card_art_preview()
+    print("  prévias: preview_composto.png, preview_on_map*.png, layout_overlay.png, cards_art_in_frames.png")
+
+
+def composed_on(ground: Image.Image, tmj: dict, extra: list[tuple], get) -> Image.Image:
+    base = ground.copy()
+    items = []
+    for o in layer_objects(tmj, "buildings"):
+        items.append((o["y"] + o["height"], props(o)["sprite"], o["x"] + o["width"] / 2, o["y"] + o["height"],
+                      False, False))
+    for name, x, y, sh, fl in extra:
+        items.append((y, name, x, y, sh, fl))
+    for _, name, x, y, sh, fl in sorted(items, key=lambda t: t[0]):
+        paste_at(base, name, x, y, shadow=sh, get=get, flip=fl)
+    base.alpha_composite(Image.open(OUT / "map" / "overhead.png"))
+    return base
+
+
+def nine_slice(tile: Image.Image, w: int, h: int, m: int) -> Image.Image:
+    """Estica um tile com margem m (cantos fixos) para w x h, vizinho mais próximo."""
+    tw, th = tile.size
+    out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    xs = [(0, m, 0, m), (m, tw - m, m, w - m), (tw - m, tw, w - m, w)]
+    ys = [(0, m, 0, m), (m, th - m, m, h - m), (th - m, th, h - m, h)]
+    for sx0, sx1, dx0, dx1 in xs:
+        for sy0, sy1, dy0, dy1 in ys:
+            if dx1 > dx0 and dy1 > dy0:
+                part = tile.crop((sx0, sy0, sx1, sy1)).resize((dx1 - dx0, dy1 - dy0), Image.NEAREST)
+                out.paste(part, (dx0, dy0))
+    return out

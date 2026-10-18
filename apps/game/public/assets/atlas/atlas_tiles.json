@@ -1,0 +1,87 @@
+{
+ "frames": {
+  "tile/soil_raw": {
+   "frame": {
+    "x": 1,
+    "y": 1,
+    "w": 112,
+    "h": 112
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 112
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 112
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "tile/soil_tilled": {
+   "frame": {
+    "x": 119,
+    "y": 1,
+    "w": 112,
+    "h": 112
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 112
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 112
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "tile/soil_wet": {
+   "frame": {
+    "x": 1,
+    "y": 119,
+    "w": 112,
+    "h": 112
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 112
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 112
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  }
+ },
+ "meta": {
+  "app": "village-idle-farm tools/assets/build.py",
+  "version": "1.0",
+  "image": "atlas_tiles.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 256,
+   "h": 256
+  },
+  "scale": "1"
+ }
+}

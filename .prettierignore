@@ -7,3 +7,5 @@ tools/assets
 assets-src
 *.tmj
 docs/PLANO-FASE0.md
+docs/DECISOES.md
+docs/BALANCEAMENTO.md

@@ -1,0 +1,80 @@
+# Prédios, árvores e decoração (v2) -> atlas_buildings
+# A folha tem ~1 px por pixel de arte (bem pequena). Ampliamos com vizinho mais próximo x2 (cada pixel de arte
+# vira 2x2). Resultado: casa 400x386, garagem 453x244, celeiro+silo 360x302, galinheiro 282x276,
+# estufa 158x304, píer 240x282, árvores ~140-215 x 250-285 — mesmo tamanho dos prédios pintados no mapa antigo
+# (casa ~455 px). Obs.: o pedido era ~3,5 px por pixel de arte (densidade do mapa limpo), mas x3,5 deixaria a
+# casa com ~700 px e a garagem com ~790 px: não cabem nas áreas livres do mapa. Se o dono quiser mais
+# densidade, precisa gerar os prédios maiores (ver README).
+# Cada sprite tem o próprio quadro (frame.per_sprite), âncora na base central (0.5, 1).
+#
+# footprints: base que tem colisão, em px do quadro final, medida a partir de baixo: [largura, altura]
+#   (centrada no x da âncora). overheadSplitY = altura_do_quadro - altura_do_footprint: tudo ACIMA dessa linha
+#   (contada do topo do sprite) é desenhado por cima do jogador; abaixo, o jogador fica na frente.
+footprints:
+  building/house: [380, 150]
+  building/garage: [440, 90]
+  building/barn: [350, 120]
+  building/coop: [270, 110]
+  building/greenhouse: [150, 110]
+  building/pier: [0, 0]          # píer é decoração sobre a água (a água já tem colisão)
+  tree/oak: [44, 26]
+  tree/pine: [36, 24]
+  tree/bush_round: [48, 26]
+  tree/apple: [40, 24]
+  tree/palm: [30, 22]
+  decor/crop_rows_1: [0, 0]
+  decor/crop_rows_2: [0, 0]
+  decor/crop_rows_3: [0, 0]
+sheet: buildings
+source: v2/predios_arvores.jpg
+category: buildings
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: true, min_L: 0, max_ab: 5}
+halo_tolerance: 12
+hole_area: 40
+hole_tolerance: 9                # buracos fechados da cor exata do fundo viram transparentes (miolo das fileiras)
+restore_enclosed: {close: 2, min_dE: 4, shadow_ab: 4}
+min_piece_area: 150
+merge_distance: 6
+merge_big_area: 1500
+merge_distance_big: 10      # celeiro + silo viram um só
+exclude:
+  - [266, 478, 269, 548]     # vão estreito entre as fileiras 1 e 2
+  - [334, 478, 337, 548]     # vão entre as fileiras 2 e 3
+rows: [4, 4, 6]
+scale:
+  mode: art
+  pitch: 1
+  upscale: 2
+quantize: 64
+frame: {size: [1, 1], anchor: bottom, per_sprite: true}
+names:
+  - building/house
+  - building/garage
+  - building/barn
+  - building/coop
+  - building/greenhouse
+  - building/pier
+  - tree/oak
+  - tree/pine
+  - decor/crop_rows_1
+  - decor/crop_rows_2
+  - decor/crop_rows_3
+  - tree/bush_round
+  - tree/apple
+  - tree/palm
+group_boxes:               # as 3 fileiras de plantinhas (cada caixa vira 1 sprite)
+  - [212, 478, 268, 548]
+  - [268, 478, 336, 548]
+  - [336, 478, 408, 548]
+overrides:
+  building/garage:
+    fill_box: [300, 75, 520, 171]   # interior escuro da garagem fica opaco (é parede/sombra, não fundo)
+  building/barn:
+    fill_box: [664, 146, 709, 179]  # vão escuro da porta do celeiro
+  decor/crop_rows_1: {strip_bg_dE: 14}
+  decor/crop_rows_2: {strip_bg_dE: 14}
+  decor/crop_rows_3: {strip_bg_dE: 14}

@@ -8,12 +8,22 @@ from PIL import Image
 from build import CATEGORIES, GENERATED, OUT, BuildError
 
 REQUIRED_FRAMES = {
-    "icons": ["icon/carrot", "icon/potato", "icon/strawberry"],
+    "icons": ["icon/carrot", "icon/potato", "icon/strawberry", "icon/egg", "icon/duck_egg", "icon/milk", "icon/wool",
+              "icon/seed_carrot", "icon/seed_potato", "icon/seed_strawberry"] + [f"buff/icon_{i}" for i in range(1, 9)],
     "cards": ["card/frame_common", "card/frame_uncommon", "card/frame_rare", "card/frame_epic",
-              "card/frame_legendary", "card/back"],
-    "characters": ["farmer_m/idle_down_0", "farmer_m/idle_up_0", "farmer_m/tool_side_0", "farmer_m/tool_down_0",
-                   "farmer_f/idle_down_0"],
-    "animals": ["cow/idle_0", "chicken/idle_0", "pig/idle_0"],
+              "card/frame_legendary", "card/back"] + [f"card/art_{i}" for i in range(1, 9)],
+    "characters": ["farmer_m/idle_down_0", "farmer_m/idle_up_0", "farmer_m/idle_side_0", "farmer_m/walk_down_0",
+                   "farmer_m/walk_up_0", "farmer_m/walk_side_0", "farmer_f/idle_down_0", "farmer_f/walk_side_0",
+                   "farmer_f/plant_side_0", "farmer_f/water_side_0", "farmer_f/harvest_side_0",
+                   "shopkeeper/idle_down_0", "blacksmith/idle_down_0", "scientist/idle_down_0"],
+    "animals": ["cow/idle_0", "chicken/idle_0", "pig/idle_0", "cow_holstein/pose_0", "chicken_brown/pose_0"],
+    "buildings": ["building/house", "building/garage", "building/barn", "building/coop", "building/greenhouse",
+                  "building/pier", "tree/oak", "tree/pine", "tree/bush_round", "tree/apple", "tree/palm",
+                  "decor/crop_rows_1", "decor/crop_rows_2", "decor/crop_rows_3"],
+    "crops": [f"crop/{c}_{i}" for c in ("carrot", "potato", "strawberry") for i in range(4)],
+    "tiles": ["tile/soil_raw", "tile/soil_tilled", "tile/soil_wet"],
+    "ui": ["ui/coin", "ui/vip_crown", "ui/xp_star", "ui/night_event", "ui/button_normal", "ui/button_hover",
+           "ui/button_pressed", "ui/panel", "ui/bar_empty", "ui/bar_green", "ui/bar_gold"],
     "pets": ["dog/walk_side_0", "cat/walk_side_0", "parrot/idle_0"],
     "vehicles": ["cart/down_left_0"],
 }

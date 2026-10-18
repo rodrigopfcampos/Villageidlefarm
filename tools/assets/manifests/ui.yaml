@@ -1,0 +1,47 @@
+# Interface (v2) -> atlas_ui
+# A folha tem ~4,2 px por pixel de arte: reduz para a grade de arte e amplia 2x (pixels de 2x2 na tela).
+#   ui/coin (moeda) | ui/vip_crown (coroa VIP) | ui/xp_star (estrela de XP) | ui/night_event (lua/coruja do evento)
+#   ui/button_normal | ui/button_hover (borda dourada) | ui/button_pressed (mais escuro)
+#   ui/panel (moldura de pergaminho) | ui/bar_empty (trilho vazio) | ui/bar_green | ui/bar_gold
+# NINE-SLICE (margens em px do quadro final, ordem esquerda, direita, cima, baixo) -> UI_NINE_SLICE no assetKeys.ts.
+#   ui/panel: os cantos com espiral ocupam ~26 px (margem 28); o miolo de pergaminho estica.
+#   Também saem os pedaços prontos: ui/panel_corner_tl/tr/bl/br, ui/panel_edge_t/b/l/r, ui/panel_center.
+sheet: ui
+source: v2/interface.jpg
+category: ui
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: false}
+hole_area: 0                 # o trilho vazio da barra é escuro como o fundo e precisa ficar opaco
+halo_tolerance: 12
+min_piece_area: 500
+merge_distance: 10           # brilhos em volta da estrela
+merge_big_area: 1500
+merge_distance_big: 0
+rows: [4, 4, 1, 2]           # o painel fica na "linha" dos botões (centro vertical parecido)
+scale: {mode: art, pitch: 4.22, upscale: 2}
+quantize: 48
+frame: {size: [1, 1], anchor: center, per_sprite: true}
+nine_slice:
+  ui/panel: [28, 28, 28, 28]
+  ui/button_normal: [8, 8, 8, 8]
+  ui/button_hover: [8, 8, 8, 8]
+  ui/button_pressed: [8, 8, 8, 8]
+  ui/bar_empty: [10, 10, 6, 6]
+  ui/bar_green: [8, 8, 6, 6]
+  ui/bar_gold: [8, 8, 6, 6]
+slice_parts: ui/panel           # exporta cantos/bordas/centro do painel como quadros separados
+names:
+  - ui/coin
+  - ui/vip_crown
+  - ui/xp_star
+  - ui/night_event
+  - ui/button_normal
+  - ui/button_hover
+  - ui/button_pressed
+  - ui/panel
+  - ui/bar_empty
+  - ui/bar_green
+  - ui/bar_gold

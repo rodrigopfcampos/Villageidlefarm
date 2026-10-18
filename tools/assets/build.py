@@ -39,7 +39,10 @@ MAPSRC = ROOT / "assets-src" / "map"
 OUT = ROOT / "apps" / "game" / "public" / "assets"
 GENERATED = ROOT / "packages" / "shared" / "src" / "generated"
 
-CATEGORIES = ["icons", "cards", "animals", "characters", "pets", "vehicles"]
+CATEGORIES = ["icons", "cards", "animals", "characters", "pets", "vehicles", "buildings", "crops", "tiles", "ui"]
+FRAME_CONSTS = {"icons": "ICON_FRAMES", "cards": "CARD_FRAMES", "animals": "ANIMAL_FRAMES",
+                "characters": "CHARACTER_FRAMES", "pets": "PET_FRAMES", "vehicles": "VEHICLE_FRAMES",
+                "buildings": "BUILDING_FRAMES", "crops": "CROP_FRAMES", "tiles": "TILE_FRAMES", "ui": "UI_FRAMES"}
 
 
 class BuildError(Exception):
@@ -179,6 +182,21 @@ def find_pieces(sprite: np.ndarray, cfg: dict) -> tuple[list[Piece], np.ndarray]
     areas = ndi.sum(np.ones_like(lbl), lbl, index=np.arange(1, n + 1)) if n else []
     pieces = [Piece(s[1].start, s[0].start, s[1].stop, s[0].stop, int(areas[i]), [i + 1])
               for i, s in enumerate(objs) if s is not None]
+    # group_boxes: tudo cujo centro cai na mesma caixa vira um sprite só (ex.: fileiras de plantinhas)
+    for gb in cfg.get("group_boxes") or []:
+        x0, y0, x1, y1 = gb
+        inside = [p for p in pieces if x0 <= p.cx < x1 and y0 <= p.cy < y1]
+        if len(inside) > 1:
+            head = inside[0]
+            for q in inside[1:]:
+                head.x0, head.y0 = min(head.x0, q.x0), min(head.y0, q.y0)
+                head.x1, head.y1 = max(head.x1, q.x1), max(head.y1, q.y1)
+                head.area += q.area
+                head.labels += q.labels
+                pieces.remove(q)
+        if inside:
+            inside[0].area = max(inside[0].area, 10 ** 9 // 1000)  # passa a contar como "grande"
+            inside[0].locked = True
     md = float(cfg.get("merge_distance", 10))
     big = float(cfg.get("merge_big_area", 400))
     # junta pedaços pequenos (asas, latido, faíscas) ao sprite mais próximo; e
@@ -218,6 +236,8 @@ def find_pieces(sprite: np.ndarray, cfg: dict) -> tuple[list[Piece], np.ndarray]
         return bool((da[mb] <= lim).any())
 
     # partes grandes só se juntam se os PIXELS estiverem a <= merge_distance_big (não as caixas)
+    locked = [p for p in pieces if getattr(p, "locked", False)]
+    pieces = [p for p in pieces if not getattr(p, "locked", False)]
     bigs = [p for p in pieces if p.area >= big]
     changed = True
     while changed:
@@ -250,7 +270,7 @@ def find_pieces(sprite: np.ndarray, cfg: dict) -> tuple[list[Piece], np.ndarray]
                 loose.append(s)
     else:
         loose = smalls
-    pieces = bigs + merge_all(loose, md)
+    pieces = bigs + merge_all(loose, md) + locked
     minA = int(cfg.get("min_piece_area", 300))
     pieces = [p for p in pieces if p.area >= minA]
     return pieces, lbl
@@ -385,6 +405,14 @@ def resize_rgba_premult(rgba: np.ndarray, size: tuple[int, int]) -> np.ndarray:
     A = np.asarray(Image.fromarray(a, mode="F").resize(size, Image.BOX))
     rgb = np.stack(chans, -1) / np.maximum(A, 1e-4)[..., None]
     return np.dstack([np.clip(rgb, 0, 255), np.clip(A * 255, 0, 255)]).astype(np.float32)
+
+
+def upscale_nearest(rgba: np.ndarray, f: float) -> np.ndarray:
+    h, w = rgba.shape[:2]
+    nw, nh = max(1, round(w * f)), max(1, round(h * f))
+    ys = np.minimum((np.arange(nh) / f).astype(int), h - 1)
+    xs = np.minimum((np.arange(nw) / f).astype(int), w - 1)
+    return rgba[ys][:, xs].copy()
 
 
 def binarize_alpha(rgba: np.ndarray, thr: float = 0.5) -> np.ndarray:
@@ -543,6 +571,13 @@ def process_sheet(cfg: dict, sheet_name: str) -> tuple[list[Sprite], dict]:
             shadowish = (dab < float(rc.get("shadow_ab", 5))) & (cl[..., 0] < lab_bg[0] + 1)
             add = filled & ~own & (dEc >= float(rc.get("min_dE", 4.5))) & ~shadowish
             own = own | add
+        if ov.get("strip_bg_dE"):  # tira QUALQUER pixel parecido com o fundo, mesmo cercado (ex.: fileiras de plantas)
+            dEs = np.linalg.norm(lab[y0:y1, x0:x1] - lab_bg, axis=-1)
+            own = own & ~(dEs < float(ov["strip_bg_dE"]))
+            own = ndi.binary_opening(own, structure=np.ones((2, 2))) | (own & ndi.binary_erosion(own))
+        if ov.get("fill_box"):  # região que é sempre opaca (ex.: interior escuro da garagem)
+            fx0, fy0, fx1, fy1 = ov["fill_box"]
+            own[max(fy0 - y0, 0):max(fy1 - y0, 0), max(fx0 - x0, 0):max(fx1 - x0, 0)] = True
         crop = rgb[y0:y1, x0:x1].astype(np.float32)
         clab = lab[y0:y1, x0:x1]
         alpha = own.astype(np.float32)
@@ -575,6 +610,8 @@ def process_sheet(cfg: dict, sheet_name: str) -> tuple[list[Sprite], dict]:
 
 
 def group_of(name: str, cfg: dict) -> str:
+    if (cfg.get("frame") or {}).get("per_sprite"):
+        return name  # cada sprite com seu próprio tamanho de quadro (prédios, árvores, interface)
     groups = cfg.get("groups") or {}
     ent = name.split("/")[0]
     for g, gc in groups.items():
@@ -604,9 +641,34 @@ def scale_sprites(raw, cfg, sheet_name) -> list[Sprite]:
             ests = [estimate_pitch(c, o) for _, _, c, o in raw[:4]]
             pitch = float(np.median(ests))
             print(f"  [{sheet_name}] grade estimada: {pitch:.2f} px por pixel de arte ({ests})")
+        up = float(sc.get("upscale", 1))
         for name, rgba, crop, own in raw:
             small = grid_downsample(crop, own, float(pitch))
+            small = quantize(small, nq)
+            if up != 1:
+                small = upscale_nearest(small, up)
             out.append(Sprite(name, small, anchor))
+        return out
+
+    if mode == "art":
+        # 1) reduz até a grade de arte (pitch = px da folha por pixel de arte, filtro de caixa),
+        # 2) limpa transparência e cores, 3) amplia com vizinho mais próximo (upscale).
+        gsc = sc.get("groups") or {}
+        for name, rgba, _, _ in raw:
+            g = group_of(name, cfg)
+            gc = {**sc, **(gsc.get(g) or gsc.get(name.split("/")[0]) or {})}
+            p, up = float(gc.get("pitch", 1)), float(gc.get("upscale", 1))
+            t = tight(rgba)
+            nw, nh = max(1, round(t.shape[1] / p)), max(1, round(t.shape[0] / p))
+            if gc.get("art_size"):  # tamanho exato em pixels de arte (ex.: carta 44x64)
+                nw, nh = gc["art_size"]
+                p = 0
+            small = resize_rgba_premult(t, (nw, nh)) if p != 1 else t.copy()
+            small = binarize_alpha(small, float(cfg.get("alpha_threshold", 0.5)))
+            small = quantize(small, nq)
+            if up != 1:
+                small = upscale_nearest(small, up)
+            out.append(Sprite(name, tight(small), anchor))
         return out
 
     # fatores de escala
@@ -628,6 +690,7 @@ def scale_sprites(raw, cfg, sheet_name) -> list[Sprite]:
         for g, ns in groups.items():
             fw, fh = frame_nominal(cfg, g)
             f = min(min((fw - margin) / tights[n].shape[1], (fh - margin) / tights[n].shape[0]) for n in ns)
+            f = min(f, float(sc.get("max_factor", 1e9)))  # nunca ampliar além disso
             for n in ns:
                 factors[n] = f
     else:
@@ -636,7 +699,11 @@ def scale_sprites(raw, cfg, sheet_name) -> list[Sprite]:
         t = tights[name]
         f = factors[name]
         nw, nh = max(1, round(t.shape[1] * f)), max(1, round(t.shape[0] * f))
-        small = resize_rgba_premult(t, (nw, nh))
+        if f > 1.0 and not keep_soft:
+            # ampliar: vizinho mais próximo (nunca borrar pixel art)
+            small = upscale_nearest(binarize_alpha(t, float(cfg.get("alpha_threshold", 0.5))), f)
+        else:
+            small = resize_rgba_premult(t, (nw, nh))
         if keep_soft:
             # cartas: a moldura sólida fica binária, o brilho mantém transparência parcial
             a = small[..., 3]
@@ -839,14 +906,16 @@ def write_asset_keys():
         if p.exists():
             js = json.load(open(p))
             frames_by_cat[c] = sorted(js["frames"])
+            per_ent: dict[str, set] = {}
             for n, fr in js["frames"].items():
-                ent = n.split("/")[0] if c not in ("icons", "cards") else n
-                if c in ("icons",):
-                    ent = "icon"
-                if c in ("cards",):
-                    ent = "card"
-                sizes.setdefault(c, {})[ent] = [fr["sourceSize"]["w"], fr["sourceSize"]["h"],
-                                                 fr["pivot"]["x"], fr["pivot"]["y"]]
+                v = (fr["sourceSize"]["w"], fr["sourceSize"]["h"], fr["pivot"]["x"], fr["pivot"]["y"])
+                per_ent.setdefault(n.split("/")[0], set()).add(v)
+            for n, fr in js["frames"].items():
+                ent = n.split("/")[0]
+                v = (fr["sourceSize"]["w"], fr["sourceSize"]["h"], fr["pivot"]["x"], fr["pivot"]["y"])
+                # entidade com tamanhos diferentes (ex.: card/frame_* e card/art_*): uma linha por quadro
+                key = ent if len(per_ent[ent]) == 1 else n
+                sizes.setdefault(c, {})[key] = list(v)
         else:
             frames_by_cat[c] = []
     lines = ["// GERADO por tools/assets/build.py — não edite à mão.\n",
@@ -856,8 +925,7 @@ def write_asset_keys():
              "export const ASSET_MANIFEST_URL = 'assets/manifest.json';\n",
              "export const MAP_KEYS = { ground: 'map_ground', overhead: 'map_overhead', layout: 'map_layout' } as const;\n",
              "export const MAP_SIZE = { width: 2576, height: 1438, tile: 32 } as const;\n\n"]
-    consts = {"icons": "ICON_FRAMES", "cards": "CARD_FRAMES", "animals": "ANIMAL_FRAMES",
-              "characters": "CHARACTER_FRAMES", "pets": "PET_FRAMES", "vehicles": "VEHICLE_FRAMES"}
+    consts = FRAME_CONSTS
     for c in CATEGORIES:
         lines.append(ts_list(consts[c], frames_by_cat[c]))
         lines.append(f"export type {consts[c].title().replace('_', '')[:-6]}Frame = (typeof {consts[c]})[number];\n\n")
@@ -873,6 +941,8 @@ def write_asset_keys():
         for ent, v in sorted(sizes.get(c, {}).items()):
             lines.append(f"  '{ent}': [{v[0]}, {v[1]}, {v[2]}, {v[3]}],\n")
     lines.append("} as const;\n")
+    import extras
+    lines.append(extras.ts_snippets())
     GENERATED.mkdir(parents=True, exist_ok=True)
     with open(GENERATED / "assetKeys.ts", "w") as fp:
         fp.write("".join(lines))
@@ -889,41 +959,78 @@ def load_manifests() -> dict[str, dict]:
     return out
 
 
+def add_slice_parts(fr: dict, gm: dict, cfg: dict):
+    """Nine-slice: exporta cantos, bordas e centro como quadros separados (<base>_corner_tl etc.)."""
+    sp = cfg.get("slice_parts") or []
+    for base in [sp] if isinstance(sp, str) else sp:
+        l, r, t, b = cfg["nine_slice"][base]
+        a = fr[base]
+        H, W = a.shape[:2]
+        parts = {"corner_tl": a[:t, :l], "corner_tr": a[:t, W - r:], "corner_bl": a[H - b:, :l],
+                 "corner_br": a[H - b:, W - r:], "edge_t": a[:t, l:W - r], "edge_b": a[H - b:, l:W - r],
+                 "edge_l": a[t:H - b, :l], "edge_r": a[t:H - b, W - r:], "center": a[t:H - b, l:W - r]}
+        for k, v in parts.items():
+            n = f"{base}_{k}"
+            fr[n] = np.ascontiguousarray(v)
+            gm[n] = {"w": v.shape[1], "h": v.shape[0], "pivot": [0.0, 0.0]}
+
+
+def sheet_categories(cfg: dict) -> set[str]:
+    return {cfg["category"]} | set((cfg.get("entity_category") or {}).values())
+
+
 def build_sheets(selected: list[str] | None, keep_going: bool) -> list[str]:
-    mans = load_manifests()
-    by_cat: dict[str, list[str]] = {}
-    for n, cfg in mans.items():
-        by_cat.setdefault(cfg["category"], []).append(n)
+    mans = {n: c for n, c in load_manifests().items() if c.get("enabled", True)}
+    wanted = set(CATEGORIES)
+    if selected:
+        wanted = set()
+        for s in selected:
+            wanted |= sheet_categories(mans[s]) if s in mans else {s}
+    run = [n for n in sorted(mans) if sheet_categories(mans[n]) & wanted]
+    frames: dict[str, dict] = {c: {} for c in wanted}
+    fmeta: dict[str, dict] = {c: {} for c in wanted}
+    aliases: dict[str, str] = {}
+    failed: set[str] = set()
     errors = []
-    for cat, sheets in sorted(by_cat.items()):
-        if selected and not any(s in selected for s in sheets) and cat not in selected:
+    for s in run:
+        cfg = mans[s]
+        print(f"- folha {s} ({cfg['source']})")
+        try:
+            sprites, info = process_sheet(cfg, s)
+        except BuildError as e:
+            print("  ERRO:", e)
+            errors.append(str(e))
+            failed |= sheet_categories(cfg)
+            if not keep_going:
+                raise
             continue
-        frames, fmeta, aliases = {}, {}, {}
-        ok = True
-        for s in sheets:
-            cfg = mans[s]
-            print(f"- folha {s} ({cfg['source']})")
-            try:
-                sprites, info = process_sheet(cfg, s)
-            except BuildError as e:
-                print("  ERRO:", e)
-                errors.append(str(e))
-                ok = False
-                if not keep_going:
-                    raise
+        drop = set(cfg.get("drop_entities") or [])
+        sprites = [sp for sp in sprites if sp.name.split("/")[0] not in drop]
+        fr, gm = make_frames(sprites, cfg)
+        add_slice_parts(fr, gm, cfg)
+        aliases.update(cfg.get("aliases") or {})
+        ec = cfg.get("entity_category") or {}
+        for n, a in fr.items():
+            c = ec.get(n.split("/")[0], cfg["category"])
+            if c not in wanted:
                 continue
-            fr, gm = make_frames(sprites, cfg)
-            aliases.update(cfg.get("aliases") or {})
-            for n, a in fr.items():
-                if n in frames:
-                    raise BuildError(f"nome de quadro repetido: {n}")
-                frames[n] = a
-                fmeta[n] = gm[group_of(n, cfg)]
-            print(f"  ok: {len(sprites)} sprites, linhas {info['rows']}, quadros "
-                  + ", ".join(f"{g}={m['w']}x{m['h']}" for g, m in gm.items()))
-        if ok and frames:
-            write_atlas(cat, frames, fmeta, aliases)
-            print(f"  atlas_{cat}: {len(frames)} quadros")
+            if any(n in frames[k] for k in frames):
+                raise BuildError(f"nome de quadro repetido: {n}")
+            frames[c][n] = a
+            fmeta[c][n] = gm[group_of(n, cfg)]
+        sizes = sorted({(m["w"], m["h"]) for m in gm.values()})
+        print(f"  ok: {len(sprites)} sprites, linhas {info['rows']}, quadros "
+              + (", ".join(f"{g}={m['w']}x{m['h']}" for g, m in gm.items()) if len(gm) <= 12
+                 else f"{len(gm)} tamanhos ({sizes[0][0]}x{sizes[0][1]} a {sizes[-1][0]}x{sizes[-1][1]})"))
+    for c in CATEGORIES:
+        if c not in wanted or c in failed or not frames[c]:
+            continue
+        al = {a: t for a, t in aliases.items() if t in frames[c]}
+        write_atlas(c, frames[c], fmeta[c], al)
+        print(f"  atlas_{c}: {len(frames[c])} quadros + {len(al)} apelidos")
+    lost = [a for a, t in aliases.items() if not any(t in frames[c] for c in frames)]
+    if lost and not selected and not failed:
+        raise BuildError(f"apelidos apontando para quadros inexistentes: {lost}")
     return errors
 
 

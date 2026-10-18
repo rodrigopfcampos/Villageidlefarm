@@ -1,3 +1,5 @@
+# DESATIVADO: substituído por animals_v2.yaml (folha nova). Mantido só para referência.
+enabled: false
 # Folha de animais -> atlas_animals
 # 10 animais x 6 poses. ATENÇÃO: as 6 poses NÃO são quadros de animação; são variações,
 # às vezes com cor diferente (ex.: vaca preta e branca, malhada de marrom, marrom).

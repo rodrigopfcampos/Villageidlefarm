@@ -1,0 +1,303 @@
+{
+ "frames": {
+  "crop/carrot_0": {
+   "frame": {
+    "x": 1,
+    "y": 1,
+    "w": 144,
+    "h": 120
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 144,
+    "h": 120
+   },
+   "sourceSize": {
+    "w": 144,
+    "h": 120
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 1.0
+   }
+  },
+  "crop/carrot_1": {
+   "frame": {
+    "x": 151,
+    "y": 1,
+    "w": 144,
+    "h": 120
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 144,
+    "h": 120
+   },
+   "sourceSize": {
+    "w": 144,
+    "h": 120
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 1.0
+   }
+  },
+  "crop/carrot_2": {
+   "frame": {
+    "x": 301,
+    "y": 1,
+    "w": 144,
+    "h": 120
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 144,
+    "h": 120
+   },
+   "sourceSize": {
+    "w": 144,
+    "h": 120
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 1.0
+   }
+  },
+  "crop/carrot_3": {
+   "frame": {
+    "x": 1,
+    "y": 127,
+    "w": 144,
+    "h": 120
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 144,
+    "h": 120
+   },
+   "sourceSize": {
+    "w": 144,
+    "h": 120
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 1.0
+   }
+  },
+  "crop/potato_0": {
+   "frame": {
+    "x": 151,
+    "y": 127,
+    "w": 144,
+    "h": 120
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 144,
+    "h": 120
+   },
+   "sourceSize": {
+    "w": 144,
+    "h": 120
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 1.0
+   }
+  },
+  "crop/potato_1": {
+   "frame": {
+    "x": 301,
+    "y": 127,
+    "w": 144,
+    "h": 120
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 144,
+    "h": 120
+   },
+   "sourceSize": {
+    "w": 144,
+    "h": 120
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 1.0
+   }
+  },
+  "crop/potato_2": {
+   "frame": {
+    "x": 1,
+    "y": 253,
+    "w": 144,
+    "h": 120
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 144,
+    "h": 120
+   },
+   "sourceSize": {
+    "w": 144,
+    "h": 120
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 1.0
+   }
+  },
+  "crop/potato_3": {
+   "frame": {
+    "x": 151,
+    "y": 253,
+    "w": 144,
+    "h": 120
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 144,
+    "h": 120
+   },
+   "sourceSize": {
+    "w": 144,
+    "h": 120
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 1.0
+   }
+  },
+  "crop/strawberry_0": {
+   "frame": {
+    "x": 301,
+    "y": 253,
+    "w": 144,
+    "h": 120
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 144,
+    "h": 120
+   },
+   "sourceSize": {
+    "w": 144,
+    "h": 120
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 1.0
+   }
+  },
+  "crop/strawberry_1": {
+   "frame": {
+    "x": 1,
+    "y": 379,
+    "w": 144,
+    "h": 120
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 144,
+    "h": 120
+   },
+   "sourceSize": {
+    "w": 144,
+    "h": 120
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 1.0
+   }
+  },
+  "crop/strawberry_2": {
+   "frame": {
+    "x": 151,
+    "y": 379,
+    "w": 144,
+    "h": 120
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 144,
+    "h": 120
+   },
+   "sourceSize": {
+    "w": 144,
+    "h": 120
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 1.0
+   }
+  },
+  "crop/strawberry_3": {
+   "frame": {
+    "x": 301,
+    "y": 379,
+    "w": 144,
+    "h": 120
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 144,
+    "h": 120
+   },
+   "sourceSize": {
+    "w": 144,
+    "h": 120
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 1.0
+   }
+  }
+ },
+ "meta": {
+  "app": "village-idle-farm tools/assets/build.py",
+  "version": "1.0",
+  "image": "atlas_crops.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 512,
+   "h": 512
+  },
+  "scale": "1"
+ }
+}

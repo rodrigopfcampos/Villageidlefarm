@@ -1,5 +1,197 @@
 {
  "frames": {
+  "card/art_1": {
+   "frame": {
+    "x": 443,
+    "y": 318,
+    "w": 132,
+    "h": 192
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 132,
+    "h": 192
+   },
+   "sourceSize": {
+    "w": 132,
+    "h": 192
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "card/art_2": {
+   "frame": {
+    "x": 581,
+    "y": 318,
+    "w": 132,
+    "h": 192
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 132,
+    "h": 192
+   },
+   "sourceSize": {
+    "w": 132,
+    "h": 192
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "card/art_3": {
+   "frame": {
+    "x": 719,
+    "y": 318,
+    "w": 132,
+    "h": 192
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 132,
+    "h": 192
+   },
+   "sourceSize": {
+    "w": 132,
+    "h": 192
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "card/art_4": {
+   "frame": {
+    "x": 857,
+    "y": 318,
+    "w": 132,
+    "h": 192
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 132,
+    "h": 192
+   },
+   "sourceSize": {
+    "w": 132,
+    "h": 192
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "card/art_5": {
+   "frame": {
+    "x": 1,
+    "y": 635,
+    "w": 132,
+    "h": 192
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 132,
+    "h": 192
+   },
+   "sourceSize": {
+    "w": 132,
+    "h": 192
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "card/art_6": {
+   "frame": {
+    "x": 139,
+    "y": 635,
+    "w": 132,
+    "h": 192
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 132,
+    "h": 192
+   },
+   "sourceSize": {
+    "w": 132,
+    "h": 192
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "card/art_7": {
+   "frame": {
+    "x": 277,
+    "y": 635,
+    "w": 132,
+    "h": 192
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 132,
+    "h": 192
+   },
+   "sourceSize": {
+    "w": 132,
+    "h": 192
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "card/art_8": {
+   "frame": {
+    "x": 415,
+    "y": 635,
+    "w": 132,
+    "h": 192
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 132,
+    "h": 192
+   },
+   "sourceSize": {
+    "w": 132,
+    "h": 192
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
   "card/back": {
    "frame": {
     "x": 1,
@@ -50,8 +242,8 @@
   },
   "card/frame_epic": {
    "frame": {
-    "x": 1,
-    "y": 318,
+    "x": 443,
+    "y": 1,
     "w": 215,
     "h": 311
    },
@@ -74,8 +266,8 @@
   },
   "card/frame_legendary": {
    "frame": {
-    "x": 222,
-    "y": 318,
+    "x": 664,
+    "y": 1,
     "w": 215,
     "h": 311
    },
@@ -99,7 +291,7 @@
   "card/frame_rare": {
    "frame": {
     "x": 1,
-    "y": 635,
+    "y": 318,
     "w": 215,
     "h": 311
    },
@@ -123,7 +315,7 @@
   "card/frame_uncommon": {
    "frame": {
     "x": 222,
-    "y": 635,
+    "y": 318,
     "w": 215,
     "h": 311
    },
@@ -151,7 +343,7 @@
   "image": "atlas_cards.png",
   "format": "RGBA8888",
   "size": {
-   "w": 512,
+   "w": 1024,
    "h": 1024
   },
   "scale": "1"

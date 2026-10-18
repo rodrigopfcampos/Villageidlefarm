@@ -26,6 +26,9 @@
 #           idle_up_0 / idle_up_1 3/4 costas com lupa | idle_up_2 3/4 costas | walk_up_0 / walk_up_1 costas andando
 #           idle_up_3 3/4 costas | plant_side_0 / plant_side_1 agachada plantando (dir)
 sheet: characters
+# farmer_m e farmer_f desta folha antiga foram substituídos por characters_v2.yaml (personagens_v2.jpg).
+# Eles continuam na lista "names" só para a contagem bater; não vão para o atlas.
+drop_entities: [farmer_m, farmer_f]
 source: Foto_dos_personagens.jpg
 category: characters
 transparency: flood
@@ -46,16 +49,6 @@ quantize: 32
 frame:
   size: [48, 72]           # nominal; personagens com ferramenta larga ganham quadro mais largo
   anchor: feet             # pivot (0.5, 1) no meio dos pés
-# Nomes extras apontando para o mesmo quadro (o atlas repete a área). Úteis para o MVP.
-aliases:
-  farmer_m/walk_down_0: farmer_m/idle_down_0
-  farmer_m/walk_down_1: farmer_m/idle_down_1
-  farmer_m/walk_up_0: farmer_m/idle_up_0
-  farmer_m/walk_up_1: farmer_m/idle_up_1
-  farmer_m/walk_side_0: farmer_m/tool_down_1
-  farmer_f/walk_down_1: farmer_f/idle_down_3
-  farmer_f/walk_up_1: farmer_f/idle_up_1
-  farmer_f/walk_side_0: farmer_f/walk_down_0
 names:
   - farmer_m/idle_down_0
   - farmer_m/idle_down_1
