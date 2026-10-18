@@ -130,7 +130,8 @@ function Root({ s }: { s: Services }) {
       bus.on('cards:changed', ({ dropped }) => {
         for (const c of dropped) {
           const def = CARDS_BY_ID.get(c.cardId);
-          if (def && c.source !== 'night_event') toast('success', STR.cards.newCard(cardName(def.buff, def.rarity)));
+          if (def && c.source !== 'night_event')
+            toast('success', STR.cards.newCard(cardName(def.buff, def.rarity)));
         }
       }),
       bus.on('xp:changed', ({ leveledUp, level }) => {

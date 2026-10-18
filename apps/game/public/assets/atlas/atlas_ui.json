@@ -1,9 +1,177 @@
 {
  "frames": {
-  "ui/bar_empty": {
+  "ui/album_arrow_left": {
+   "frame": {
+    "x": 349,
+    "y": 525,
+    "w": 61,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 61,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 61,
+    "h": 56
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "ui/album_arrow_right": {
+   "frame": {
+    "x": 416,
+    "y": 525,
+    "w": 61,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 61,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 61,
+    "h": 56
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "ui/album_book": {
    "frame": {
     "x": 1,
-    "y": 225,
+    "y": 1,
+    "w": 944,
+    "h": 518
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 944,
+    "h": 518
+   },
+   "sourceSize": {
+    "w": 944,
+    "h": 518
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "ui/album_tab_blue": {
+   "frame": {
+    "x": 655,
+    "y": 525,
+    "w": 49,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 49,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 49,
+    "h": 44
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "ui/album_tab_green": {
+   "frame": {
+    "x": 710,
+    "y": 525,
+    "w": 46,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 46,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 46,
+    "h": 44
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "ui/album_tab_purple": {
+   "frame": {
+    "x": 762,
+    "y": 525,
+    "w": 43,
+    "h": 43
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 43,
+    "h": 43
+   },
+   "sourceSize": {
+    "w": 43,
+    "h": 43
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "ui/album_tab_red": {
+   "frame": {
+    "x": 811,
+    "y": 525,
+    "w": 40,
+    "h": 42
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 40,
+    "h": 42
+   },
+   "sourceSize": {
+    "w": 40,
+    "h": 42
+   },
+   "pivot": {
+    "x": 0.5,
+    "y": 0.5
+   }
+  },
+  "ui/bar_empty": {
+   "frame": {
+    "x": 183,
+    "y": 697,
     "w": 282,
     "h": 30
    },
@@ -26,8 +194,8 @@
   },
   "ui/bar_gold": {
    "frame": {
-    "x": 225,
-    "y": 261,
+    "x": 831,
+    "y": 697,
     "w": 166,
     "h": 26
    },
@@ -51,7 +219,7 @@
   "ui/bar_green": {
    "frame": {
     "x": 1,
-    "y": 295,
+    "y": 739,
     "w": 194,
     "h": 26
    },
@@ -74,8 +242,8 @@
   },
   "ui/button_hover": {
    "frame": {
-    "x": 105,
-    "y": 173,
+    "x": 901,
+    "y": 525,
     "w": 88,
     "h": 38
    },
@@ -98,8 +266,8 @@
   },
   "ui/button_normal": {
    "frame": {
-    "x": 199,
-    "y": 173,
+    "x": 1,
+    "y": 697,
     "w": 84,
     "h": 36
    },
@@ -122,8 +290,8 @@
   },
   "ui/button_pressed": {
    "frame": {
-    "x": 289,
-    "y": 173,
+    "x": 91,
+    "y": 697,
     "w": 86,
     "h": 36
    },
@@ -146,8 +314,8 @@
   },
   "ui/coin": {
    "frame": {
-    "x": 61,
-    "y": 173,
+    "x": 857,
+    "y": 525,
     "w": 38,
     "h": 40
    },
@@ -170,8 +338,8 @@
   },
   "ui/night_event": {
    "frame": {
-    "x": 349,
-    "y": 1,
+    "x": 483,
+    "y": 525,
     "w": 50,
     "h": 54
    },
@@ -195,7 +363,7 @@
   "ui/panel": {
    "frame": {
     "x": 1,
-    "y": 1,
+    "y": 525,
     "w": 162,
     "h": 166
    },
@@ -219,7 +387,7 @@
   "ui/panel_center": {
    "frame": {
     "x": 169,
-    "y": 1,
+    "y": 525,
     "w": 106,
     "h": 110
    },
@@ -242,8 +410,8 @@
   },
   "ui/panel_corner_bl": {
    "frame": {
-    "x": 289,
-    "y": 225,
+    "x": 471,
+    "y": 697,
     "w": 28,
     "h": 28
    },
@@ -266,8 +434,8 @@
   },
   "ui/panel_corner_br": {
    "frame": {
-    "x": 323,
-    "y": 225,
+    "x": 505,
+    "y": 697,
     "w": 28,
     "h": 28
    },
@@ -290,8 +458,8 @@
   },
   "ui/panel_corner_tl": {
    "frame": {
-    "x": 357,
-    "y": 225,
+    "x": 539,
+    "y": 697,
     "w": 28,
     "h": 28
    },
@@ -314,8 +482,8 @@
   },
   "ui/panel_corner_tr": {
    "frame": {
-    "x": 391,
-    "y": 225,
+    "x": 573,
+    "y": 697,
     "w": 28,
     "h": 28
    },
@@ -338,8 +506,8 @@
   },
   "ui/panel_edge_b": {
    "frame": {
-    "x": 1,
-    "y": 261,
+    "x": 607,
+    "y": 697,
     "w": 106,
     "h": 28
    },
@@ -363,7 +531,7 @@
   "ui/panel_edge_l": {
    "frame": {
     "x": 281,
-    "y": 1,
+    "y": 525,
     "w": 28,
     "h": 110
    },
@@ -387,7 +555,7 @@
   "ui/panel_edge_r": {
    "frame": {
     "x": 315,
-    "y": 1,
+    "y": 525,
     "w": 28,
     "h": 110
    },
@@ -410,8 +578,8 @@
   },
   "ui/panel_edge_t": {
    "frame": {
-    "x": 113,
-    "y": 261,
+    "x": 719,
+    "y": 697,
     "w": 106,
     "h": 28
    },
@@ -434,8 +602,8 @@
   },
   "ui/vip_crown": {
    "frame": {
-    "x": 1,
-    "y": 173,
+    "x": 595,
+    "y": 525,
     "w": 54,
     "h": 46
    },
@@ -458,8 +626,8 @@
   },
   "ui/xp_star": {
    "frame": {
-    "x": 405,
-    "y": 1,
+    "x": 539,
+    "y": 525,
     "w": 50,
     "h": 54
    },
@@ -487,8 +655,8 @@
   "image": "atlas_ui.png",
   "format": "RGBA8888",
   "size": {
-   "w": 512,
-   "h": 512
+   "w": 1024,
+   "h": 1024
   },
   "scale": "1"
  }

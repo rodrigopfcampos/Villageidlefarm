@@ -30,7 +30,11 @@ export function Sprite({ frames, box, title, class: cls, fallback }: SpriteProps
   const size = frame ? frameSize(frame) : null;
   if (!url || !size) {
     return (
-      <span class={`vif-sprite vif-sprite--missing ${cls ?? ''}`} style={{ width: box, height: box }} title={title}>
+      <span
+        class={`vif-sprite vif-sprite--missing ${cls ?? ''}`}
+        style={{ width: box, height: box }}
+        title={title}
+      >
         {fallback ?? ''}
       </span>
     );
@@ -38,7 +42,13 @@ export function Sprite({ frames, box, title, class: cls, fallback }: SpriteProps
   const k = box / Math.max(size.w, size.h);
   return (
     <span class={`vif-sprite ${cls ?? ''}`} style={{ width: box, height: box }} title={title}>
-      <img src={url} alt={title ?? ''} width={Math.round(size.w * k)} height={Math.round(size.h * k)} draggable={false} />
+      <img
+        src={url}
+        alt={title ?? ''}
+        width={Math.round(size.w * k)}
+        height={Math.round(size.h * k)}
+        draggable={false}
+      />
     </span>
   );
 }
@@ -51,7 +61,12 @@ export function ItemIcon({ itemId, box }: { itemId: ItemId; box: number }) {
   const seedMark = isSeedFallback(itemId, hasFrame);
   return (
     <span class="vif-itemicon" style={{ width: box, height: box }}>
-      <Sprite frames={itemFrames(itemId)} box={box} title={itemName(itemId)} fallback={itemName(itemId).slice(0, 2)} />
+      <Sprite
+        frames={itemFrames(itemId)}
+        box={box}
+        title={itemName(itemId)}
+        fallback={itemName(itemId).slice(0, 2)}
+      />
       {seedMark && <span class="vif-seedmark">{STR.plant.seed}</span>}
     </span>
   );
@@ -103,11 +118,28 @@ export function Button(p: ButtonProps) {
 
 // ---------- barra ----------
 
-export function Bar({ value, kind = 'green', label }: { value: number; kind?: 'green' | 'gold'; label?: string }) {
+export function Bar({
+  value,
+  kind = 'green',
+  label,
+}: {
+  value: number;
+  kind?: 'green' | 'gold';
+  label?: string;
+}) {
   const pct = Math.max(0, Math.min(1, value)) * 100;
   return (
-    <span class="vif-bar" role="progressbar" aria-valuenow={Math.round(pct)} aria-valuemin={0} aria-valuemax={100}>
-      <span class={`vif-bar__fill vif-bar__fill--${kind}`} style={{ width: `${pct}%`, display: pct <= 0 ? 'none' : undefined }} />
+    <span
+      class="vif-bar"
+      role="progressbar"
+      aria-valuenow={Math.round(pct)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    >
+      <span
+        class={`vif-bar__fill vif-bar__fill--${kind}`}
+        style={{ width: `${pct}%`, display: pct <= 0 ? 'none' : undefined }}
+      />
       {label && <span class="vif-bar__label">{label}</span>}
     </span>
   );
@@ -126,7 +158,14 @@ export interface PanelProps {
   noBackdrop?: boolean;
 }
 
-export function Panel({ title, onClose, children, width = 860, class: cls, noBackdrop }: PanelProps) {
+export function Panel({
+  title,
+  onClose,
+  children,
+  width = 860,
+  class: cls,
+  noBackdrop,
+}: PanelProps) {
   // Foco no painel para o Esc e leitores de tela.
   useEffect(() => {
     (document.activeElement as HTMLElement | null)?.blur?.();
@@ -144,7 +183,13 @@ export function Panel({ title, onClose, children, width = 860, class: cls, noBac
       >
         <header class="vif-panel__head">
           <h2 class="vif-panel__title">{title}</h2>
-          <button type="button" class="vif-close" onClick={onClose} title={`${STR.close} (Esc)`} aria-label={STR.close}>
+          <button
+            type="button"
+            class="vif-close"
+            onClick={onClose}
+            title={`${STR.close} (Esc)`}
+            aria-label={STR.close}
+          >
             ×
           </button>
         </header>
@@ -197,10 +242,17 @@ export function QtyStepper({
   max: number;
   onChange: (v: number) => void;
 }) {
-  const set = (v: number) => onChange(Math.min(Math.max(Math.floor(v) || min, min), Math.max(min, max)));
+  const set = (v: number) =>
+    onChange(Math.min(Math.max(Math.floor(v) || min, min), Math.max(min, max)));
   return (
     <div class="vif-qty" aria-label={STR.qty}>
-      <Button small variant="flat" onClick={() => set(value - 1)} disabled={value <= min} ariaLabel="−1">
+      <Button
+        small
+        variant="flat"
+        onClick={() => set(value - 1)}
+        disabled={value <= min}
+        ariaLabel="−1"
+      >
         −
       </Button>
       <input
@@ -211,7 +263,13 @@ export function QtyStepper({
         value={value}
         onInput={(e) => set(Number((e.target as HTMLInputElement).value))}
       />
-      <Button small variant="flat" onClick={() => set(value + 1)} disabled={value >= max} ariaLabel="+1">
+      <Button
+        small
+        variant="flat"
+        onClick={() => set(value + 1)}
+        disabled={value >= max}
+        ariaLabel="+1"
+      >
         +
       </Button>
       <Button small variant="flat" onClick={() => set(max)} disabled={value >= max}>
@@ -242,7 +300,16 @@ export interface CardViewProps {
 }
 
 /** Carta: arte ATRÁS da moldura da raridade, centrada no CARD_ART_SLOT; nome na faixa de baixo. */
-export function CardView({ cardId, height, silhouette, showName = true, selected, onClick, title, badge }: CardViewProps) {
+export function CardView({
+  cardId,
+  height,
+  silhouette,
+  showName = true,
+  selected,
+  onClick,
+  title,
+  badge,
+}: CardViewProps) {
   useAtlas();
   const def = CARDS_BY_ID.get(cardId);
   const k = height / FRAME_H;
@@ -278,12 +345,26 @@ export function CardView({ cardId, height, silhouette, showName = true, selected
         />
       )}
       {frame ? (
-        <img class="vif-card__frame" src={frame} alt="" draggable={false} style={{ width: w, height }} />
+        <img
+          class="vif-card__frame"
+          src={frame}
+          alt=""
+          draggable={false}
+          style={{ width: w, height }}
+        />
       ) : (
         <span class="vif-card__noframe" />
       )}
       {showName && !silhouette && (
-        <span class="vif-card__name" style={{ fontSize: Math.max(9, Math.round(height * 0.058)) }}>
+        <span
+          class="vif-card__name"
+          style={{
+            fontSize: Math.max(
+              9,
+              Math.round(Math.min(height * 0.068, (w * 1.45) / Math.max(6, name.length))),
+            ),
+          }}
+        >
           {name}
         </span>
       )}
@@ -309,11 +390,20 @@ export function Glyph({ name, size = 14 }: { name: keyof typeof GLYPHS | string;
   const rects: JSX.Element[] = [];
   rows.forEach((row, y) =>
     [...row].forEach((c, x) => {
-      if (c === '#' && x < 8) rects.push(<rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} />);
+      if (c === '#' && x < 8)
+        rects.push(<rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} />);
     }),
   );
   return (
-    <svg class={`vif-glyph vif-glyph--${name}`} width={size} height={size} viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true" fill="currentColor">
+    <svg
+      class={`vif-glyph vif-glyph--${name}`}
+      width={size}
+      height={size}
+      viewBox="0 0 8 8"
+      shape-rendering="crispEdges"
+      aria-hidden="true"
+      fill="currentColor"
+    >
       {rects}
     </svg>
   );

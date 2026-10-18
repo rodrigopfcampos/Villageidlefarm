@@ -89,8 +89,12 @@ def _nine_slices() -> dict[str, list[int]]:
 
 
 def footprints() -> dict[str, list[int]]:
-    p = MANIFESTS / "buildings.yaml"
-    return (yaml.safe_load(open(p)).get("footprints") or {}) if p.exists() else {}
+    out = {}
+    for p in sorted(MANIFESTS.glob("*.yaml")):
+        cfg = yaml.safe_load(open(p))
+        if cfg.get("enabled", True):
+            out.update(cfg.get("footprints") or {})
+    return out
 
 
 def ts_snippets() -> str:
@@ -108,10 +112,104 @@ def ts_snippets() -> str:
     lines.append("} as const;\n\n")
     js, _ = _atlas("buildings")
     lines.append("/** Prédios/árvores: [largura, altura] da base com colisão (a partir de baixo, centrada) e\n"
-                 " *  overheadSplitY (linha do quadro, a partir do topo, acima da qual o sprite cobre o jogador). */\n")
+                 " *  overheadSplitY (linha do quadro, a partir do topo, acima da qual o sprite cobre o jogador; 0 = nunca).\n"
+                 " *  dx = deslocamento horizontal da base em relação ao centro do sprite. */\n")
     lines.append("export const BUILDING_FOOTPRINTS = {\n")
-    for n, (w, h) in sorted(footprints().items()):
+    for n, v in sorted(footprints().items()):
+        w, h = v[0], v[1]
+        dx = v[2] if len(v) > 2 else 0
         H = js["frames"][n]["sourceSize"]["h"] if js and n in js["frames"] else 0
-        lines.append(f"  '{n}': {{ w: {w}, h: {h}, overheadSplitY: {max(H - h, 0)} }},\n")
+        split = max(H - h, 0) if h else 0
+        lines.append(f"  '{n}': {{ w: {w}, h: {h}, dx: {dx}, overheadSplitY: {split} }},\n")
     lines.append("} as const;\n")
+    lines.append(album_ts())
     return "".join(lines)
+
+
+def album_info():
+    """ALBUM_SLOTS (8 espaços de carta) e ALBUM_PARTS (setas e fitas) em px do quadro ui/album_book."""
+    js, im = _atlas("ui")
+    if js is None or "ui/album_book" not in js["frames"]:
+        return None, None
+    from numpy.lib.stride_tricks import sliding_window_view
+    from scipy import ndimage as ndi
+    book = np.asarray(_frame(js, im, "ui/album_book")).astype(int)
+    r, g, b = book[..., 0], book[..., 1], book[..., 2]
+    slot = (r > 50) & (r < 95) & (g > 35) & (g < 70) & (b < 45) & (r - b > 25) & (book[..., 3] > 0)
+    slot = ndi.binary_opening(slot, iterations=2)
+    lbl, n = ndi.label(slot)
+    slots = []
+    for s in ndi.find_objects(lbl):
+        if (s[0].stop - s[0].start) * (s[1].stop - s[1].start) > 5000:
+            slots.append((s[1].start, s[0].start, s[1].stop - s[1].start, s[0].stop - s[0].start))
+    W = book.shape[1]
+    left = sorted([s for s in slots if s[0] < W / 2], key=lambda q: (q[1] // 50, q[0]))
+    right = sorted([s for s in slots if s[0] >= W / 2], key=lambda q: (q[1] // 50, q[0]))
+    slots = left + right
+    parts = {}
+    win = sliding_window_view(book[..., :3], (6, 6, 3))[..., 0, :, :, :]
+    for n in js["frames"]:
+        if not n.startswith("ui/album_") or n == "ui/album_book":
+            continue
+        part = np.asarray(_frame(js, im, n)).astype(int)
+        a = part[..., 3] > 0
+        ys, xs = np.where(ndi.binary_erosion(a, iterations=4))
+        if not len(ys):
+            continue
+        py, px = ys[len(ys) // 2] - 3, xs[len(xs) // 2] - 3
+        patch = part[py:py + 6, px:px + 6, :3]
+        hit = np.argwhere((win == patch).all(axis=(2, 3, 4)))
+        if len(hit):
+            parts[n] = (int(hit[0][1] - px), int(hit[0][0] - py), part.shape[1], part.shape[0])
+    return slots, parts
+
+
+def album_ts() -> str:
+    slots, parts = album_info()
+    if slots is None:
+        return ""
+    out = ["\n/** Álbum: os 8 espaços de carta em px do quadro 'ui/album_book' (x, y = canto superior esquerdo).\n"
+           " *  Ordem: página esquerda 1-4 (linha por linha), página direita 5-8. */\n",
+           "export const ALBUM_SLOTS = [\n"]
+    out += [f"  {{ x: {x}, y: {y}, w: {w}, h: {h} }},\n" for x, y, w, h in slots]
+    out.append("] as const;\n\n/** Posição das setas e fitas dentro do livro (para desenhar por cima, com destaque). */\n")
+    out.append("export const ALBUM_PARTS = {\n")
+    out += [f"  '{n}': {{ x: {x}, y: {y}, w: {w}, h: {h} }},\n" for n, (x, y, w, h) in sorted(parts.items())]
+    out.append("} as const;\n")
+    return "".join(out)
+
+
+def album_preview():
+    slots, parts = album_info()
+    if slots is None:
+        return
+    js, im = _atlas("ui")
+    cj, ci = _atlas("cards")
+    book = _frame(js, im, "ui/album_book")
+    W, H = book.size
+    out = Image.new("RGBA", (W, H * 2 + 10), (40, 40, 48, 255))
+    out.alpha_composite(book)
+    d = ImageDraw.Draw(out)
+    for i, (x, y, w, h) in enumerate(slots):
+        d.rectangle([x, y, x + w - 1, y + h - 1], outline=(0, 255, 0, 255), width=2)
+        d.text((x + 4, y + 4), str(i + 1), fill=(255, 255, 0, 255), font=font(18), stroke_width=2, stroke_fill=(0, 0, 0, 255))
+    for n, (x, y, w, h) in parts.items():
+        d.rectangle([x, y, x + w - 1, y + h - 1], outline=(255, 0, 255, 255), width=2)
+    # embaixo: cartas encaixadas (arte dentro da moldura, reduzida para caber no espaço)
+    out.alpha_composite(book, (0, H + 10))
+    if cj:
+        for i, (x, y, w, h) in enumerate(slots):
+            fr = FRAMES[i % 5]
+            card = _frame(cj, ci, fr)
+            s = CARD_SLOT_CACHE.get(fr) or card_slots()[fr]
+            art = _frame(cj, ci, f"card/art_{i + 1}")
+            c = Image.new("RGBA", card.size, (0, 0, 0, 0))
+            c.alpha_composite(art, (int(s["cx"] - art.width / 2), int(s["cy"] - art.height / 2)))
+            c.alpha_composite(card)
+            f = min(w / c.width, h / c.height)
+            c = c.resize((int(c.width * f), int(c.height * f)), Image.NEAREST)
+            out.alpha_composite(c, (x + (w - c.width) // 2, H + 10 + y + (h - c.height) // 2))
+    out.convert("RGB").save(DEBUG / "album_preview.png")
+
+
+CARD_SLOT_CACHE: dict = {}

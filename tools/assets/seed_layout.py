@@ -46,18 +46,20 @@ COLLISION = [
 
 # Prédios e árvores: (sprite, x da base central, y da base). A base é o pé do sprite (pivot 0.5, 1).
 PLACEMENTS = [
-    ("building/house", 400, 545),
-    ("building/garage", 905, 455),
-    ("building/greenhouse", 1105, 1005),
-    ("building/barn", 1690, 1128),
-    ("building/coop", 2060, 1120),
-    ("building/pier", 1820, 768),
-    ("tree/pine", 70, 800), ("tree/pine", 70, 1050), ("tree/pine", 72, 1300),
-    ("tree/apple", 1545, 440), ("tree/apple", 1725, 440),
-    ("tree/palm", 2075, 700),
+    # prédios HD (v4) — tamanhos em atlas_buildings; base central = (x, y)
+    ("building/house", 400, 560),
+    ("building/garage", 905, 470),
+    ("building/greenhouse", 1560, 485),     # área de grama acima do lago (era perto dos canteiros)
+    ("building/barn", 1640, 1132),
+    ("building/coop", 2045, 1112),
+    ("building/pier", 1830, 724),           # entra no lago pela margem de baixo/direita
+    # árvores
+    ("tree/pine", 92, 800), ("tree/pine", 92, 1050), ("tree/pine", 92, 1300),
+    ("tree/apple", 1110, 1015), ("tree/apple", 1105, 690),
+    ("tree/palm", 2175, 690),
     ("tree/bush_round", 700, 690),
-    ("tree/oak", 1400, 445),
-    ("tree/pine", 2330, 310), ("tree/oak", 2470, 470), ("tree/pine", 2420, 660),
+    ("tree/oak", 2120, 470),
+    ("tree/pine", 2330, 345), ("tree/oak", 2470, 470), ("tree/pine", 2420, 660),
     ("tree/oak", 2330, 1100), ("tree/pine", 2470, 1300),
 ]
 
@@ -72,7 +74,7 @@ LOCKED_LOTS = [
     ("lot_meadow", 5000, (1470, 1138, 2215, 1376)),
 ]
 SPAWN = ("player", (450, 625))
-NPCS = [("shopkeeper", (2150, 795)), ("blacksmith", (905, 492)), ("scientist", (1105, 1040))]
+NPCS = [("shopkeeper", (2150, 795)), ("blacksmith", (905, 500)), ("scientist", (1480, 530))]
 STARTS_UNLOCKED = {1, 2, 3, 4}
 
 
@@ -210,7 +212,11 @@ def layer(lid, name, objects):
 
 
 def load_sizes() -> tuple[dict, dict]:
-    fps = (yaml.safe_load(open(BUILD_MANIFEST)) or {}).get("footprints") or {}
+    fps = {}
+    for p in sorted(BUILD_MANIFEST.parent.glob("*.yaml")):
+        cfg = yaml.safe_load(open(p)) or {}
+        if cfg.get("enabled", True):
+            fps.update(cfg.get("footprints") or {})
     if not ATLAS_BUILDINGS.exists():
         raise SystemExit("rode antes: python tools/assets/build.py --sheet buildings")
     js = json.load(open(ATLAS_BUILDINGS))
@@ -232,7 +238,9 @@ def build(force: bool):
     count: dict[str, int] = {}
     for sprite, bx, by in PLACEMENTS:
         w, h = sizes[sprite]
-        fw, fh = fps.get(sprite, [0, 0])
+        fp = fps.get(sprite, [0, 0])
+        fw, fh = fp[0], fp[1]
+        fdx = fp[2] if len(fp) > 2 else 0
         k = sprite.split("/")[1]
         count[k] = count.get(k, 0) + 1
         name = k if sprite.startswith("building/") else f"{k}_{count[k]}"
@@ -243,7 +251,7 @@ def build(force: bool):
             prop("overheadSplitY", "int", int(h - fh) if fh else 0),
         ]))
         if fw and fh:
-            col.append(rect_obj(ids, f"{name}_base", (int(bx - fw / 2), by - fh, int(bx + fw / 2), by)))
+            col.append(rect_obj(ids, f"{name}_base", (int(bx + fdx - fw / 2), by - fh, int(bx + fdx + fw / 2), by)))
     plots = []
     for i, rr in enumerate(detect_plots(rgb), start=1):
         cost, lvl = plot_price(i)

@@ -24,7 +24,11 @@ export interface KeyInfo {
 export function keyAction(e: KeyInfo): KeyAction | null {
   if (e.ctrlKey || e.altKey || e.metaKey || e.repeat) return null;
   const k = e.key.toLowerCase();
-  const typing = e.targetEditable || e.targetTag === 'INPUT' || e.targetTag === 'TEXTAREA' || e.targetTag === 'SELECT';
+  const typing =
+    e.targetEditable ||
+    e.targetTag === 'INPUT' ||
+    e.targetTag === 'TEXTAREA' ||
+    e.targetTag === 'SELECT';
   if (typing && k !== 'escape') return null;
   return HOTKEYS[k] ?? null;
 }

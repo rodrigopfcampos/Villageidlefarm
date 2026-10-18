@@ -69,6 +69,7 @@ function CardsTab() {
   const fc = store.estimatedFarmClock();
   const max = cardSlots(vip);
   const check = def ? cardActivateCheck(def, active, vip) : null;
+  const cardsH = useWindowHeight() < 900 ? 176 : 220;
 
   useEffect(() => {
     if (!selected && cards[0]) setSel(cards[0].id);
@@ -92,7 +93,13 @@ function CardsTab() {
       <div class="vif-cardgrid">
         {cards.length === 0 && <p class="vif-empty">{STR.cards.empty}</p>}
         {cards.map((c) => (
-          <CardView key={c.id} cardId={c.cardId} height={176} selected={c.id === sel} onClick={() => setSel(c.id)} />
+          <CardView
+            key={c.id}
+            cardId={c.cardId}
+            height={cardsH}
+            selected={c.id === sel}
+            onClick={() => setSel(c.id)}
+          />
         ))}
       </div>
       <aside class="vif-detail">
@@ -114,7 +121,11 @@ function CardsTab() {
                   <Sprite frames={[icon]} box={28} />
                   <span class="vif-active__main">
                     <span>{cardName(b.buff, b.rarity)}</span>
-                    <Bar kind="gold" value={left / total} label={STR.cards.remaining(formatCountdown(left))} />
+                    <Bar
+                      kind="gold"
+                      value={left / total}
+                      label={STR.cards.remaining(formatCountdown(left))}
+                    />
                   </span>
                 </li>
               );
@@ -131,7 +142,11 @@ function CardsTab() {
             <p>{buffDescription(def.buff)}</p>
             <dl class="vif-kv">
               <dt>{STR.cards.duration}</dt>
-              <dd>{def.durationSeconds > 0 ? formatDurationShort(def.durationSeconds) : STR.cards.instant}</dd>
+              <dd>
+                {def.durationSeconds > 0
+                  ? formatDurationShort(def.durationSeconds)
+                  : STR.cards.instant}
+              </dd>
               <dt>Origem</dt>
               <dd>{STR.cards.source[selected.source] ?? selected.source}</dd>
             </dl>
@@ -180,7 +195,8 @@ function AlbumTab() {
   return (
     <div class="vif-album">
       <p class="vif-muted">
-        {STR.cards.albumIntro} <span class="vif-strong">{STR.cards.albumCount(have, album.slots.length)}</span>
+        {STR.cards.albumIntro}{' '}
+        <span class="vif-strong">{STR.cards.albumCount(have, album.slots.length)}</span>
       </p>
       <div class="vif-album__legend">
         {RARITIES.map((r) => (
@@ -244,7 +260,10 @@ function AlbumTab() {
 /** Espaço cheio se o servidor OU o inventário local diz que sim; bônus pelas linhas completas. */
 export function mergeAlbum(server: Album, local: Album): Album {
   const localById = new Map(local.slots.map((x) => [x.cardId, x.copies]));
-  const slots = server.slots.map((x) => ({ ...x, copies: Math.max(x.copies, localById.get(x.cardId) ?? 0) }));
+  const slots = server.slots.map((x) => ({
+    ...x,
+    copies: Math.max(x.copies, localById.get(x.cardId) ?? 0),
+  }));
   const completedLines = BUFF_KINDS.filter((b) => {
     const row = slots.filter((x) => x.buff === b);
     return row.length > 0 && row.every((x) => x.copies > 0);

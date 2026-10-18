@@ -35,10 +35,13 @@ export function OfflineReportPanel() {
         <p>{STR.offline.credited(formatDurationShort(r.creditedSeconds))}</p>
         {r.capped && (
           <p class="vif-banner vif-banner--warn" role="alert">
-            <Glyph name="warn" /> {STR.offline.capped(formatDurationShort(ECONOMY.OFFLINE_CAP_SECONDS))}
+            <Glyph name="warn" />{' '}
+            {STR.offline.capped(formatDurationShort(ECONOMY.OFFLINE_CAP_SECONDS))}
           </p>
         )}
-        <p class="vif-strong">{ready > 0 ? STR.offline.readyPlots(ready) : STR.offline.noneReady}</p>
+        <p class="vif-strong">
+          {ready > 0 ? STR.offline.readyPlots(ready) : STR.offline.noneReady}
+        </p>
         <div class="vif-actions">
           <Button variant="flat" onClick={ui.close}>
             {STR.offline.continue}

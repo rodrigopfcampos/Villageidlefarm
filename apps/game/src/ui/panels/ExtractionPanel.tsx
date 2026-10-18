@@ -49,7 +49,12 @@ export function ExtractionPanel({ initialItem }: { initialItem?: ItemId }) {
   const items = sortedInventory(store.inventory.entries()).filter((e) => e.def?.steamExtractable);
   const selItem = sel ? ITEMS_BY_ID.get(sel) : undefined;
   const have = sel ? store.qty(sel) : 0;
-  const check = extractionCheck(selItem, { have, level, quota, steamUnavailable: ui.steamUnavailable });
+  const check = extractionCheck(selItem, {
+    have,
+    level,
+    quota,
+    steamUnavailable: ui.steamUnavailable,
+  });
   const waitS = nextSlotSeconds(quota, serverNow);
   const tz = store.profile?.timezone ?? 'UTC';
 
@@ -125,7 +130,9 @@ export function ExtractionPanel({ initialItem }: { initialItem?: ItemId }) {
                 <>
                   <ItemIcon itemId={sel} box={40} />
                   <span class="vif-strong">{itemName(sel)}</span>
-                  {!check.ok && check.reason && <span class="vif-warn">{errorMessage(check.reason)}</span>}
+                  {!check.ok && check.reason && (
+                    <span class="vif-warn">{errorMessage(check.reason)}</span>
+                  )}
                   <Button variant="gold" disabled={!check.ok} onClick={() => setConfirming(true)}>
                     {STR.steam.send}
                   </Button>

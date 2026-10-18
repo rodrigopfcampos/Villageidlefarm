@@ -91,7 +91,7 @@ export function cropSpriteFor(
 
 /** Escala do ícone de reserva por estágio (pequeno no início, cresce até pronto). */
 export function fallbackIconScale(stage: GrowthStage): number {
-  return [0.5, 0.75, 1, 1.25][stage]!;
+  return [0.9, 1.2, 1.5, 1.8][stage]!;
 }
 
 /** Quantas plantas desenhar num canteiro (canteiros largos ganham mais de uma). */

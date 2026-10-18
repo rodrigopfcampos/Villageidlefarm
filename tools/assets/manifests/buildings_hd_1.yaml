@@ -1,0 +1,39 @@
+# Prédios e árvores HD, folha 1 (v4/predios_hd_1.jpg) -> atlas_buildings. SUBSTITUEM os da folha antiga.
+# Linha 1: building/coop (galinheiro, com cercas e barril), building/greenhouse (estufa), tree/pine.
+# Linha 2: building/pier (píer em diagonal), tree/oak, tree/apple, tree/palm.
+# A folha tem ~1 px por pixel de arte, sem grade limpa. Escala por sprite em scale.groups (vizinho mais
+# próximo): ver README ("Escala dos prédios HD").
+sheet: buildings_hd_1
+source: v4/predios_hd_1.jpg
+category: buildings
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: true, min_L: 0, max_ab: 5}
+halo_tolerance: 12
+hole_area: 0                # vãos escuros (garagem, celeiro) fazem parte do prédio
+restore_enclosed: {close: 3, min_dE: 3, shadow_ab: 3}
+min_piece_area: 300
+merge_distance: 30          # cercas, barris e mourões soltos
+merge_big_area: 6000
+merge_distance_big: 0
+footprints:                 # base com colisão [largura, altura(, deslocamento x)] a partir de baixo, centrada
+  building/coop: [300, 95]
+  building/greenhouse: [330, 140]
+  building/pier: [0, 0]      # o píer fica sobre a água (a água já tem colisão)
+  tree/pine: [40, 24]
+  tree/oak: [48, 26]
+  tree/apple: [42, 24]
+  tree/palm: [36, 22, -52]   # tronco torto: a base fica 52 px à esquerda do centro
+quantize: 0
+frame: {size: [1, 1], anchor: bottom, per_sprite: true}
+rows: [3, 4]
+scale:
+  mode: art
+  pitch: 1
+  upscale: 1.25             # 1,25x vizinho mais próximo (casa ~380 px, árvores ~180-235 px)
+  groups:                    # largos por causa de cercas/diagonal: 1:1 para caber ao lado do celeiro / no lago
+    building/coop: {upscale: 0.9}
+    building/pier: {upscale: 1.0}
+names: [building/coop, building/greenhouse, tree/pine, building/pier, tree/oak, tree/apple, tree/palm]

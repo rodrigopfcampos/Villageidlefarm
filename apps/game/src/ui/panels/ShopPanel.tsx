@@ -66,7 +66,9 @@ function SeedRow({ item }: { item: ItemDef }) {
 
   const buy = async () => {
     setBusy(true);
-    const r = await ui.mutate('shopBuy', () => api.shopBuy({ itemId: item.id, qty, requestId: newRequestId() }));
+    const r = await ui.mutate('shopBuy', () =>
+      api.shopBuy({ itemId: item.id, qty, requestId: newRequestId() }),
+    );
     setBusy(false);
     if (r) ui.toast('success', STR.shop.bought(qty, itemName(item.id)));
   };

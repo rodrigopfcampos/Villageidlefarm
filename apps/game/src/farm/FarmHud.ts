@@ -63,7 +63,8 @@ export class FarmHud extends Phaser.Scene {
     const { width, height } = this.scale;
     if (this.badge) {
       const w = this.badgeWidth();
-      this.badge.setPosition(Math.round(width / 2 - w / 2 + 28), 74);
+      // logo abaixo do painel do evento da interface (A5), centralizado
+      this.badge.setPosition(Math.round(width / 2 - w / 2 + 28), 104);
     }
     if (this.chooser) this.chooser.setPosition(Math.round(width / 2), Math.round(height / 2));
   }
@@ -80,7 +81,7 @@ export class FarmHud extends Phaser.Scene {
     if (this.badgeText.text !== text) {
       this.badgeText.setText(text);
       const bg = this.badge.list[0] as Phaser.GameObjects.Rectangle;
-      bg.width = this.badgeWidth();
+      bg.setSize(this.badgeWidth(), 44);
       this.layout();
     }
   }

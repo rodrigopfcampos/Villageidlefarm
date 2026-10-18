@@ -139,9 +139,14 @@ export class Player {
     const step = (PLAYER_SPEED * dtMs) / 1000;
     const vx = (dx / len) * step;
     const vy = (dy / len) * step;
-    const next = this.collider
-      ? slideMove(this.collider, this.x, this.y, vx, vy, PLAYER_FOOT)
-      : { x: this.x + vx, y: this.y + vy };
+    // passos de no máx. 6 px para não atravessar colisões finas quando o quadro demora
+    const steps = Math.max(1, Math.ceil(step / 6));
+    let next = { x: this.x, y: this.y };
+    for (let i = 0; i < steps; i++) {
+      next = this.collider
+        ? slideMove(this.collider, next.x, next.y, vx / steps, vy / steps, PLAYER_FOOT)
+        : { x: next.x + vx / steps, y: next.y + vy / steps };
+    }
     this.facing = facingFrom(dx, dy, this.facing);
     this.setPos(next.x, next.y);
     this.moving = true;

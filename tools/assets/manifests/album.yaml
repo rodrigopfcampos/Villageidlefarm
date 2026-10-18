@@ -1,0 +1,35 @@
+# Álbum de cartas (v4/album_livro.jpg) -> atlas_ui. Escala 1:1 (a folha já está no tamanho de interface).
+#   ui/album_book: o livro inteiro como foi desenhado (com fitas e setas pintadas e os 8 espaços escuros).
+#   ui/album_arrow_left / _right: setas de navegação recortadas pelo contorno (mesma posição do livro,
+#     para desenhar por cima com destaque ao tocar). ui/album_tab_blue/green/red/purple: as fitas
+#     (azul da esquerda; verde, vermelha e roxa da direita, que aparecem inteiras).
+# Posição de cada peça e dos 8 espaços de carta (ALBUM_SLOTS, ALBUM_PARTS) em px do quadro ui/album_book:
+# ver assetKeys.ts. Ordem dos espaços: página esquerda 1-4 (linha por linha), página direita 5-8.
+sheet: album
+source: v4/album_livro.jpg
+category: ui
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: false}
+hole_area: 0
+halo_tolerance: 10
+boxes:
+  ui/album_book: {box: [30, 25, 995, 552]}
+  ui/album_arrow_left:
+    box: [38, 423, 102, 482]
+    poly: [[40, 452], [67, 425], [71, 425], [71, 435], [100, 435], [100, 469], [71, 469], [71, 480], [67, 480]]
+  ui/album_arrow_right:
+    box: [921, 423, 985, 482]
+    poly: [[983, 452], [956, 425], [952, 425], [952, 435], [923, 435], [923, 469], [952, 469], [952, 480], [956, 480]]
+  ui/album_tab_blue: {box: [58, 128, 112, 178], color: blue}
+  ui/album_tab_green: {box: [916, 180, 968, 229], color: green}
+  ui/album_tab_red: {box: [922, 234, 966, 282], color: red}
+  ui/album_tab_purple: {box: [916, 287, 966, 336], color: purple}
+rows: [9]
+names: [ui/album_book, ui/album_arrow_left, ui/album_arrow_right, ui/album_tab_blue, ui/album_tab_green,
+        ui/album_tab_red, ui/album_tab_purple]
+scale: {mode: art, pitch: 1, upscale: 1}
+quantize: 0
+frame: {size: [1, 1], anchor: center, per_sprite: true}

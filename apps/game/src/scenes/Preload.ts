@@ -96,7 +96,7 @@ function makeTextures(scene: Phaser.Scene): void {
   });
   // Balão do produto pronto (animal).
   canvasTexture(scene, FX_TEXTURES.bubble, 36, 40, (ctx) => {
-    ctx.fillStyle = '#2b2b2b';
+    ctx.fillStyle = '#f3d9a4';
     ctx.beginPath();
     ctx.roundRect(1, 1, 34, 30, 8);
     ctx.fill();
@@ -105,7 +105,7 @@ function makeTextures(scene: Phaser.Scene): void {
     ctx.lineTo(18, 39);
     ctx.lineTo(24, 30);
     ctx.fill();
-    ctx.fillStyle = '#fff8e8';
+    ctx.fillStyle = '#4a3220';
     ctx.beginPath();
     ctx.roundRect(3, 3, 30, 26, 7);
     ctx.fill();

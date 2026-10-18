@@ -16,14 +16,7 @@ import { onAtlasChange } from './atlas';
 
 /** Painéis da interface. 'plant'/'unlock' vêm do clique no canteiro (A3). */
 export type UiPanelId =
-  | 'inventory'
-  | 'shop'
-  | 'cards'
-  | 'album'
-  | 'extraction'
-  | 'plant'
-  | 'unlock'
-  | 'offline-report';
+  'inventory' | 'shop' | 'cards' | 'album' | 'extraction' | 'plant' | 'unlock' | 'offline-report';
 
 export interface OpenPanel {
   id: UiPanelId;

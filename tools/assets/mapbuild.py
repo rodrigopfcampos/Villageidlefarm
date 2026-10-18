@@ -226,31 +226,38 @@ def previews():
     tmj = json.load(open(SRC_TMJ))
     sp = next(o for o in layer_objects(tmj, "spawn") if o["name"] == "player")
     plots = layer_objects(tmj, "plots")
-    stages = ["carrot", "potato", "strawberry"]
+    # culturas variadas nos canteiros (estágio = coluna); os 4 primeiros com terra arada/molhada
+    crops = ["carrot", "pumpkin", "strawberry", "corn", "watermelon", "cabbage", "apple", "eggplant", "pineapple",
+             "bell_pepper", "grape", "cauliflower", "banana", "potato", "lemon", "kale", "melon", "chili_pepper",
+             "orange", "artichoke"]
     extra = []
-    tiles = ["tile/soil_tilled", "tile/soil_wet", "tile/soil_raw"]
+    tiles = ["tile/soil_tilled", "tile/soil_wet", "tile/soil_tilled", "tile/soil_raw"]
     base_tiles = []
     for i, o in enumerate(plots):
-        cx, cy = o["x"] + o["width"] / 2, o["y"] + o["height"] / 2
-        base_tiles.append((tiles[i % 3] if i < 9 else None, o))
-        if i < 12:
-            crop = stages[(i // 4) % 3]
-            extra.append((f"crop/{crop}_{i % 4}", cx, o["y"] + o["height"] - 12, False, False))
+        cx = o["x"] + o["width"] / 2
+        base_tiles.append((tiles[i % 4] if i < 12 else None, o))
+        if i < 16:
+            extra.append((f"crop/{crops[i]}_{(i + 3) % 4 if i < 8 else 3}", cx, o["y"] + o["height"] - 10, False, False))
+    walk = lambda n, i: f"{n}/walk_{i % 5}"
     extra += [("farmer_m/idle_down_0", sp["x"], sp["y"], True, False),
               ("farmer_f/idle_down_0", sp["x"] + 60, sp["y"] + 8, True, False),
-              ("farmer_m/idle_up_0", 330, 300, True, False),          # atrás da casa (telhado por cima)
-              ("farmer_f/water_side_0", plots[1]["x"] - 20, plots[1]["y"] + 90, True, False),
-              ("farmer_m/water_side_0", plots[0]["x"] - 14, plots[0]["y"] + 90, True, False),
-              ("farmer_m/walk_side_1", sp["x"] + 150, sp["y"] + 30, True, False),
-              ("farmer_m/hoe_side_0", plots[4]["x"] - 20, plots[4]["y"] + 100, True, False),
-              ("dog/sit_0", sp["x"] - 60, sp["y"] + 12, True, False),
-              ("cow_holstein/pose_0", 1560, 1230, True, False), ("cow_brown/pose_0", 1700, 1300, True, False),
-              ("sheep_white/pose_0", 1820, 1220, True, False), ("pig_pink/pose_0", 1640, 1340, True, True),
-              ("chicken_brown/pose_0", 1980, 1200, True, False), ("chicken_white/pose_1", 2060, 1250, True, False),
-              ("chicken_black/pose_1", 2130, 1200, True, True), ("turkey_bronze/pose_0", 2150, 1320, True, False),
-              ("duck_mallard/pose_1", 1700, 610, False, False), ("duck_white/pose_1", 1880, 560, False, True),
-              ("shopkeeper/idle_down_0", 2150, 795, True, False), ("blacksmith/idle_down_0", 905, 492, True, False),
-              ("scientist/idle_down_0", 1105, 1040, True, False)]
+              ("farmer_m/walk_right_1", sp["x"] + 150, sp["y"] + 20, True, False),
+              ("farmer_m/walk_left_2", sp["x"] - 120, sp["y"] + 40, True, False),
+              ("farmer_m/idle_up_0", 420, 300, True, False),          # atrás da casa (telhado por cima)
+              ("farmer_m/water_right_0", plots[0]["x"] - 18, plots[0]["y"] + 95, True, False),
+              ("farmer_f/water_side_0", plots[1]["x"] - 20, plots[1]["y"] + 95, True, False),
+              ("farmer_m/plant_kneel_1", plots[2]["x"] - 14, plots[2]["y"] + 95, True, False),
+              ("dog/sit_0", sp["x"] - 50, sp["y"] + 12, True, False),
+              (walk("cow", 1), 1520, 1235, True, False), (walk("cow", 3), 1700, 1310, True, True),
+              ("cow/graze_0", 1600, 1360, True, False),
+              (walk("sheep", 2), 1820, 1225, True, False), (walk("pig", 0), 1660, 1215, True, True),
+              (walk("goat", 4), 1880, 1330, True, False), (walk("alpaca", 1), 1520, 1350, True, False),
+              (walk("chicken", 0), 1960, 1200, True, False), (walk("chicken", 2), 2010, 1260, True, True),
+              ("chicken/graze_0", 2080, 1215, True, False), (walk("turkey", 1), 2150, 1330, True, False),
+              (walk("goose", 3), 2000, 1340, True, True), (walk("rabbit", 2), 2160, 1250, True, False),
+              ("duck_mallard/pose_3", 1700, 620, False, False), (walk("duck", 1), 1990, 760, True, True),
+              ("shopkeeper/idle_down_0", 2150, 795, True, False), ("blacksmith/idle_down_0", 905, 500, True, False),
+              ("scientist/idle_down_0", 1480, 530, True, False)]
     get = atlas_cache()
     ground = load_map().convert("RGBA")
     for t, o in base_tiles:  # terra arada por cima dos canteiros (nine-slice simples)
@@ -258,7 +265,7 @@ def previews():
             ground.alpha_composite(nine_slice(get(t)[0], int(o["width"]), int(o["height"]), 12), (int(o["x"]), int(o["y"])))
     full = composed_on(ground, tmj, extra, get)
     full.convert("RGB").save(DEBUG / "preview_composto.png")
-    crop = full.crop((120, 120, 1320, 820)).convert("RGB")
+    crop = full.crop((120, 100, 1320, 800)).convert("RGB")
     crop.resize((crop.width * 2, crop.height * 2), Image.NEAREST).save(DEBUG / "preview_on_map.png")
     right = full.crop((1380, 380, 2280, 1400)).convert("RGB")
     right.save(DEBUG / "preview_on_map_animals.png")
@@ -309,6 +316,7 @@ def previews():
     im.convert("RGB").save(DEBUG / "layout_overlay.png")
     import extras
     extras.card_art_preview()
+    extras.album_preview()
     print("  prévias: preview_composto.png, preview_on_map*.png, layout_overlay.png, cards_art_in_frames.png")
 
 

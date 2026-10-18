@@ -89,7 +89,8 @@ export class FarmScene extends Phaser.Scene {
   private hud: FarmHud | null = null;
   private keys: Record<string, Phaser.Input.Keyboard.Key> = {};
   private following = false;
-  private tickAcc = 0;
+  private lastTick = 0;
+  private lastFrame = 0;
   private queue: Job[] = [];
   private currentJob: string | null = null;
   private pumping = false;
@@ -310,7 +311,10 @@ export class FarmScene extends Phaser.Scene {
   override update(time: number, delta: number): void {
     const p = this.player;
     if (!p) return;
-    const dt = Math.min(delta, 100);
+    // dt real (timestamp do rAF): o delta do Phaser é suavizado e fica "câmera lenta" se o fps cai.
+    const dt =
+      this.lastFrame > 0 ? Math.min(Math.max(time - this.lastFrame, 0), 250) : Math.min(delta, 50);
+    this.lastFrame = time;
 
     // teclado
     const k = this.keys;
@@ -340,9 +344,9 @@ export class FarmScene extends Phaser.Scene {
     this.buildings?.update(p.body(), p.y, dt);
     this.fx?.update(p.x, p.y);
 
-    this.tickAcc += delta;
-    if (this.tickAcc >= TICK_MS) {
-      this.tickAcc = 0;
+    // tempo real (o delta do Phaser é suavizado/limitado quando o fps cai)
+    if (time - this.lastTick >= TICK_MS) {
+      this.lastTick = time;
       this.tick();
     }
   }
@@ -362,7 +366,7 @@ export class FarmScene extends Phaser.Scene {
         const left = t.nightEndsAt
           ? Math.max(0, (t.nightEndsAt - store.estimatedServerNow()) / 1000)
           : 0;
-        this.hud?.setNightBadge(true, `Evento noturno  ×1.5  ·  ${formatDuration(left)}`);
+        this.hud?.setNightBadge(true, `Crescimento ×1.5  ·  ${formatDuration(left)}`);
       } else {
         this.hud?.setNightBadge(false);
       }
@@ -446,6 +450,9 @@ export class FarmScene extends Phaser.Scene {
   // ---------------- fila de ações ----------------
 
   private enqueue(job: Job): void {
+    // ação do jogador tem prioridade sobre as animações automáticas de plantio ainda na fila
+    if (!job.key.startsWith('plant:'))
+      this.queue = this.queue.filter((j) => !j.key.startsWith('plant:'));
     if (this.currentJob === job.key || this.queue.some((j) => j.key === job.key)) return;
     if (this.queue.length >= 24) return;
     this.queue.push(job);
@@ -531,15 +538,21 @@ export class FarmScene extends Phaser.Scene {
     if ((await this.walkTo(stand.point)) === 'arrived') this.player.facing = stand.facing;
   }
 
+  /**
+   * Plantio confirmado (o painel do A5 chama a API): toca "plantar" se o jogador foi até o canteiro
+   * (clique) ou já está perto. Plantios feitos de longe (ex.: "plantar tudo") não puxam o personagem.
+   */
   private enqueuePlantAnim(slotId: string): void {
-    if (this.queue.length > 3) return;
+    const def = this.plots?.def(slotId);
+    const p = this.player;
+    if (!def || !p) return;
+    const stand = this.standPointFor(def.rect);
+    const near = Math.hypot(stand.point.x - p.x, stand.point.y - p.y) < 160;
+    const going = this.currentJob === `goto:${slotId}`;
+    if (!near && !going) return;
     this.enqueue({
       key: `plant:${slotId}`,
       run: async () => {
-        const def = this.plots?.def(slotId);
-        const p = this.player;
-        if (!def || !p) return;
-        const stand = this.standPointFor(def.rect);
         if ((await this.walkTo(stand.point)) === 'canceled') return;
         await p.act('plant', stand.facing, 900);
       },

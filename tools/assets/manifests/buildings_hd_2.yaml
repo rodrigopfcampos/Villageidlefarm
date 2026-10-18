@@ -1,0 +1,31 @@
+# Prédios HD, folha 2 (v4/predios_hd_2.jpg) -> atlas_buildings: building/house, building/garage,
+# building/barn (celeiro com silo). Mesma escala da folha 1.
+sheet: buildings_hd_2
+source: v4/predios_hd_2.jpg
+category: buildings
+transparency: flood
+bg_tolerance: 6
+barrier_L: 4
+barrier_grow: 1
+shadow: {enabled: true, min_L: 0, max_ab: 5}
+halo_tolerance: 12
+hole_area: 0                # vãos escuros (garagem, celeiro) fazem parte do prédio
+restore_enclosed: {close: 3, min_dE: 3, shadow_ab: 3}
+min_piece_area: 300
+merge_distance: 30          # cercas, barris e mourões soltos
+merge_big_area: 6000
+merge_distance_big: 0
+footprints:
+  building/house: [330, 150]
+  building/garage: [380, 120]
+  building/barn: [400, 140]
+quantize: 0
+frame: {size: [1, 1], anchor: bottom, per_sprite: true}
+rows: [3]
+scale:
+  mode: art
+  pitch: 1
+  upscale: 1.25             # 1,25x vizinho mais próximo (casa ~380 px, árvores ~180-235 px)
+names: [building/house, building/garage, building/barn]
+overrides:
+  building/garage: {fill_hull: true}   # o interior escuro do galpão é aberto para o fundo: preenche pelo contorno

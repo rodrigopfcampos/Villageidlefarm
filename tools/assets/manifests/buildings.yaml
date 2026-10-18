@@ -11,20 +11,13 @@
 #   (centrada no x da âncora). overheadSplitY = altura_do_quadro - altura_do_footprint: tudo ACIMA dessa linha
 #   (contada do topo do sprite) é desenhado por cima do jogador; abaixo, o jogador fica na frente.
 footprints:
-  building/house: [380, 150]
-  building/garage: [440, 90]
-  building/barn: [350, 120]
-  building/coop: [270, 110]
-  building/greenhouse: [150, 110]
-  building/pier: [0, 0]          # píer é decoração sobre a água (a água já tem colisão)
-  tree/oak: [44, 26]
-  tree/pine: [36, 24]
   tree/bush_round: [48, 26]
-  tree/apple: [40, 24]
-  tree/palm: [30, 22]
   decor/crop_rows_1: [0, 0]
   decor/crop_rows_2: [0, 0]
   decor/crop_rows_3: [0, 0]
+# ATUALIZAÇÃO v4: prédios e árvores principais vêm de buildings_hd_1/2.yaml (folhas HD). Daqui só ficam
+# tree/bush_round e decor/crop_rows_1..3 (os outros, renomeados para old*, são descartados).
+drop_entities: [oldbuilding, oldtree]
 sheet: buildings
 source: v2/predios_arvores.jpg
 category: buildings
@@ -52,28 +45,28 @@ scale:
 quantize: 64
 frame: {size: [1, 1], anchor: bottom, per_sprite: true}
 names:
-  - building/house
-  - building/garage
-  - building/barn
-  - building/coop
-  - building/greenhouse
-  - building/pier
-  - tree/oak
-  - tree/pine
+  - oldbuilding/house
+  - oldbuilding/garage
+  - oldbuilding/barn
+  - oldbuilding/coop
+  - oldbuilding/greenhouse
+  - oldbuilding/pier
+  - oldtree/oak
+  - oldtree/pine
   - decor/crop_rows_1
   - decor/crop_rows_2
   - decor/crop_rows_3
   - tree/bush_round
-  - tree/apple
-  - tree/palm
+  - oldtree/apple
+  - oldtree/palm
 group_boxes:               # as 3 fileiras de plantinhas (cada caixa vira 1 sprite)
   - [212, 478, 268, 548]
   - [268, 478, 336, 548]
   - [336, 478, 408, 548]
 overrides:
-  building/garage:
+  oldbuilding/garage:
     fill_box: [300, 75, 520, 171]   # interior escuro da garagem fica opaco (é parede/sombra, não fundo)
-  building/barn:
+  oldbuilding/barn:
     fill_box: [664, 146, 709, 179]  # vão escuro da porta do celeiro
   decor/crop_rows_1: {strip_bg_dE: 14}
   decor/crop_rows_2: {strip_bg_dE: 14}

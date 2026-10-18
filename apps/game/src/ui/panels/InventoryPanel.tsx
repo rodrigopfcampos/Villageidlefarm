@@ -20,7 +20,10 @@ export interface InvEntry {
 }
 
 /** Itens do inventário ordenados por tipo e nome (função pura, usada também na retirada). */
-export function sortedInventory(entries: Iterable<[ItemId, number]>, filter: Filter = 'all'): InvEntry[] {
+export function sortedInventory(
+  entries: Iterable<[ItemId, number]>,
+  filter: Filter = 'all',
+): InvEntry[] {
   const out: InvEntry[] = [];
   for (const [itemId, qty] of entries) {
     if (qty <= 0) continue;
@@ -62,7 +65,11 @@ export function InventoryPanel({ initialItem }: { initialItem?: ItemId }) {
       api.shopSell({ itemId: selected.itemId, qty, requestId: newRequestId() }),
     );
     setBusy(false);
-    if (r) ui.toast('success', STR.inventory.sold(qty, itemName(selected.itemId), formatInt(check.total)));
+    if (r)
+      ui.toast(
+        'success',
+        STR.inventory.sold(qty, itemName(selected.itemId), formatInt(check.total)),
+      );
   };
 
   return (
@@ -136,7 +143,10 @@ export function InventoryPanel({ initialItem }: { initialItem?: ItemId }) {
                 </>
               )}
               {selected.def?.steamExtractable && (
-                <Button variant="flat" onClick={() => ui.open({ id: 'extraction', itemId: selected.itemId })}>
+                <Button
+                  variant="flat"
+                  onClick={() => ui.open({ id: 'extraction', itemId: selected.itemId })}
+                >
                   <Glyph name="steam" /> {STR.inventory.toSteam}
                 </Button>
               )}

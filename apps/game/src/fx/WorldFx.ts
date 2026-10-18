@@ -18,6 +18,8 @@ export class WorldFx {
   private color = -1;
   private weather: WeatherKind = 'clear';
   private night = false;
+  private pendingFireflies = false;
+  private frames = 0;
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -55,7 +57,9 @@ export class WorldFx {
     }
     if (nightEvent !== this.night) {
       this.night = nightEvent;
-      this.setFireflies(nightEvent);
+      // liga no próximo update(), quando a câmera já tem a área visível certa
+      this.pendingFireflies = nightEvent;
+      if (!nightEvent) this.setFireflies(false);
     }
   }
 
@@ -68,12 +72,12 @@ export class WorldFx {
       this.fireflies = this.scene.add.particles(0, 0, FX_TEXTURES.glow, {
         emitZone: { type: 'random', source: this.view, quantity: 1 },
         lifespan: { min: 3500, max: 7000 },
-        frequency: 90,
-        quantity: 1,
-        maxAliveParticles: 90,
+        frequency: 70,
+        quantity: 2,
+        maxAliveParticles: 120,
         speedX: { min: -14, max: 14 },
         speedY: { min: -18, max: 8 },
-        scale: { min: 0.08, max: 0.16 },
+        scale: { min: 0.12, max: 0.24 },
         tint: [0xfff59a, 0xd8ff8a, 0xffe07a],
         blendMode: Phaser.BlendModes.ADD,
         alpha: {
@@ -84,7 +88,9 @@ export class WorldFx {
       });
       this.fireflies.setDepth(FX_DEPTH.fireflies);
     }
+    this.syncView();
     this.fireflies.start();
+    this.fireflies.fastForward(5000, 50); // já começa cheio de vagalumes
   }
 
   private setRain(on: boolean): void {
@@ -107,16 +113,27 @@ export class WorldFx {
       });
       this.rain.setDepth(FX_DEPTH.rain);
     }
+    this.syncView();
     this.rain.start();
+    this.rain.fastForward(900, 16);
   }
 
   /** Por quadro: acompanha a câmera e a lanterna. */
   update(playerX: number, playerY: number): void {
+    this.syncView();
+    this.frames++;
+    if (this.pendingFireflies && this.frames > 3) {
+      this.pendingFireflies = false;
+      this.setFireflies(true);
+    }
+    if (this.lantern.visible) this.lantern.setPosition(playerX, playerY - 30);
+  }
+
+  private syncView(): void {
     const v = this.scene.cameras.main.worldView;
     this.view.setTo(v.x, v.y, v.width, v.height);
     // a chuva nasce acima e um pouco à direita da tela (vento para a esquerda)
     this.rainZone.setTo(v.x - 40, v.y - 160, v.width + 220, v.height * 0.6 + 160);
-    if (this.lantern.visible) this.lantern.setPosition(playerX, playerY - 30);
   }
 
   destroy(): void {

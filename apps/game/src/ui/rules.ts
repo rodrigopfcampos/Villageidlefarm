@@ -111,7 +111,8 @@ export function plantOption(
     return { action: 'no-money', cost: 0, ok: false, reason: 'INSUFFICIENT_ITEMS' };
   }
   const cost = shopPrice(seed, 1);
-  if (ctx.coins < cost) return { action: 'no-money', cost, ok: false, reason: 'INSUFFICIENT_FUNDS' };
+  if (ctx.coins < cost)
+    return { action: 'no-money', cost, ok: false, reason: 'INSUFFICIENT_FUNDS' };
   return { action: 'buy-and-plant', cost, ok: true, reason: null };
 }
 
@@ -158,7 +159,11 @@ export function buyCheck(
   return { ...OK, total };
 }
 
-export function sellCheck(item: ItemDef | undefined, qty: number, have: number): Check & { total: number } {
+export function sellCheck(
+  item: ItemDef | undefined,
+  qty: number,
+  have: number,
+): Check & { total: number } {
   if (!item) return { ...no('NOT_FOUND'), total: 0 };
   if (item.sellPrice === null) return { ...no('NOT_FOR_SALE'), total: 0 };
   if (!Number.isInteger(qty) || qty <= 0 || qty > ECONOMY.SHOP_MAX_QTY) {
@@ -186,7 +191,11 @@ export function cardSlots(vip: boolean): number {
  * BUFF_ALREADY_ACTIVE → CARD_SLOT_FULL. Adubo (instantâneo) não ocupa vaga.
  * `active` = buffs ainda em vigor (store.currentBuffs()).
  */
-export function cardActivateCheck(card: CardDef, active: readonly ActiveBuff[], vip: boolean): Check {
+export function cardActivateCheck(
+  card: CardDef,
+  active: readonly ActiveBuff[],
+  vip: boolean,
+): Check {
   if (card.durationSeconds <= 0) return OK;
   if (active.some((b) => b.buff === card.buff)) return no('BUFF_ALREADY_ACTIVE');
   if (active.length >= cardSlots(vip)) return no('CARD_SLOT_FULL');

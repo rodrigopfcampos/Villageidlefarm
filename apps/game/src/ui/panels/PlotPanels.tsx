@@ -88,7 +88,11 @@ export function PlantPanel({ slotId }: { slotId: string }) {
           <ItemIcon itemId={plot.cropId} box={64} />
           <div>
             <p class="vif-strong">{itemName(plot.cropId)}</p>
-            <p>{ready ? STR.plant.ready : STR.plant.readyIn(formatCountdown(secondsRemaining(plot, fc)))}</p>
+            <p>
+              {ready
+                ? STR.plant.ready
+                : STR.plant.readyIn(formatCountdown(secondsRemaining(plot, fc)))}
+            </p>
           </div>
           {ready && (
             <Button variant="gold" onClick={() => void harvest()}>
@@ -124,7 +128,8 @@ export function PlantPanel({ slotId }: { slotId: string }) {
                     {STR.plant.seed} <Coins n={seed?.basePrice ?? 0} compact />
                   </span>
                   <span class="vif-stat vif-stat--profit" title={STR.plant.profit}>
-                    {STR.plant.profit} +{formatInt(eco.profit)} · {STR.plant.perHour(formatInt(eco.profitPerHour))}
+                    {STR.plant.profit} +{formatInt(eco.profit)} ·{' '}
+                    {STR.plant.perHour(formatInt(eco.profitPerHour))}
                   </span>
                 </span>
                 {!locked && have > 0 && <span class="vif-row__note">{STR.plant.owned(have)}</span>}
@@ -156,7 +161,9 @@ export function PlantPanel({ slotId }: { slotId: string }) {
         })}
       </ul>
       {hidden.length > 0 && (
-        <p class="vif-muted vif-more">{STR.plant.moreLocked(hidden.length, hidden[0]!.unlockLevel)}</p>
+        <p class="vif-muted vif-more">
+          {STR.plant.moreLocked(hidden.length, hidden[0]!.unlockLevel)}
+        </p>
       )}
     </Panel>
   );
@@ -173,7 +180,9 @@ export function UnlockPanel({ slotId }: { slotId: string }) {
 
   const unlock = async () => {
     setBusy(true);
-    const r = await ui.mutate('unlockSlot', () => api.unlockSlot({ slotId, requestId: newRequestId() }));
+    const r = await ui.mutate('unlockSlot', () =>
+      api.unlockSlot({ slotId, requestId: newRequestId() }),
+    );
     setBusy(false);
     if (r) {
       ui.toast('success', STR.unlock.done);
@@ -189,7 +198,7 @@ export function UnlockPanel({ slotId }: { slotId: string }) {
         </>
       }
       onClose={ui.close}
-      width={480}
+      width={580}
     >
       {plot?.unlocked ? (
         <p>{STR.unlock.already}</p>
@@ -210,8 +219,12 @@ export function UnlockPanel({ slotId }: { slotId: string }) {
               <Coins n={store.wallet.coins} />
             </dd>
           </dl>
-          {check.reason === 'LEVEL_TOO_LOW' && <p class="vif-warn">{STR.unlock.needLevel(def?.unlockLevel ?? 1)}</p>}
-          {check.reason === 'INSUFFICIENT_FUNDS' && <p class="vif-warn">{errorMessage('INSUFFICIENT_FUNDS')}</p>}
+          {check.reason === 'LEVEL_TOO_LOW' && (
+            <p class="vif-warn">{STR.unlock.needLevel(def?.unlockLevel ?? 1)}</p>
+          )}
+          {check.reason === 'INSUFFICIENT_FUNDS' && (
+            <p class="vif-warn">{errorMessage('INSUFFICIENT_FUNDS')}</p>
+          )}
           <div class="vif-actions">
             <Button variant="flat" onClick={ui.close}>
               {STR.cancel}

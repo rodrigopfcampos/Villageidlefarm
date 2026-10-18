@@ -699,9 +699,9 @@
      "id": 62,
      "name": "house_base",
      "type": "",
-     "x": 210,
-     "y": 395,
-     "width": 380,
+     "x": 235,
+     "y": 410,
+     "width": 330,
      "height": 150,
      "rotation": 0,
      "visible": true
@@ -710,10 +710,10 @@
      "id": 64,
      "name": "garage_base",
      "type": "",
-     "x": 685,
-     "y": 365,
-     "width": 440,
-     "height": 90,
+     "x": 715,
+     "y": 350,
+     "width": 380,
+     "height": 120,
      "rotation": 0,
      "visible": true
     },
@@ -721,10 +721,10 @@
      "id": 66,
      "name": "greenhouse_base",
      "type": "",
-     "x": 1030,
-     "y": 895,
-     "width": 150,
-     "height": 110,
+     "x": 1395,
+     "y": 345,
+     "width": 330,
+     "height": 140,
      "rotation": 0,
      "visible": true
     },
@@ -732,10 +732,10 @@
      "id": 68,
      "name": "barn_base",
      "type": "",
-     "x": 1515,
-     "y": 1008,
-     "width": 350,
-     "height": 120,
+     "x": 1440,
+     "y": 992,
+     "width": 400,
+     "height": 140,
      "rotation": 0,
      "visible": true
     },
@@ -743,10 +743,10 @@
      "id": 70,
      "name": "coop_base",
      "type": "",
-     "x": 1925,
-     "y": 1010,
-     "width": 270,
-     "height": 110,
+     "x": 1895,
+     "y": 1017,
+     "width": 300,
+     "height": 95,
      "rotation": 0,
      "visible": true
     },
@@ -754,9 +754,9 @@
      "id": 73,
      "name": "pine_1_base",
      "type": "",
-     "x": 52,
+     "x": 72,
      "y": 776,
-     "width": 36,
+     "width": 40,
      "height": 24,
      "rotation": 0,
      "visible": true
@@ -765,9 +765,9 @@
      "id": 75,
      "name": "pine_2_base",
      "type": "",
-     "x": 52,
+     "x": 72,
      "y": 1026,
-     "width": 36,
+     "width": 40,
      "height": 24,
      "rotation": 0,
      "visible": true
@@ -776,9 +776,9 @@
      "id": 77,
      "name": "pine_3_base",
      "type": "",
-     "x": 54,
+     "x": 72,
      "y": 1276,
-     "width": 36,
+     "width": 40,
      "height": 24,
      "rotation": 0,
      "visible": true
@@ -787,9 +787,9 @@
      "id": 79,
      "name": "apple_1_base",
      "type": "",
-     "x": 1525,
-     "y": 416,
-     "width": 40,
+     "x": 1089,
+     "y": 991,
+     "width": 42,
      "height": 24,
      "rotation": 0,
      "visible": true
@@ -798,9 +798,9 @@
      "id": 81,
      "name": "apple_2_base",
      "type": "",
-     "x": 1705,
-     "y": 416,
-     "width": 40,
+     "x": 1084,
+     "y": 666,
+     "width": 42,
      "height": 24,
      "rotation": 0,
      "visible": true
@@ -809,9 +809,9 @@
      "id": 83,
      "name": "palm_1_base",
      "type": "",
-     "x": 2060,
-     "y": 678,
-     "width": 30,
+     "x": 2105,
+     "y": 668,
+     "width": 36,
      "height": 22,
      "rotation": 0,
      "visible": true
@@ -831,9 +831,9 @@
      "id": 87,
      "name": "oak_1_base",
      "type": "",
-     "x": 1378,
-     "y": 419,
-     "width": 44,
+     "x": 2096,
+     "y": 444,
+     "width": 48,
      "height": 26,
      "rotation": 0,
      "visible": true
@@ -842,9 +842,9 @@
      "id": 89,
      "name": "pine_4_base",
      "type": "",
-     "x": 2312,
-     "y": 286,
-     "width": 36,
+     "x": 2310,
+     "y": 321,
+     "width": 40,
      "height": 24,
      "rotation": 0,
      "visible": true
@@ -853,9 +853,9 @@
      "id": 91,
      "name": "oak_2_base",
      "type": "",
-     "x": 2448,
+     "x": 2446,
      "y": 444,
-     "width": 44,
+     "width": 48,
      "height": 26,
      "rotation": 0,
      "visible": true
@@ -864,9 +864,9 @@
      "id": 93,
      "name": "pine_5_base",
      "type": "",
-     "x": 2402,
+     "x": 2400,
      "y": 636,
-     "width": 36,
+     "width": 40,
      "height": 24,
      "rotation": 0,
      "visible": true
@@ -875,9 +875,9 @@
      "id": 95,
      "name": "oak_3_base",
      "type": "",
-     "x": 2308,
+     "x": 2306,
      "y": 1074,
-     "width": 44,
+     "width": 48,
      "height": 26,
      "rotation": 0,
      "visible": true
@@ -886,9 +886,9 @@
      "id": 97,
      "name": "pine_6_base",
      "type": "",
-     "x": 2452,
+     "x": 2450,
      "y": 1276,
-     "width": 36,
+     "width": 40,
      "height": 24,
      "rotation": 0,
      "visible": true
@@ -1772,7 +1772,7 @@
      "name": "blacksmith",
      "type": "",
      "x": 905,
-     "y": 492,
+     "y": 500,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -1790,8 +1790,8 @@
      "id": 127,
      "name": "scientist",
      "type": "",
-     "x": 1105,
-     "y": 1040,
+     "x": 1480,
+     "y": 530,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -1821,10 +1821,10 @@
      "id": 61,
      "name": "house",
      "type": "",
-     "x": 200,
-     "y": 159,
-     "width": 400,
-     "height": 386,
+     "x": 210,
+     "y": 160,
+     "width": 380,
+     "height": 400,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1836,7 +1836,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 236
+       "value": 250
       }
      ]
     },
@@ -1844,10 +1844,10 @@
      "id": 63,
      "name": "garage",
      "type": "",
-     "x": 679,
-     "y": 211,
-     "width": 452,
-     "height": 244,
+     "x": 704,
+     "y": 125,
+     "width": 402,
+     "height": 345,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1859,7 +1859,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 154
+       "value": 225
       }
      ]
     },
@@ -1867,10 +1867,10 @@
      "id": 65,
      "name": "greenhouse",
      "type": "",
-     "x": 1026,
-     "y": 701,
-     "width": 158,
-     "height": 304,
+     "x": 1377,
+     "y": 124,
+     "width": 366,
+     "height": 361,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1882,7 +1882,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 194
+       "value": 221
       }
      ]
     },
@@ -1890,10 +1890,10 @@
      "id": 67,
      "name": "barn",
      "type": "",
-     "x": 1510,
-     "y": 826,
-     "width": 360,
-     "height": 302,
+     "x": 1422,
+     "y": 802,
+     "width": 436,
+     "height": 330,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1905,7 +1905,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 182
+       "value": 190
       }
      ]
     },
@@ -1913,10 +1913,10 @@
      "id": 69,
      "name": "coop",
      "type": "",
-     "x": 1919,
-     "y": 844,
-     "width": 282,
-     "height": 276,
+     "x": 1866,
+     "y": 853,
+     "width": 358,
+     "height": 259,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1928,7 +1928,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 166
+       "value": 164
       }
      ]
     },
@@ -1936,10 +1936,10 @@
      "id": 71,
      "name": "pier",
      "type": "",
-     "x": 1700,
-     "y": 486,
-     "width": 240,
-     "height": 282,
+     "x": 1639,
+     "y": 483,
+     "width": 382,
+     "height": 241,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1959,10 +1959,10 @@
      "id": 72,
      "name": "pine_1",
      "type": "",
-     "x": 1,
-     "y": 540,
-     "width": 138,
-     "height": 260,
+     "x": 4,
+     "y": 472,
+     "width": 176,
+     "height": 328,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1974,7 +1974,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 236
+       "value": 304
       }
      ]
     },
@@ -1982,10 +1982,10 @@
      "id": 74,
      "name": "pine_2",
      "type": "",
-     "x": 1,
-     "y": 790,
-     "width": 138,
-     "height": 260,
+     "x": 4,
+     "y": 722,
+     "width": 176,
+     "height": 328,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -1997,7 +1997,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 236
+       "value": 304
       }
      ]
     },
@@ -2005,10 +2005,10 @@
      "id": 76,
      "name": "pine_3",
      "type": "",
-     "x": 3,
-     "y": 1040,
-     "width": 138,
-     "height": 260,
+     "x": 4,
+     "y": 972,
+     "width": 176,
+     "height": 328,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2020,7 +2020,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 236
+       "value": 304
       }
      ]
     },
@@ -2028,10 +2028,10 @@
      "id": 78,
      "name": "apple_1",
      "type": "",
-     "x": 1454,
-     "y": 158,
-     "width": 182,
-     "height": 282,
+     "x": 1017,
+     "y": 735,
+     "width": 186,
+     "height": 280,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2043,7 +2043,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 258
+       "value": 256
       }
      ]
     },
@@ -2051,10 +2051,10 @@
      "id": 80,
      "name": "apple_2",
      "type": "",
-     "x": 1634,
-     "y": 158,
-     "width": 182,
-     "height": 282,
+     "x": 1012,
+     "y": 410,
+     "width": 186,
+     "height": 280,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2066,7 +2066,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 258
+       "value": 256
       }
      ]
     },
@@ -2074,10 +2074,10 @@
      "id": 82,
      "name": "palm_1",
      "type": "",
-     "x": 1992,
-     "y": 416,
-     "width": 166,
-     "height": 284,
+     "x": 2078,
+     "y": 389,
+     "width": 194,
+     "height": 301,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2089,7 +2089,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 262
+       "value": 279
       }
      ]
     },
@@ -2120,10 +2120,10 @@
      "id": 86,
      "name": "oak_1",
      "type": "",
-     "x": 1298,
-     "y": 177,
-     "width": 204,
-     "height": 268,
+     "x": 2002,
+     "y": 172,
+     "width": 236,
+     "height": 298,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2135,7 +2135,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 242
+       "value": 272
       }
      ]
     },
@@ -2143,10 +2143,10 @@
      "id": 88,
      "name": "pine_4",
      "type": "",
-     "x": 2261,
-     "y": 50,
-     "width": 138,
-     "height": 260,
+     "x": 2242,
+     "y": 17,
+     "width": 176,
+     "height": 328,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2158,7 +2158,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 236
+       "value": 304
       }
      ]
     },
@@ -2166,10 +2166,10 @@
      "id": 90,
      "name": "oak_2",
      "type": "",
-     "x": 2368,
-     "y": 202,
-     "width": 204,
-     "height": 268,
+     "x": 2352,
+     "y": 172,
+     "width": 236,
+     "height": 298,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2181,7 +2181,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 242
+       "value": 272
       }
      ]
     },
@@ -2189,10 +2189,10 @@
      "id": 92,
      "name": "pine_5",
      "type": "",
-     "x": 2351,
-     "y": 400,
-     "width": 138,
-     "height": 260,
+     "x": 2332,
+     "y": 332,
+     "width": 176,
+     "height": 328,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2204,7 +2204,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 236
+       "value": 304
       }
      ]
     },
@@ -2212,10 +2212,10 @@
      "id": 94,
      "name": "oak_3",
      "type": "",
-     "x": 2228,
-     "y": 832,
-     "width": 204,
-     "height": 268,
+     "x": 2212,
+     "y": 802,
+     "width": 236,
+     "height": 298,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2227,7 +2227,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 242
+       "value": 272
       }
      ]
     },
@@ -2235,10 +2235,10 @@
      "id": 96,
      "name": "pine_6",
      "type": "",
-     "x": 2401,
-     "y": 1040,
-     "width": 138,
-     "height": 260,
+     "x": 2382,
+     "y": 972,
+     "width": 176,
+     "height": 328,
      "rotation": 0,
      "visible": true,
      "properties": [
@@ -2250,7 +2250,7 @@
       {
        "name": "overheadSplitY",
        "type": "int",
-       "value": 236
+       "value": 304
       }
      ]
     }

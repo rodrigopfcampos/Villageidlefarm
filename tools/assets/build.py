@@ -546,6 +546,8 @@ def process_sheet(cfg: dict, sheet_name: str) -> tuple[list[Sprite], dict]:
         seg_sprite = clean_sprite_mask(~seg_bg, lab, lab_bg, cfg)
     else:
         seg_bg, seg_sprite = bg, sprite
+    if cfg.get("boxes"):
+        return process_boxes(cfg, sheet_name, rgb, sprite, lab, lab_bg)
     pieces, lbl = find_pieces(seg_sprite, cfg)
     rows_expected = cfg["rows"]
     if cfg.get("regions"):
@@ -622,6 +624,14 @@ def process_sheet(cfg: dict, sheet_name: str) -> tuple[list[Sprite], dict]:
             ax1, ay1 = min(ax1, x1), min(ay1, y1)
             if ax1 > ax0 and ay1 > ay0:
                 own[ay0 - y0:ay1 - y0, ax0 - x0:ax1 - x0] |= sprite[ay0:ay1, ax0:ax1]
+        if ov.get("fill_hull"):  # tudo dentro do contorno convexo vira opaco (interior escuro aberto da garagem)
+            from scipy.spatial import ConvexHull
+            ys_, xs_ = np.where(own)
+            pts = np.stack([xs_, ys_], 1)
+            hull = ConvexHull(pts)
+            hm = Image.new("L", (own.shape[1], own.shape[0]), 0)
+            ImageDraw.Draw(hm).polygon([tuple(map(float, pts[v])) for v in hull.vertices], fill=255)
+            own = own | (np.asarray(hm) > 0)
         if ov.get("fill_box"):  # região que é sempre opaca (ex.: interior escuro da garagem)
             fx0, fy0, fx1, fy1 = ov["fill_box"]
             own[max(fy0 - y0, 0):max(fy1 - y0, 0), max(fx0 - x0, 0):max(fx1 - x0, 0)] = True
@@ -654,6 +664,48 @@ def process_sheet(cfg: dict, sheet_name: str) -> tuple[list[Sprite], dict]:
     sprites = scale_sprites(raw_sprites, cfg, sheet_name)
     info = {"rows": got, "bg": bg_rgb.tolist()}
     return sprites, info
+
+
+COLOR_MASKS = {
+    "blue": lambda r, g, b: (b > r + 50) & (b > g + 10) & (b > 100),
+    "green": lambda r, g, b: (g > r + 40) & (g > b + 20),
+    "red": lambda r, g, b: (r > g + 80) & (r > b + 70) & (r > 150),
+    "purple": lambda r, g, b: (b > g + 50) & (r > g + 30) & (b > 100),
+}
+
+
+def process_boxes(cfg, sheet_name, rgb, sprite, lab, lab_bg):
+    """Folha com peças grudadas (álbum): cada nome tem uma caixa (e opcionalmente um polígono ou uma cor).
+    A máscara do sprite = pixels que não são fundo, dentro da caixa/polígono/cor."""
+    H, W = sprite.shape
+    im = Image.fromarray(rgb).convert("RGB")
+    ov = np.asarray(im).copy()
+    ov[~sprite] = (ov[~sprite] * 0.35 + np.array([255, 0, 255]) * 0.25).astype(np.uint8)
+    dbg = Image.fromarray(ov)
+    d = ImageDraw.Draw(dbg)
+    raw = []
+    r, g, b = [rgb[..., i].astype(int) for i in range(3)]
+    for k, (name, spec) in enumerate(cfg["boxes"].items()):
+        x0, y0, x1, y1 = spec["box"]
+        m = np.zeros((H, W), bool)
+        m[y0:y1, x0:x1] = True
+        if spec.get("poly"):
+            pm = Image.new("L", (W, H), 0)
+            ImageDraw.Draw(pm).polygon([tuple(p) for p in spec["poly"]], fill=255)
+            m &= np.asarray(pm) > 0
+        if spec.get("color"):
+            cm = COLOR_MASKS[spec["color"]](r, g, b) & m
+            cm = ndi.binary_fill_holes(ndi.binary_closing(cm, iterations=2))
+            cm = ndi.binary_dilation(cm, iterations=int(spec.get("grow", 2)))  # contorno escuro da fita
+            m &= cm
+        own = (m & sprite)[y0:y1, x0:x1]
+        crop = rgb[y0:y1, x0:x1].astype(np.float32)
+        raw.append((name, np.dstack([crop, own.astype(np.float32) * 255]), crop, own))
+        d.rectangle([x0, y0, x1 - 1, y1 - 1], outline=(0, 255, 0), width=2)
+        d.text((x0 + 2, y0 + 1), f"{k} {name}", fill=(255, 255, 0), font=font(16), stroke_width=2,
+               stroke_fill=(0, 0, 0))
+    dbg.save(DEBUG / f"{sheet_name}_boxes.png")
+    return scale_sprites(raw, cfg, sheet_name), {"rows": [len(raw)], "bg": border_color(rgb).tolist()}
 
 
 def group_of(name: str, cfg: dict) -> str:

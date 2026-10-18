@@ -40,21 +40,22 @@
   font-synthesis: none;
   letter-spacing: 0.02em;
 }
-.vif-ui *,
-.vif-ui *::before,
-.vif-ui *::after {
+:where(.vif-ui) *,
+:where(.vif-ui) *::before,
+:where(.vif-ui) *::after {
   box-sizing: border-box;
 }
-.vif-ui img,
-.vif-ui svg {
+:where(.vif-ui) img,
+:where(.vif-ui) svg {
   image-rendering: pixelated;
 }
-.vif-ui button,
-.vif-ui input {
+:where(.vif-ui) button,
+:where(.vif-ui) input {
   font: inherit;
   color: inherit;
+  letter-spacing: inherit;
 }
-.vif-ui p {
+:where(.vif-ui) p {
   margin: 0 0 0.5em;
 }
 .vif-layer {
@@ -85,6 +86,7 @@
   font-weight: 700;
 }
 .vif-sub {
+  white-space: nowrap;
   font-size: 0.7em;
   font-weight: 400;
   color: var(--vif-ink-soft);
@@ -270,7 +272,7 @@
 .vif-bar {
   position: relative;
   display: block;
-  height: 22px;
+  height: 24px;
   min-width: 120px;
   border: 6px solid #1d1d1d;
   border-width: 6px 10px;
@@ -309,7 +311,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 14px;
   color: #fff;
   text-shadow:
     1px 0 0 #000,
@@ -386,7 +388,7 @@
   justify-content: center;
   padding-top: 3px;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
   color: #fff;
   text-shadow:
     1px 0 0 #0b3a66,
@@ -926,8 +928,8 @@
 }
 .vif-card__name {
   position: absolute;
-  left: 18%;
-  right: 18%;
+  left: 12%;
+  right: 12%;
   top: 80.5%;
   height: 9%;
   display: flex;
@@ -937,11 +939,6 @@
   line-height: 1;
   white-space: nowrap;
   overflow: hidden;
-  color: #3b2414;
-}
-.vif-card--rare .vif-card__name,
-.vif-card--legendary .vif-card__name,
-.vif-card--uncommon .vif-card__name {
   color: #fff4dc;
   text-shadow:
     1px 0 0 #1a0f07,

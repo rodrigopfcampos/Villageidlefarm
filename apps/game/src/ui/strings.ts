@@ -1,7 +1,14 @@
 // Todos os textos da interface (pt-BR) num lugar só, para traduzir depois.
 // Regra: nenhum componente escreve texto solto; tudo vem daqui (STR, nomes e mensagens).
 
-import type { AnimalType, BuffKind, ErrorCode, ExtractionStatus, ItemId, Rarity } from '@vif/shared';
+import type {
+  AnimalType,
+  BuffKind,
+  ErrorCode,
+  ExtractionStatus,
+  ItemId,
+  Rarity,
+} from '@vif/shared';
 import { BUFFS_BY_KIND, ERROR_MESSAGES_PT } from '@vif/shared';
 
 export const LOCALE = 'pt-BR';
@@ -167,7 +174,8 @@ export const STR = {
     sent: (name: string) => `${name} enviado para a Steam!`,
     history: 'Histórico',
     noHistory: 'Nenhum envio ainda.',
-    unavailable: 'Steam ainda não conectada. Os envios voltam a funcionar quando a ponte estiver no ar.',
+    unavailable:
+      'Steam ainda não conectada. Os envios voltam a funcionar quando a ponte estiver no ar.',
     status: {
       pending: 'Pendente',
       granted: 'Na Steam',
@@ -243,8 +251,6 @@ const BUFF_NAMES: Record<string, string> = {
   animals: 'Animais',
   fertilizer: 'Adubo',
   xp: 'XP',
-  farm_xp: 'XP',
-  account_xp: 'XP',
   clear_sky: 'Céu limpo',
   exploration: 'Exploração',
   luck: 'Sorte',

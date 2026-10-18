@@ -113,7 +113,11 @@ export function Hud() {
                   title={`${buffName(b.buff)} (${RARITY_NAMES[b.rarity]}) — ${STR.cards.remaining(formatDurationShort(left))}`}
                   onClick={() => ui.open({ id: 'cards' })}
                 >
-                  <Sprite frames={[def?.iconKey ?? '']} box={28} fallback={buffName(b.buff).slice(0, 2)} />
+                  <Sprite
+                    frames={[def?.iconKey ?? '']}
+                    box={28}
+                    fallback={buffName(b.buff).slice(0, 2)}
+                  />
                   <span class="vif-buff__txt">
                     <span class="vif-buff__name">{buffName(b.buff)}</span>
                     <span class="vif-buff__time">{formatCountdown(left)}</span>
@@ -132,7 +136,12 @@ export function Toolbar() {
   const ui = useUi();
   useBus(['cards:changed', 'farm:snapshot']);
   const nCards = ui.s.store.cards.size;
-  const item = (id: Parameters<typeof ui.toggle>[0], label: string, key?: string, badge?: number) => (
+  const item = (
+    id: Parameters<typeof ui.toggle>[0],
+    label: string,
+    key?: string,
+    badge?: number,
+  ) => (
     <Button
       class={`vif-tool ${ui.panel?.id === id ? 'vif-tool--on' : ''}`}
       onClick={() => ui.toggle(id)}
